@@ -58,10 +58,9 @@
                     android:id="@+id/tv_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:text="Home"
                     android:textColor="@{viewModel.flagSelectedTabHome ? @color/colorAccent : @color/unSelectedColor}"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/tab_text_size"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -86,10 +85,9 @@
                     android:id="@+id/tv_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:text="Favorite"
                     android:textColor="@{viewModel.flagSelectedTabFavorite ? @color/colorAccent : @color/unSelectedColor}"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/tab_text_size"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -114,10 +112,9 @@
                     android:id="@+id/tv_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:text="Profile"
                     android:textColor="@{viewModel.flagSelectedTabProfile ? @color/colorAccent : @color/unSelectedColor}"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/tab_text_size"
                     android:textStyle="bold" />
 
             </LinearLayout>

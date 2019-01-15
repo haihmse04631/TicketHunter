@@ -1,15 +1,15 @@
 package com.example.macbookpro.ticketapp.viewmodels.activitys;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
 import com.example.macbookpro.ticketapp.BR;
+import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
 
 /**
  * Created by Hoang Hai on 1/13/19.
  */
-public class MainActivityVM extends BaseObservable {
+public class MainActivityVM extends BaseActivityVM {
     public static final int TAB_HOME = 0;
     public static final int TAB_FAVORITE = 1;
     public static final int TAB_PROFILE = 2;

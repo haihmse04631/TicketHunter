@@ -4,31 +4,29 @@
 
     <data>
 
-
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10"
         tools:context=".views.fragments.DetailEventFragment">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="10">
+        <!--<fragment-->
+        <!--android:id="@+id/map_view"-->
+        <!--android:name="com.google.android.gms.maps.MapFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="4" />-->
 
-            <fragment
-                android:id="@+id/map_view"
-                android:name="com.google.android.gms.maps.MapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
+        <include
+            android:id="@+id/nav_view"
+            layout="@layout/custom_navigation_bar" />
 
-        </LinearLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
 </layout>
 
