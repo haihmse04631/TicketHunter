@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TicketApp</string>
+    <string name="map_api_key">AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo</string>
+    //error message
+    <string name="alert_msg_noconnection">No Connection</string>
+    <string name="alert_update_version">Request update version</string>
+    <string name="error_message">Common error</string>
+    <string name="main_tab_schedule">Schedule</string>
+    <string name="main_tab_dictionary">Dictionary</string>
+    <string name="main_tab_setting">Other</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

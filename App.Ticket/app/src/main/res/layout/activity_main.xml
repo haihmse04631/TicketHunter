@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.MainActivityVM" />
+
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.MainActivityVM.OnSelectedTabCallBack" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.macbookpro.ticketapp.views.customviews.CustomViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/view_border" />
+
+        <View
+            android:id="@+id/view_border"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/tab_layout"
+            android:background="@color/lineColor" />
+
+        <LinearLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_tab_bar"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:id="@+id/tab_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="@{v -> listened.onTabSelected(v)}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_home"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home_black_24dp"
+                    android:tint="@{viewModel.flagSelectedTabHome ? @color/colorAccent : @color/unSelectedColor}" />
+
+                <TextView
+                    android:id="@+id/tv_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Home"
+                    android:textColor="@{viewModel.flagSelectedTabHome ? @color/colorAccent : @color/unSelectedColor}"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tab_favorite"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="@{v -> listened.onTabSelected(v)}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_favorite"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_favorite_black_24dp"
+                    android:tint="@{viewModel.flagSelectedTabFavorite ? @color/colorAccent : @color/unSelectedColor}" />
+
+                <TextView
+                    android:id="@+id/tv_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Favorite"
+                    android:textColor="@{viewModel.flagSelectedTabFavorite ? @color/colorAccent : @color/unSelectedColor}"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tab_profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="@{v -> listened.onTabSelected(v)}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_person_black_24dp"
+                    android:tint="@{viewModel.flagSelectedTabProfile ? @color/colorAccent : @color/unSelectedColor}" />
+
+                <TextView
+                    android:id="@+id/tv_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Profile"
+                    android:textColor="@{viewModel.flagSelectedTabProfile ? @color/colorAccent : @color/unSelectedColor}"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</layout>

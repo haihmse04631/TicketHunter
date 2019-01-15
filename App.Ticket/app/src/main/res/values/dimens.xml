@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //dp
+    <dimen name="height_tab_bar">50dp</dimen>
+    <dimen name="height_navigation_bar">50dp</dimen>
+
+    //size
+
+    <dimen name="navi_text_size">18sp</dimen>
+
+</resources>
