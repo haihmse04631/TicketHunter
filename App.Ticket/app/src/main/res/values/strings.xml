@@ -15,4 +15,7 @@
     <!--FacebookSDK-->
     <string name="facebook_app_id">794601517549572</string>
     <string name="fb_login_protocol_scheme">fb794601517549572</string>
+
+    <!--Navigation-->
+    <string name="detail_ticket">Detail Ticket</string>
 </resources>

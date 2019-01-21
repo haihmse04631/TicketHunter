@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
+        android:id="@+id/mapFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="10"
         tools:context=".views.fragments.DetailEventFragment">
 
-        <!--<fragment-->
-        <!--android:id="@+id/map_view"-->
-        <!--android:name="com.google.android.gms.maps.MapFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="4" />-->
-
         <include
+            bind:navTitle="@{@string/detail_ticket}"
             android:id="@+id/nav_view"
-            layout="@layout/custom_navigation_bar" />
+            layout="@layout/navigation_bar" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
 
 
     </LinearLayout>

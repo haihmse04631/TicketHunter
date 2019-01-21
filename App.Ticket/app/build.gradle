@@ -53,5 +53,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     //FacebookSDK
     implementation 'com.facebook.android:facebook-login:[4,5)'
+    //Text Field
+    implementation 'com.github.HITGIF:TextFieldBoxes:1.4.4'
+    //Material Design
+    implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+
 
 }
