@@ -58,6 +58,8 @@ dependencies {
     implementation 'com.github.HITGIF:TextFieldBoxes:1.4.4'
     //Material Design
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+    //Loading
+    implementation 'com.wang.avi:library:2.1.3'
 
 
 }

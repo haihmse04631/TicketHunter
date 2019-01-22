@@ -18,9 +18,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
 
-        <activity android:name=".views.activitys.MainActivity">
-
-        </activity>
+        <activity android:name=".views.activitys.MainActivity"></activity>
 
         <!-- Facebook SDK -->
         <meta-data
@@ -43,7 +41,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.activitys.LoginActivity">
+        <activity android:name=".views.activitys.LoginActivity"/>
+        <activity android:name=".views.activitys.LaunchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

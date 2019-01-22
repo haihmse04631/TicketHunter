@@ -3,19 +3,24 @@
 
     <data>
 
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.viewmodels.fragments.ProfileFragmentVM.ProfileFragmentListened" />
+
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center"
-            android:text="Profile"
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:onClick="@{v -> listened.onLogoutTapped(v)}"
+            android:text="Log Out" />
 
     </LinearLayout>
 

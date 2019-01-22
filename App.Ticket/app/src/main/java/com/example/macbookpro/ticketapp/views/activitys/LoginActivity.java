@@ -1,6 +1,7 @@
 package com.example.macbookpro.ticketapp.views.activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityLoginBinding;
+import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.LoginActivityVM;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.facebook.login.Login;
@@ -56,6 +58,9 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
 
     @Override
     public void onLoginTapped(View view) {
+        SharedPreferences.Editor editor = getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE).edit();
+        editor.putString(Constant.USER_ID, "123456789"); // put user id after login success
+        editor.apply();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
