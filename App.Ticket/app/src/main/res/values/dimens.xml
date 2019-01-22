@@ -8,8 +8,8 @@
     //size
     <dimen name="navi_text_size">18sp</dimen>
     <dimen name="tab_text_size">11sp</dimen>
-    <dimen name="selectedTextSize">26sp</dimen>
-    <dimen name="unSelectTextSize">18sp</dimen>
+    <dimen name="selectedTextSize">24sp</dimen>
+    <dimen name="unSelectTextSize">16sp</dimen>
     <dimen name="mainTextSize">15sp</dimen>
 
 </resources>
