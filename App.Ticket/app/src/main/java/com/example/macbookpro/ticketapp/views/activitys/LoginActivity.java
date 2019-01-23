@@ -2,8 +2,9 @@ package com.example.macbookpro.ticketapp.views.activitys;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,16 +13,43 @@ import com.example.macbookpro.ticketapp.databinding.ActivityLoginBinding;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.LoginActivityVM;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
-import com.facebook.login.Login;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class LoginActivity extends BindingActivity implements LoginActivityVM.LoginActionListened {
 
+    private String TAG = this.getClass().getName();
+
     private LoginActivityVM loginActivityVM;
     private ActivityLoginBinding binding;
+    private CallbackManager callbackManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initViewBinding();
+        initSetingFacebookAuth();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void initViewBinding() {
         binding = (ActivityLoginBinding) getViewBinding();
         loginActivityVM = new LoginActivityVM();
         binding.setListened(this);
@@ -72,7 +100,7 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
 
     @Override
     public void onLoginFacebookTapped(View view) {
-
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
     }
 
     @Override
@@ -85,8 +113,10 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
 
     }
 
-    private void showLayout( View view, boolean show){
-        if (show){
+    // FUNCTION
+
+    private void showLayout(View view, boolean show) {
+        if (show) {
             view.animate()
                     .translationX(0)
                     .setDuration(300)
@@ -102,4 +132,61 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
             view.setVisibility(View.GONE);
         }
     }
+
+    // For Facebook
+
+    private void initSetingFacebookAuth() {
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                        loadInformation();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(LoginActivity.this, "Cancel", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    protected void loadInformation() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+        if (isLoggedIn) {
+            Bundle params = new Bundle();
+            params.putString("fields", "id,name,email,picture.width(960)");
+
+            new GraphRequest(AccessToken.getCurrentAccessToken(),
+                    "/" + accessToken.getUserId() + "/",
+                    params,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            Log.i("Data: ", response.toString());
+                            try {
+                                JSONObject obj = response.getJSONObject();
+                                Log.d(TAG, "Name: " + obj.getString("name") +
+                                        "Avatar: " + obj.getJSONObject("picture").getJSONObject("data").getString("url"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            ).executeAsync();
+        } else {
+            Log.i("Data: ", "Not yet");
+        }
+    }
+
+
 }
