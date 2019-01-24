@@ -10,21 +10,26 @@ import com.bumptech.glide.Glide;
  * Created by Hoang Hai on 1/23/19.
  */
 public class Category extends BaseObservable {
-    private String imgCategory;
+    private Integer imgCategory;
     private String categoryName;
 
+    public Category(Integer imgCategory, String categoryName) {
+        this.imgCategory = imgCategory;
+        this.categoryName = categoryName;
+    }
+
     @BindingAdapter("imgCategory")
-    public static void loadImage(ImageView view, String imgCategory) {
+    public static void loadImage(ImageView view, Integer imgCategory) {
         Glide.with(view.getContext())
                 .load(imgCategory)
                 .into(view);
     }
 
-    public String getImgCategory() {
+    public Integer getImgCategory() {
         return imgCategory;
     }
 
-    public void setImgCategory(String imgCategory) {
+    public void setImgCategory(Integer imgCategory) {
         this.imgCategory = imgCategory;
     }
 

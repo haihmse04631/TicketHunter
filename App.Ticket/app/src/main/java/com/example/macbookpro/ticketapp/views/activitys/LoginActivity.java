@@ -90,6 +90,7 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
         editor.putString(Constant.USER_ID, "123456789"); // put user id after login success
         editor.apply();
         Intent intent = new Intent(this, MainActivity.class);
+        finish();
         startActivity(intent);
     }
 

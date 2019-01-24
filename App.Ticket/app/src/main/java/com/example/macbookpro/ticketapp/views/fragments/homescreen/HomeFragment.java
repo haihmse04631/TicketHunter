@@ -6,18 +6,28 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentHomeBinding;
+import com.example.macbookpro.ticketapp.models.Category;
+import com.example.macbookpro.ticketapp.viewmodels.fragments.HomeFragmentVM;
+import com.example.macbookpro.ticketapp.views.adapter.CategoryAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends BindingFragment {
+public class HomeFragment extends BindingFragment implements CategoryAdapter.CategoryAdapterListened {
 
     private FragmentHomeBinding binding;
+    private CategoryAdapter categoryAdapter;
+    private RecyclerView recyclerView;
+    private HomeFragmentVM homeFragmentVM;
 
     public static HomeFragment newInstance() {
 
@@ -32,6 +42,19 @@ public class HomeFragment extends BindingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentHomeBinding) getViewBinding();
+        homeFragmentVM = new HomeFragmentVM();
+        homeFragmentVM.getCategories();
+        initRecycleView();
+    }
+
+    private void initRecycleView() {
+        recyclerView = binding.categotiesView;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
+        categoryAdapter = new CategoryAdapter(homeFragmentVM.categories, this);
+        recyclerView.setAdapter(categoryAdapter);
     }
 
     @Override
@@ -47,5 +70,10 @@ public class HomeFragment extends BindingFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onCategoryTapped(Category category) {
+        Toast.makeText(getActivity(), category.getCategoryName(), Toast.LENGTH_LONG).show();
     }
 }

@@ -18,4 +18,5 @@
 
     <!--Navigation-->
     <string name="detail_ticket">Detail Ticket</string>
+    <string name="home_tab">Home</string>
 </resources>
