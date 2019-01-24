@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -12,16 +11,35 @@
         android:orientation="vertical"
         android:weightSum="10">
 
-        <include
-            bind:navTitle="@{@string/home_tab}"
-            layout="@layout/navigation_bar"
-            android:id="@+id/nav_view"
-            />
+        <RelativeLayout
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:text="Chủ Đề: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textStyle="bold"
+                android:text="Xem Tất cả >"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/categoties_view"
             android:layout_width="match_parent"
-            android:layout_height="90dp"/>
+            android:layout_height="80dp"/>
 
     </LinearLayout>
 

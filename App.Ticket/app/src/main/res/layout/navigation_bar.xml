@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-        <variable
-            name="navTitle"
-            type="String"/>
-
-    </data>
-
     <RelativeLayout
+        android:background="@color/selectedColor"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="45dp">
 
         <TextView
+            android:fontFamily="@font/custom_font"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
             android:id="@+id/nav_title"
-            android:textColor="@color/navTextColor"
-            android:textSize="18sp"
+            android:textColor="@color/whiteColor"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:text="@{navTitle}"
-            android:layout_centerInParent="true"
+            android:text="Ticket Hunter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lineColor"
-            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 

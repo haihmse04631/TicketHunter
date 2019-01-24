@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.example.macbookpro.ticketapp.models.User"/>
+
+    </data>
 
     <LinearLayout
         android:id="@+id/navigation_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:background="@color/selectedColor"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:fontFamily="@font/custom_font"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:id="@+id/nav_title"
+                android:textColor="@color/whiteColor"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Ticket Hunter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                bind:imageCircle="@{user.avatarUrl}"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>
