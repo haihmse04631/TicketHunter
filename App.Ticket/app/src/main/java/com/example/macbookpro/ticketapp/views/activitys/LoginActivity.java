@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityLoginBinding;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
+import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.LoginActivityVM;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.facebook.AccessToken;
@@ -22,6 +23,7 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,12 +88,9 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
 
     @Override
     public void onLoginTapped(View view) {
-        SharedPreferences.Editor editor = getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE).edit();
-        editor.putString(Constant.USER_ID, "123456789"); // put user id after login success
-        editor.apply();
-        Intent intent = new Intent(this, MainActivity.class);
-        finish();
-        startActivity(intent);
+        User user = new User("1234567", "Ice Tea", "", Constant.DEFAULT_ACCTION);
+        saveToSharePreference(user);
+        goToMainScreen();
     }
 
     @Override
@@ -145,6 +144,7 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
                     public void onSuccess(LoginResult loginResult) {
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         loadInformation();
+                        goToMainScreen();
                     }
 
                     @Override
@@ -178,6 +178,12 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
                                 JSONObject obj = response.getJSONObject();
                                 Log.d(TAG, "Name: " + obj.getString("name") +
                                         "Avatar: " + obj.getJSONObject("picture").getJSONObject("data").getString("url"));
+                                String id = obj.getString("id");
+                                String name = obj.getString("name");
+                                String avatarUrl = obj.getJSONObject("picture").getJSONObject("data").getString("url");
+                                String accountType = Constant.FACEBOOK_ACCOUNT;
+                                User user = new User(id, name, avatarUrl, accountType);
+                                saveToSharePreference(user);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -187,6 +193,20 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
         } else {
             Log.i("Data: ", "Not yet");
         }
+    }
+
+    private void goToMainScreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
+    private void saveToSharePreference(User user){
+        SharedPreferences.Editor editor = getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString(Constant.USER_DATA, json);
+        editor.apply();
     }
 
 

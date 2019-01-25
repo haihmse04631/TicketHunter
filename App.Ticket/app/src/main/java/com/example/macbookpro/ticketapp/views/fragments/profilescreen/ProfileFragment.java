@@ -15,14 +15,19 @@ import android.view.ViewGroup;
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentProfileBinding;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
+import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.fragments.ProfileFragmentVM;
 import com.example.macbookpro.ticketapp.views.activitys.LoginActivity;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
+import com.facebook.login.LoginManager;
+import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends BindingFragment implements ProfileFragmentVM.ProfileFragmentListened {
+
+    private User user;
 
     private FragmentProfileBinding binding;
 
@@ -40,6 +45,7 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentProfileBinding) getViewBinding();
         binding.setListened(this);
+        getUserData();
     }
 
     @Override
@@ -54,12 +60,52 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
 
     @Override
     public void onLogoutTapped(View view) {
-        SharedPreferences.Editor sharedPreferences = getActivity().getSharedPreferences(Constant.TK_SHARE_PREFERENCE, Context.MODE_PRIVATE).edit();
-        sharedPreferences.putString(Constant.USER_ID, null);
-        sharedPreferences.apply();
+        if (user != null) {
+            switch (user.getAccountType()) {
+                case Constant.DEFAULT_ACCTION:
+                    clearUserData();
+                    backToLoginActivity();
+                    break;
+                case Constant.FACEBOOK_ACCOUNT:
+                    LoginManager.getInstance().logOut();
+                    clearUserData();
+                    backToLoginActivity();
+                    break;
+                case Constant.GOOGLE_ACCOUNT:
+                    clearUserData();
+                    backToLoginActivity();
+                    break;
+                case Constant.TWITTER_ACCOUNT:
+                    clearUserData();
+                    backToLoginActivity();
+                    break;
+                default:
+                    clearUserData();
+                    backToLoginActivity();
+            }
+        }
+    }
+
+    private void backToLoginActivity() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         getActivity().finish();
         startActivity(intent);
+    }
 
+    private void getUserData() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constant.TK_SHARE_PREFERENCE, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(Constant.USER_DATA, null);
+        if (json != null) {
+            user = gson.fromJson(json, User.class);
+        }
+    }
+
+    private void clearUserData() {
+        SharedPreferences.Editor sharedPreferences = getActivity().getSharedPreferences(Constant.TK_SHARE_PREFERENCE, Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(null);
+        sharedPreferences.putString(Constant.USER_DATA, json);
+        sharedPreferences.apply();
     }
 }

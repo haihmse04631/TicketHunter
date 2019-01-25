@@ -7,8 +7,13 @@ import android.os.Bundle;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
+import com.example.macbookpro.ticketapp.models.User;
+import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class LaunchActivity extends AppCompatActivity {
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,16 +21,28 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE);
-        String userID = sharedPreferences.getString(Constant.USER_ID, null);
-        if (userID == null) {
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(Constant.USER_DATA, null);
+        if (json != null) {
+            user = gson.fromJson(json, User.class);
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (user == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             finish();
             startActivity(intent);
+            overridePendingTransition(0,0);
         } else  {
             Intent intent = new Intent(this, MainActivity.class);
             finish();
             startActivity(intent);
+            overridePendingTransition(0,0);
         }
-
     }
+
 }
