@@ -1,11 +1,12 @@
 package com.example.macbookpro.ticketapp.viewmodels.fragments;
 
+import android.view.View;
+
+import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseFragmentVM;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import com.example.macbookpro.ticketapp.R;
 import java.util.List;
 
 public class HomeFragmentVM extends BaseFragmentVM {
@@ -25,6 +26,10 @@ public class HomeFragmentVM extends BaseFragmentVM {
         categories.add(new Category(R.drawable.category_sport, "Công Nghệ"));
         categories.add(new Category(R.drawable.category_sport, "Kinh Doanh"));
         categories.add(new Category(R.drawable.category_sport, "Khác"));
+    }
+
+    public interface HomeFragmentListened {
+        void onShowAllCategoriesTapped(View view);
     }
 
 }

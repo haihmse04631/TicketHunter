@@ -1,8 +1,7 @@
 package com.example.macbookpro.ticketapp.views.activitys;
 
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.example.macbookpro.ticketapp.R;
@@ -50,6 +49,11 @@ public class MainActivity extends BindingActivity implements ViewPager.OnPageCha
     @Override
     public void onPageScrollStateChanged(int i) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        getCurrentFragment().showBack();
     }
 
     @Override
