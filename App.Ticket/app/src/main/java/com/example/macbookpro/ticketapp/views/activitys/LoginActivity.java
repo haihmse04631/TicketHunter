@@ -144,7 +144,6 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
                     public void onSuccess(LoginResult loginResult) {
                         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
                         loadInformation();
-                        goToMainScreen();
                     }
 
                     @Override
@@ -184,6 +183,7 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
                                 String accountType = Constant.FACEBOOK_ACCOUNT;
                                 User user = new User(id, name, avatarUrl, accountType);
                                 saveToSharePreference(user);
+                                goToMainScreen();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

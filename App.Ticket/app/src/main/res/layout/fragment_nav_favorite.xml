@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
-        <variable
-            name="user"
-            type="com.example.macbookpro.ticketapp.models.User"/>
 
     </data>
 
@@ -17,29 +12,29 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:background="@color/selectedColor"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:background="@color/selectedColor">
 
             <TextView
-                android:fontFamily="@font/custom_font"
-                android:layout_marginLeft="16dp"
-                android:layout_centerVertical="true"
                 android:id="@+id/nav_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/custom_font"
+                android:text="@string/app_name"
                 android:textColor="@color/whiteColor"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="Ticket Hunter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <ImageView
-                bind:imageCircle="@{user.avatarUrl}"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:layout_alignParentRight="true"
+                android:id="@+id/img_avatar"
                 android:layout_width="35dp"
-                android:layout_height="35dp" />
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp" />
 
         </RelativeLayout>
 

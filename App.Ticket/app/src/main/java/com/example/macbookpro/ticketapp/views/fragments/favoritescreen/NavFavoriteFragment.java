@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentNavFavoriteBinding;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 import com.example.macbookpro.ticketapp.views.base.NavigationFragment;
@@ -18,7 +19,8 @@ import com.example.macbookpro.ticketapp.views.base.NavigationFragment;
  */
 public class NavFavoriteFragment extends NavigationFragment {
 
-    FragmentNavFavoriteBinding binding;
+    private FragmentNavFavoriteBinding binding;
+    private User userInfor;
 
     public static NavFavoriteFragment newInstance() {
 
@@ -33,7 +35,8 @@ public class NavFavoriteFragment extends NavigationFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentNavFavoriteBinding) getViewBinding();
-        binding.setUser(new User("asdasdas","Ice Tea", ""));
+        userInfor = Ultil.getUserInfor(getActivity());
+        setupContentView(userInfor, binding.imgAvatar);
     }
 
     @Override
@@ -50,4 +53,5 @@ public class NavFavoriteFragment extends NavigationFragment {
     protected int layoutRes() {
         return R.layout.fragment_nav_favorite;
     }
+
 }

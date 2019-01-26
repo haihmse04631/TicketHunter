@@ -6,6 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.macbookpro.ticketapp.R;
+import com.example.macbookpro.ticketapp.models.User;
 
 /**
  * Created by Hoang Hai on 1/13/19.
@@ -28,6 +34,7 @@ public abstract class NavigationFragment extends BindingFragment {
                     .add(contentViewId, fragment)
                     .commit();
         }
+
     }
 
     public BindingFragment getSubpageFragment() {
@@ -35,5 +42,18 @@ public abstract class NavigationFragment extends BindingFragment {
             return (BindingFragment) getChildFragmentManager().findFragmentById(getContentViewId());
         }
         return null;
+    }
+
+    public void setupContentView(User userInfor, ImageView imgAvatar) {
+        String avatarUrl = userInfor.getAvatarUrl();
+        if (getActivity() != null) {
+            Glide.with(getActivity())
+                    .applyDefaultRequestOptions(new RequestOptions()
+                            .placeholder(R.drawable.ic_avatar)
+                            .error(R.drawable.ic_avatar))
+                    .load(avatarUrl)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imgAvatar);
+        }
     }
 }

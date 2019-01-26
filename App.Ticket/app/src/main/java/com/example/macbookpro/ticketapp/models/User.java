@@ -4,21 +4,25 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.example.macbookpro.ticketapp.BR;
+import com.example.macbookpro.ticketapp.helper.constant.Constant;
+
+import java.io.Serializable;
 
 /**
  * Created by Hoang Hai on 1/24/19.
  */
-public class User extends BaseObservable {
+public class User extends BaseObservable implements Serializable {
 
     private String id;
     private String userName;
     private String avatarUrl;
     private String accountType;
 
-    public User(String id, String userName, String avatarUrl) {
-        this.id = id;
-        this.userName = userName;
-        this.avatarUrl = avatarUrl;
+    public User() {
+        this.id = "";
+        this.userName = "";
+        this.avatarUrl = "";
+        this.accountType = Constant.EMPTY_ACCOUNT;
     }
 
     public User(String id, String userName, String avatarUrl, String accountType) {

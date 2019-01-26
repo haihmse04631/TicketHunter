@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TicketApp</string>
+    <string name="app_name">Ticket Hunter</string>
     <string name="map_api_key">AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo</string>
     //error message
     <string name="alert_msg_noconnection">No Connection</string>

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentNavHomeBinding;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 import com.example.macbookpro.ticketapp.views.base.NavigationFragment;
@@ -19,6 +20,7 @@ import com.example.macbookpro.ticketapp.views.base.NavigationFragment;
 public class NavHomeFragment extends NavigationFragment {
 
     private FragmentNavHomeBinding binding;
+    private User userInfor;
 
     public static NavHomeFragment newInstance() {
 
@@ -33,7 +35,8 @@ public class NavHomeFragment extends NavigationFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentNavHomeBinding) getViewBinding();
-        binding.setUser(new User("asdasdas","Ice Tea", ""));
+        userInfor = Ultil.getUserInfor(getActivity());
+        setupContentView(userInfor, binding.imgAvatar);
     }
 
     @Override
@@ -50,4 +53,5 @@ public class NavHomeFragment extends NavigationFragment {
     protected int layoutRes() {
         return R.layout.fragment_nav_home;
     }
+
 }

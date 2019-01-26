@@ -2,16 +2,17 @@ package com.example.macbookpro.ticketapp.views.activitys;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.models.User;
 import com.google.gson.Gson;
-import com.wang.avi.AVLoadingIndicatorView;
 
 public class LaunchActivity extends AppCompatActivity {
+
+    private final String TAG = this.getClass().getName();
 
     private User user;
 
