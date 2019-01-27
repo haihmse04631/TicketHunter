@@ -16,11 +16,11 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField("String", "BASE_URL", '"http://systena.assit.jp/"')
+            buildConfigField("String", "BASE_URL", '"https://itunes.apple.com/"')
         }
         release {
             minifyEnabled false
-            buildConfigField("String", "BASE_URL", '"http://systena.assit.jp/"')
+            buildConfigField("String", "BASE_URL", '"https://itunes.apple.com/"')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

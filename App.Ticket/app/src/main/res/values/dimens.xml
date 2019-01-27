@@ -11,5 +11,6 @@
     <dimen name="selectedTextSize">24sp</dimen>
     <dimen name="unSelectTextSize">16sp</dimen>
     <dimen name="mainTextSize">15sp</dimen>
+    <dimen name="loadingViewSize">80dp</dimen>
 
 </resources>

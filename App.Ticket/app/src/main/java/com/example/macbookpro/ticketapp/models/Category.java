@@ -12,10 +12,12 @@ import com.bumptech.glide.Glide;
 public class Category extends BaseObservable {
     private Integer imgCategory;
     private String categoryName;
+    private String id;
 
-    public Category(Integer imgCategory, String categoryName) {
+    public Category(Integer imgCategory, String categoryName, String id) {
         this.imgCategory = imgCategory;
         this.categoryName = categoryName;
+        this.id = id;
     }
 
     @BindingAdapter("imgCategory")
@@ -39,5 +41,13 @@ public class Category extends BaseObservable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

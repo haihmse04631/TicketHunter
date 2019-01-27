@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentProfileBinding;
@@ -61,28 +59,32 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
     @Override
     public void onLogoutTapped(View view) {
         if (user != null) {
-            switch (user.getAccountType()) {
-                case Constant.DEFAULT_ACCTION:
-                    clearUserData();
-                    backToLoginActivity();
-                    break;
-                case Constant.FACEBOOK_ACCOUNT:
-                    LoginManager.getInstance().logOut();
-                    clearUserData();
-                    backToLoginActivity();
-                    break;
-                case Constant.GOOGLE_ACCOUNT:
-                    clearUserData();
-                    backToLoginActivity();
-                    break;
-                case Constant.TWITTER_ACCOUNT:
-                    clearUserData();
-                    backToLoginActivity();
-                    break;
-                default:
-                    clearUserData();
-                    backToLoginActivity();
-            }
+            doLogout(user);
+        }
+    }
+
+    private void doLogout(User user) {
+        switch (user.getAccountType()) {
+            case Constant.DEFAULT_ACCTION:
+                clearUserData();
+                backToLoginActivity();
+                break;
+            case Constant.FACEBOOK_ACCOUNT:
+                LoginManager.getInstance().logOut();
+                clearUserData();
+                backToLoginActivity();
+                break;
+            case Constant.GOOGLE_ACCOUNT:
+                clearUserData();
+                backToLoginActivity();
+                break;
+            case Constant.TWITTER_ACCOUNT:
+                clearUserData();
+                backToLoginActivity();
+                break;
+            default:
+                clearUserData();
+                backToLoginActivity();
         }
     }
 

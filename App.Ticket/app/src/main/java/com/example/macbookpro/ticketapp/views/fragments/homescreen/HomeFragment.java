@@ -10,7 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentHomeBinding;
@@ -18,6 +17,7 @@ import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.viewmodels.fragments.HomeFragmentVM;
 import com.example.macbookpro.ticketapp.views.adapter.CategoryAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
+import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,7 +75,8 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
 
     @Override
     public void onCategoryTapped(Category category) {
-        Toast.makeText(getActivity(), category.getCategoryName(), Toast.LENGTH_LONG).show();
+        homeFragmentVM.getAppleMusic(category.getId());
+        CustomProgress.getInstance().showLoading(getContext());
     }
 
     @Override
