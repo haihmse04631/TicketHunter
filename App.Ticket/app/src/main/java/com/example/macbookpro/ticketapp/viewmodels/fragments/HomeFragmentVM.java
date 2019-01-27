@@ -1,35 +1,31 @@
 package com.example.macbookpro.ticketapp.viewmodels.fragments;
 
-import android.util.Log;
 import android.view.View;
 
 import com.example.macbookpro.ticketapp.R;
-import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.models.AppleMusic;
 import com.example.macbookpro.ticketapp.models.Category;
+import com.example.macbookpro.ticketapp.models.Entry;
+import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseFragmentVM;
-import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class HomeFragmentVM extends BaseFragmentVM {
 
     public List<Category> categories = new ArrayList<>();
-    public AppleMusic appleMusic;
+    public AppleMusic appleMusic = new AppleMusic();
+    public List<Event> events = new ArrayList<>();
 
     public HomeFragmentVM() {
     }
 
     public void getCategories() {
         categories.add(new Category(R.drawable.category_sport, "Thể Thao", "1"));
-        categories.add(new Category(R.drawable.category_sport, "Du Lịch","2"));
-        categories.add(new Category(R.drawable.category_sport, "Ẩm Thực","3"));
-        categories.add(new Category(R.drawable.category_sport, "Game Show","4"));
+        categories.add(new Category(R.drawable.category_sport, "Du Lịch", "2"));
+        categories.add(new Category(R.drawable.category_sport, "Ẩm Thực", "3"));
+        categories.add(new Category(R.drawable.category_sport, "Game Show", "4"));
         categories.add(new Category(R.drawable.category_sport, "Nghệ Thuật", "5"));
         categories.add(new Category(R.drawable.category_sport, "Học Tập", "6"));
         categories.add(new Category(R.drawable.category_sport, "Công Nghệ", "7"));
@@ -37,25 +33,24 @@ public class HomeFragmentVM extends BaseFragmentVM {
         categories.add(new Category(R.drawable.category_sport, "Khác", "9"));
     }
 
-    public interface HomeFragmentListened {
-        void onShowAllCategoriesTapped(View view);
+    public void prepareDataEventList() {
+        if (appleMusic.getFeed() != null) {
+            List<Entry> entries = appleMusic.getFeed().getEntries();
+            for (int i = 0; i < entries.size(); i++) {
+                Entry entry = entries.get(i);
+                Integer id = i;
+                String name = entry.getName().getLabel();
+                String collection = entry.getCollection().getName().getLabel();
+                String price = entry.getPrice().getLabel();
+                String imageUrl = entry.getImages().get(1).getLabel();
+                Event event = new Event(id,name,collection,price,imageUrl);
+                events.add(event);
+            }
+        }
     }
 
-    public void getAppleMusic(String id) {
-        final Call<AppleMusic> appleMusicCall = ApiClient.getInstance().getApi().getAppleMusic(id);
-        appleMusicCall.enqueue(new Callback<AppleMusic>() {
-            @Override
-            public void onResponse(Call<AppleMusic> call, Response<AppleMusic> response) {
-                //appleMusic = response.body();
-                Log.e("Response", response.isSuccessful() + "");
-                CustomProgress.getInstance().hideLoading();
-            }
-
-            @Override
-            public void onFailure(Call<AppleMusic> call, Throwable t) {
-
-            }
-        });
+    public interface HomeFragmentListened {
+        void onShowAllCategoriesTapped(View view);
     }
 
 }

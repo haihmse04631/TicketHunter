@@ -11,7 +11,7 @@ import retrofit2.http.Path;
  */
 public interface ApiService {
 
-    @GET("us/rss/topsongs/limit=50/genre={id}/explicit=true/json")
+    @GET("us/rss/topsongs/limit=20/genre={id}/explicit=true/json")
     Call<AppleMusic> getAppleMusic(@Path("id") String id);
 
 }

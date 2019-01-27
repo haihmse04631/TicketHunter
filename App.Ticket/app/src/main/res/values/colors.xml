@@ -8,6 +8,7 @@
     <color name="navTextColor">#000000</color>
     <color name="separatorColor">#797979</color>
     <color name="backup">#e97026</color>
+    <color name="normalText">#131313</color>
 
     //Text Color
     <color name="selectedColor">#f13939</color>

@@ -1,5 +1,7 @@
 package com.example.macbookpro.ticketapp.models;
 
+import android.databinding.BaseObservable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,7 +10,7 @@ import java.util.List;
 /**
  * Created by Hoang Hai on 1/27/19.
  */
-public class Entry implements Serializable {
+public class Entry extends BaseObservable implements Serializable {
 
     @SerializedName("im:name")
     private Name name;
@@ -17,7 +19,7 @@ public class Entry implements Serializable {
         private String label;
 
         public String getLabel() {
-            return label;
+            return "Name: " + label;
         }
 
         public void setLabel(String label) {
@@ -29,21 +31,40 @@ public class Entry implements Serializable {
     private List<Image> images;
     public class Image {
         private String label;
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
     }
 
     @SerializedName("im:collection")
     private Collection collection;
     public class Collection {
+
+        @SerializedName("im:name")
+        private Name name;
         public class Name {
             private String label;
 
             public String getLabel() {
-                return label;
+                return "Collection: " + label;
             }
 
             public void setLabel(String label) {
                 this.label = label;
             }
+        }
+
+        public Name getName() {
+            return name;
+        }
+
+        public void setName(Name name) {
+            this.name = name;
         }
     }
 
@@ -53,7 +74,7 @@ public class Entry implements Serializable {
         private String label;
 
         public String getLabel() {
-            return label;
+            return "Price: " + label;
         }
 
         public void setLabel(String label) {

@@ -3,6 +3,7 @@ package com.example.macbookpro.ticketapp.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,12 +11,16 @@ import java.util.List;
  */
 public class AppleMusic extends BaseApiModel implements Serializable {
 
-    private Feed feed;
+    private Feed feed = new Feed();
 
     public class Feed {
 
         @SerializedName("entry")
         private List<Entry> entries;
+
+        public Feed() {
+            this.entries = new ArrayList<>();
+        }
 
         public List<Entry> getEntries() {
             return entries;
