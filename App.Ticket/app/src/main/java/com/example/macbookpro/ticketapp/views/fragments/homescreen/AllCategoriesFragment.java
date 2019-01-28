@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentAllCategoriesBinding;
@@ -65,7 +64,11 @@ public class AllCategoriesFragment extends BindingFragment implements AllCategoi
 
     @Override
     public void onCategoryTapped(Category category) {
-        Toast.makeText(getActivity(), category.getCategoryName(), Toast.LENGTH_LONG).show();
+        showNext(AllEventsFragment.newInstance(category.getId()));
     }
 
+    @Override
+    protected int containerViewId() {
+        return R.id.navigation_home;
+    }
 }

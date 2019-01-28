@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentHomeBinding;
@@ -24,6 +23,7 @@ import com.example.macbookpro.ticketapp.views.adapter.CategoryAdapter;
 import com.example.macbookpro.ticketapp.views.adapter.EventListAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
+import com.example.macbookpro.ticketapp.views.fragments.DetailEventFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -112,7 +112,7 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
 
     @Override
     public void onEventTapped(Event event) {
-        Toast.makeText(getActivity(), event.getName(), Toast.LENGTH_LONG).show();
+        showNext(DetailEventFragment.newInstance());
     }
 
     public void getAppleMusic(String id) {
