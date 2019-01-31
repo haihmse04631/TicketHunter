@@ -85,6 +85,12 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        CustomProgress.getInstance().hideLoading();
+    }
+
+    @Override
     protected int layoutRes() {
         return R.layout.fragment_home;
     }
@@ -130,7 +136,7 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
 
             @Override
             public void onFailure(Call<AppleMusic> call, Throwable t) {
-
+                Log.e("apiResponse", "Call API Failed: " + t.toString());
             }
         });
     }

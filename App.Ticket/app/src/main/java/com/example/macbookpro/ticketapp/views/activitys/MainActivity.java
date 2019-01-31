@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityMainBinding;
+import com.example.macbookpro.ticketapp.helper.location.TaskLoadedCallback;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.MainActivityVM;
 import com.example.macbookpro.ticketapp.views.adapter.NavigationPagerAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;

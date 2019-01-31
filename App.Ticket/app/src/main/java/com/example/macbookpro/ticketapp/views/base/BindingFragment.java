@@ -1,5 +1,6 @@
 package com.example.macbookpro.ticketapp.views.base;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -135,5 +136,12 @@ public abstract class BindingFragment<VB extends ViewDataBinding> extends Fragme
             return arguments.getInt(PARENT_CONTAINER_VIEW_ID, -1);
         }
         return -1;
+    }
+
+    public Context getCurrentContext() {
+        if (getContext() != null) {
+            return getContext();
+        }
+        return null;
     }
 }
