@@ -9,6 +9,7 @@ public class ProfileFragmentVM {
 
     public interface ProfileFragmentListened {
         void onLogoutTapped(View view);
+        void onShowDialog(View view);
     }
 
 }

@@ -1,9 +1,12 @@
 package com.example.macbookpro.ticketapp.views.activitys;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ import java.util.Arrays;
 public class LoginActivity extends BindingActivity implements LoginActivityVM.LoginActionListened {
 
     private String TAG = this.getClass().getName();
+    private static final int LOCATION_PERMISSTION_REQUEST_CODE = 1;
 
     private LoginActivityVM loginActivityVM;
     private ActivityLoginBinding binding;
@@ -43,6 +47,15 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
         super.onCreate(savedInstanceState);
         initViewBinding();
         initSetingFacebookAuth();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSTION_REQUEST_CODE);
+        }
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.example.macbookpro.ticketapp.views.fragments.profilescreen;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentProfileBinding;
@@ -19,6 +22,7 @@ import com.example.macbookpro.ticketapp.views.activitys.LoginActivity;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
+import com.orhanobut.dialogplus.DialogPlus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +65,29 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
         if (user != null) {
             doLogout(user);
         }
+    }
+
+    @Override
+    public void onShowDialog(View view) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Title")
+                .setMessage("Ahihi Ahihi Ahooooooo!")
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Nope", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(), "Nope", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
     private void doLogout(User user) {

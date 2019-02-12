@@ -19,6 +19,7 @@ import com.example.macbookpro.ticketapp.models.AppleMusic;
 import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.viewmodels.fragments.HomeFragmentVM;
+import com.example.macbookpro.ticketapp.views.activitys.DetailEventActivity;
 import com.example.macbookpro.ticketapp.views.adapter.CategoryAdapter;
 import com.example.macbookpro.ticketapp.views.adapter.EventListAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
@@ -112,7 +113,8 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
 
     @Override
     public void onEventTapped(Event event) {
-        showNext(DetailEventFragment.newInstance());
+        Intent intent = new Intent(getActivity(), DetailEventActivity.class);
+        startActivity(intent);
     }
 
     public void getAppleMusic(String id) {
