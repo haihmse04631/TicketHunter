@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
@@ -13,6 +14,9 @@ import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.models.User;
 import com.google.gson.Gson;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -54,6 +58,21 @@ public class Ultil {
             }
         }
         return null;
+    }
+
+    public static boolean isEmpty(String content) {
+        if (content == null) {
+            return true;
+        } else {
+            return content.isEmpty();
+        }
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
 }

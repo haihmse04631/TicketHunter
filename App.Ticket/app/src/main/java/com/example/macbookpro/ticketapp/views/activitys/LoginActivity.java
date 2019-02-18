@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityLoginBinding;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.LoginActivityVM;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.example.macbookpro.ticketapp.views.customviews.SimpleDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -101,14 +103,34 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
 
     @Override
     public void onLoginTapped(View view) {
-        User user = new User("1234567", "Ice Tea", "", Constant.DEFAULT_ACCTION);
-        saveToSharePreference(user);
-        goToMainScreen();
+        if (Ultil.isEmpty(loginActivityVM.email)) {
+            SimpleDialog.getInstance().show(this, "Hãy điền địa chỉ Email");
+        } else if (!Ultil.isEmailValid(loginActivityVM.email)) {
+            SimpleDialog.getInstance().show(this, "Sai định dạng email");
+        } else if (Ultil.isEmpty(loginActivityVM.password)) {
+            SimpleDialog.getInstance().show(this, "Hãy điền Password");
+        } else {
+            User user = new User("1234567", "Ice Tea", "", Constant.DEFAULT_ACCTION);
+            processLoginSuccess(user);
+        }
     }
 
     @Override
     public void onRegisterTapped(View view) {
-        Toast.makeText(this, "register", Toast.LENGTH_LONG).show();
+        if (Ultil.isEmpty(loginActivityVM.regEmail)) {
+            SimpleDialog.getInstance().show(this, "Hãy điền địa chỉ Email");
+        } else if (!Ultil.isEmailValid(loginActivityVM.regEmail)) {
+            SimpleDialog.getInstance().show(this, "Sai định dạng email");
+        } else if (Ultil.isEmpty(loginActivityVM.regPassword)) {
+            SimpleDialog.getInstance().show(this, "Hãy điền Password");
+        } else if (Ultil.isEmpty(loginActivityVM.regConfirmPassword)) {
+            SimpleDialog.getInstance().show(this, "Hãy điền Confirm Password");
+        } else if (!loginActivityVM.regPassword.equals(loginActivityVM.regConfirmPassword)) {
+            SimpleDialog.getInstance().show(this, "Mật khẩu không khớp");
+        } else {
+            User user = new User("1234567", "Ice Tea", "", Constant.DEFAULT_ACCTION);
+            processLoginSuccess(user);
+        }
     }
 
     @Override
@@ -127,6 +149,11 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
     }
 
     // FUNCTION
+
+    private void processLoginSuccess(User user) {
+        saveToSharePreference(user);
+        goToMainScreen();
+    }
 
     private void showLayout(View view, boolean show) {
         if (show) {
@@ -214,7 +241,7 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
         startActivity(intent);
     }
 
-    private void saveToSharePreference(User user){
+    private void saveToSharePreference(User user) {
         SharedPreferences.Editor editor = getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE).edit();
         Gson gson = new Gson();
         String json = gson.toJson(user);

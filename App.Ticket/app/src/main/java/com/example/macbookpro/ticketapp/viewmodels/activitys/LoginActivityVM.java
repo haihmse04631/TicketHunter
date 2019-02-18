@@ -2,9 +2,11 @@ package com.example.macbookpro.ticketapp.viewmodels.activitys;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 import android.view.View;
 import com.example.macbookpro.ticketapp.BR;
 
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
 
 /**
@@ -16,6 +18,11 @@ public class LoginActivityVM extends BaseActivityVM {
     private boolean flagLoginState = true;
     @Bindable
     private boolean flagRegisterState = false;
+    public String email = "";
+    public String password = "";
+    public String regEmail = "";
+    public String regPassword = "";
+    public String regConfirmPassword = "";
 
     public boolean isFlagLoginState() {
         return flagLoginState;
@@ -36,6 +43,26 @@ public class LoginActivityVM extends BaseActivityVM {
     public void notifyStateChange() {
         notifyPropertyChanged(BR.flagLoginState);
         notifyPropertyChanged(BR.flagRegisterState);
+    }
+
+    public void afterEmailTextChanged(CharSequence email) {
+        this.email = email.toString();
+    }
+
+    public void afterPasswordTextChanged(CharSequence password) {
+        this.password = password.toString();
+    }
+
+    public void afterRegEmailTextChanged(CharSequence regEmail) {
+        this.regEmail = regEmail.toString();
+    }
+
+    public void afterRegPasswordTextChanged(CharSequence regPassword) {
+        this.regPassword = regPassword.toString();
+    }
+
+    public void afterRegConfirmPasswordTextChanged(CharSequence regConfirmPassword) {
+        this.regConfirmPassword = regConfirmPassword.toString();
     }
 
     public interface LoginActionListened {

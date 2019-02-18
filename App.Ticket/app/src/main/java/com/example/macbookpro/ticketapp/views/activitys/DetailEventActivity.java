@@ -157,11 +157,13 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             mLastKnownLocation = task.getResult();
-                            currentMarkerOptions = new MarkerOptions().position(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude())).title("Location 2");
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), 15.0f));
-                            new FetchURL(DetailEventActivity.this).execute(getUrl(currentMarkerOptions.getPosition(), targetLocation.getPosition(), DIRECTION_MODE), DIRECTION_MODE);
+                            if (mLastKnownLocation != null) {
+                                currentMarkerOptions = new MarkerOptions().position(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude())).title("Location 2");
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(mLastKnownLocation.getLatitude(),
+                                                mLastKnownLocation.getLongitude()), 15.0f));
+                                new FetchURL(DetailEventActivity.this).execute(getUrl(currentMarkerOptions.getPosition(), targetLocation.getPosition(), DIRECTION_MODE), DIRECTION_MODE);
+                            }
                         }
                     }
                 });

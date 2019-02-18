@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="listened"
-            type="com.example.macbookpro.ticketapp.viewmodels.activitys.LoginActivityVM.LoginActionListened"/>
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.LoginActivityVM.LoginActionListened" />
 
         <variable
             name="loginVM"
@@ -19,211 +20,223 @@
         android:layout_height="match_parent"
         android:background="@drawable/background">
 
-        <ImageView
-            android:id="@+id/img_ticket"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_ticker" />
-
-        <TextView
-            android:fontFamily="@font/custom_font"
-            android:id="@+id/text_title"
-            android:textSize="28sp"
-            android:textColor="@color/selectedColor"
-            android:text="Ticket Hunter"
-            android:layout_below="@id/img_ticket"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:id="@+id/title_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_title"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
-
-            <TextView
-                android:onClick="@{v -> listened.onLoginChangeStateTapped(v)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đăng Nhập"
-                android:textColor="@{loginVM.flagLoginState ? @color/selectedColor : @color/unselectColor }"
-                android:textSize="@{loginVM.flagLoginState ? @dimen/selectedTextSize : @dimen/unSelectTextSize}"
-                android:textStyle="bold" />
-
-            <TextView
-                android:onClick="@{v -> listened.onRegisterChangeStateTapped(v)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:text="Đăng Ký"
-                android:textColor="@{loginVM.flagRegisterState ? @color/selectedColor : @color/unselectColor }"
-                android:textSize="@{loginVM.flagRegisterState ? @dimen/selectedTextSize : @dimen/unSelectTextSize}"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/login_view"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
-            android:orientation="vertical">
-
-            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                app:labelText="Tên đăng nhập:"
-                app:primaryColor="@color/selectedColor"
-                app:secondaryColor="@color/unselectColor">
-
-                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/selectedColor" />
-
-            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
-
-            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:labelText="Mật Khẩu:"
-                app:primaryColor="@color/selectedColor"
-                app:secondaryColor="@color/unselectColor">
-
-                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/selectedColor" />
-
-            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
-
-            <com.dd.processbutton.iml.ActionProcessButton
-                android:onClick="@{v -> listened.onLoginTapped(v)}"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="14dp"
-                android:text="Đăng Nhập"
-                android:textColor="@color/whiteColor"
-                android:textStyle="bold"
-                app:pb_colorNormal="@color/selectedColor" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/register_view"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                app:labelText="Tên đăng nhập:"
-                app:primaryColor="@color/selectedColor"
-                app:secondaryColor="@color/unselectColor">
-
-                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/selectedColor" />
-
-            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
-
-            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:labelText="Mật Khẩu:"
-                app:primaryColor="@color/selectedColor"
-                app:secondaryColor="@color/unselectColor">
-
-                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/selectedColor" />
-
-            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
-
-            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:labelText="Nhập lại mật khẩu:"
-                app:primaryColor="@color/selectedColor"
-                app:secondaryColor="@color/unselectColor">
-
-                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/selectedColor" />
-
-            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
-
-            <com.dd.processbutton.iml.ActionProcessButton
-                android:onClick="@{v -> listened.onRegisterTapped(v)}"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="14dp"
-                android:text="Đăng Ký"
-                android:textColor="@color/whiteColor"
-                android:textStyle="bold"
-                app:pb_colorNormal="@color/selectedColor" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:onClick="@{v -> listened.onLoginFacebookTapped(v)}"
+                    android:id="@+id/img_ticket"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:src="@drawable/ic_login_facebook" />
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_ticker" />
 
-                <ImageView
-                    android:onClick="@{v -> listened.onLoginTwitterTapped(v)}"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp"
-                    android:src="@drawable/ic_login_twitter" />
+                <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/custom_font"
+                    android:text="Ticket Hunter"
+                    android:textColor="@color/selectedColor"
+                    android:textSize="28sp" />
 
-                <ImageView
-                    android:onClick="@{v -> listened.onLoginGoogleTapped(v)}"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:src="@drawable/ic_login_google" />
+                <LinearLayout
+                    android:id="@+id/title_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{v -> listened.onLoginChangeStateTapped(v)}"
+                        android:text="Đăng Nhập"
+                        android:textColor="@{loginVM.flagLoginState ? @color/selectedColor : @color/unselectColor }"
+                        android:textSize="@{loginVM.flagLoginState ? @dimen/selectedTextSize : @dimen/unSelectTextSize}"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:onClick="@{v -> listened.onRegisterChangeStateTapped(v)}"
+                        android:text="Đăng Ký"
+                        android:textColor="@{loginVM.flagRegisterState ? @color/selectedColor : @color/unselectColor }"
+                        android:textSize="@{loginVM.flagRegisterState ? @dimen/selectedTextSize : @dimen/unSelectTextSize}"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/login_view"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        app:hasFocus="false"
+                        app:labelText="Email:"
+                        app:primaryColor="@color/selectedColor"
+                        app:secondaryColor="@color/unselectColor">
+
+                        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                            android:id="@+id/email_text_feild"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:afterTextChanged="@{(content) -> loginVM.afterEmailTextChanged(content)}"
+                            android:textColor="@color/selectedColor" />
+
+                    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+                    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:labelText="Mật Khẩu:"
+                        app:primaryColor="@color/selectedColor"
+                        app:secondaryColor="@color/unselectColor">
+
+                        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                            android:afterTextChanged="@{(content) -> loginVM.afterPasswordTextChanged(content)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/selectedColor" />
+
+                    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+                    <com.dd.processbutton.iml.ActionProcessButton
+                        android:layout_width="200dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:onClick="@{v -> listened.onLoginTapped(v)}"
+                        android:text="Đăng Nhập"
+                        android:textColor="@color/whiteColor"
+                        android:textStyle="bold"
+                        app:pb_colorNormal="@color/selectedColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/register_view"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                        android:id="@+id/register_email_text_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        app:labelText="Email:"
+                        app:primaryColor="@color/selectedColor"
+                        app:secondaryColor="@color/unselectColor">
+
+                        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                            android:afterTextChanged="@{(content) -> loginVM.afterRegEmailTextChanged(content)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/selectedColor" />
+
+                    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+                    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:labelText="Mật Khẩu:"
+                        app:primaryColor="@color/selectedColor"
+                        app:secondaryColor="@color/unselectColor">
+
+                        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                            android:afterTextChanged="@{(content) -> loginVM.afterRegPasswordTextChanged(content)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/selectedColor" />
+
+                    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+                    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:labelText="Nhập lại mật khẩu:"
+                        app:primaryColor="@color/selectedColor"
+                        app:secondaryColor="@color/unselectColor">
+
+                        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                            android:afterTextChanged="@{(content) -> loginVM.afterRegConfirmPasswordTextChanged(content)}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/selectedColor" />
+
+                    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+                    <com.dd.processbutton.iml.ActionProcessButton
+                        android:layout_width="200dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:onClick="@{v -> listened.onRegisterTapped(v)}"
+                        android:text="Đăng Ký"
+                        android:textColor="@color/whiteColor"
+                        android:textStyle="bold"
+                        app:pb_colorNormal="@color/selectedColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/third_method_login_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:onClick="@{v -> listened.onLoginFacebookTapped(v)}"
+                        android:src="@drawable/ic_login_facebook" />
+
+                    <ImageView
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        android:onClick="@{v -> listened.onLoginTwitterTapped(v)}"
+                        android:src="@drawable/ic_login_twitter" />
+
+                    <ImageView
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:onClick="@{v -> listened.onLoginGoogleTapped(v)}"
+                        android:src="@drawable/ic_login_google" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-
+        </ScrollView>
 
     </RelativeLayout>
 

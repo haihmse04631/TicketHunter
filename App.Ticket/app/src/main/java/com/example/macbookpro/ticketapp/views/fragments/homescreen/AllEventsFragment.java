@@ -1,6 +1,7 @@
 package com.example.macbookpro.ticketapp.views.fragments.homescreen;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.models.AppleMusic;
 import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.viewmodels.fragments.HomeFragmentVM;
+import com.example.macbookpro.ticketapp.views.activitys.DetailEventActivity;
 import com.example.macbookpro.ticketapp.views.adapter.EventListAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
@@ -93,7 +95,8 @@ public class AllEventsFragment extends BindingFragment implements EventListAdapt
 
     @Override
     public void onEventTapped(Event event) {
-        showNext(DetailEventFragment.newInstance());
+        Intent intent = new Intent(getActivity(), DetailEventActivity.class);
+        startActivity(intent);
     }
 
     @Override
