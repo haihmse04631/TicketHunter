@@ -50,7 +50,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
     //Image
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     //FacebookSDK
     implementation 'com.facebook.android:facebook-login:[4,5)'
@@ -67,6 +67,12 @@ dependencies {
     implementation 'com.orhanobut:dialogplus:1.11@aar'
     //Map
     implementation "com.google.android.gms:play-services-location:16.0.0"
-
+    //Flow layout
+    implementation 'com.nex3z:flow-layout:1.2.4'
+    //Fire Base
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
 
 }
+
+apply plugin: 'com.google.gms.google-services'

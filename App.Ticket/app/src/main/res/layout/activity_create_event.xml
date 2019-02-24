@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="navigation"
+            type="com.example.macbookpro.ticketapp.models.Navigation" />
+
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM.CreateEventActivityListened"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/navigation_bar"
+            layout="@layout/custom_external_nav_bar"
+            app:navigation="@{navigation}" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_upload_avatar" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Chọn avatar event"
+                    android:textColor="@color/colorPrimary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_write_title" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên sự kiện:" />
+
+                </LinearLayout>
+
+                <EditText
+                    style="@style/editTextTheme"
+                    android:hint="Tên sự kiện" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_place" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Địa điểm tổ chức:" />
+
+                </LinearLayout>
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_time" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:text="Thời gian:" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:text="23/02/2018 - 10:00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                     />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_ticker" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số lượng vé:" />
+
+                </LinearLayout>
+
+                <EditText
+                    style="@style/editTextTheme"
+                    android:hint="Số lượng "
+                    android:inputType="number" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_category" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chủ đề sự kiện: " />
+
+                </LinearLayout>
+
+                <com.nex3z.flowlayout.FlowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:flChildSpacing="auto"
+                    app:flRowSpacing="8dp">
+
+                    <TextView
+                        style="@style/textViewCategoryChecked"
+                        android:text="Thể Thao" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Du lịch" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Ẩm thực" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Game show" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Nghệ thuật" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Học tập" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Công nghệ" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Khác" />
+
+                    <TextView
+                        style="@style/textViewCategoryUncheck"
+                        android:text="Kinh doanh" />
+
+                </com.nex3z.flowlayout.FlowLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_contact" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin liên hệ: " />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/checkbox_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sử dụng thông tin của tôi"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_email"
+                    style="@style/editTextTheme"
+                    android:hint="Email" />
+
+                <EditText
+                    android:id="@+id/edt_phone"
+                    style="@style/editTextTheme"
+                    android:hint="Phone"
+                    android:inputType="number" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_write_content" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nội dung:" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:gravity="top|left"
+                    android:minLines="5"
+                    android:id="@+id/edt_description"
+                    style="@style/editTextMultipleLineTheme"
+                    android:hint="Nội dung"
+                    android:inputType="textMultiLine" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:onClick="@{v -> listened.onSelectImageTapped(v)}"
+                    android:textSize="18sp"
+                    android:id="@+id/btn_add_image"
+                    android:layout_marginBottom="8dp"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/whiteColor"
+                    android:text="Thêm Ảnh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:background="@drawable/custom_border_edit_text"
+                    android:id="@+id/rv_list_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:textSize="18sp"
+                    android:id="@+id/btn_create_event"
+                    android:layout_marginBottom="8dp"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/whiteColor"
+                    android:text="Đăng Sự Kiện"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

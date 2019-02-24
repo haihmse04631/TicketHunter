@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="navigation"
+            type="com.example.macbookpro.ticketapp.models.Navigation" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            bind:imgCategory="@{navigation.imageResource}"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_ticker" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@{navigation.title}"
+            android:textColor="@color/whiteColor"
+            android:textSize="@dimen/navi_text_size"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</layout>

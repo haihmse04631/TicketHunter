@@ -28,6 +28,9 @@ public class Ultil {
     @BindingAdapter("imageUrl")
     public static void loadImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.ic_avatar)
+                        .error(R.drawable.ic_avatar))
                 .load(imageUrl)
                 .into(view);
     }

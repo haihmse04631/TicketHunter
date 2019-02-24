@@ -6,7 +6,8 @@
 
 
     //size
-    <dimen name="navi_text_size">18sp</dimen>
+    <dimen name="navi_text_size">19sp</dimen>
+    <dimen name="label_text_size">14sp</dimen>
     <dimen name="tab_text_size">11sp</dimen>
     <dimen name="selectedTextSize">24sp</dimen>
     <dimen name="unSelectTextSize">16sp</dimen>

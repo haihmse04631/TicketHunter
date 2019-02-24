@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".views.activitys.CreateEventActivity"></activity>
         <activity android:name=".views.activitys.DetailEventActivity" />
 
         <meta-data
