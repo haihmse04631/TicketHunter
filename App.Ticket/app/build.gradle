@@ -52,6 +52,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     //FacebookSDK
     implementation 'com.facebook.android:facebook-login:[4,5)'
     //Text Field

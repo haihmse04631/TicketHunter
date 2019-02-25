@@ -1,9 +1,11 @@
 package com.example.macbookpro.ticketapp.helper.ultility;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
+import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
@@ -15,6 +17,10 @@ import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.models.User;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,6 +82,13 @@ public class Ultil {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static File createImageFile() throws IOException {
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "img_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        return  File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
 }

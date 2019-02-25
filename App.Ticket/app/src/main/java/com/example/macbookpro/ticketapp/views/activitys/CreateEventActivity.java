@@ -1,11 +1,17 @@
 package com.example.macbookpro.ticketapp.views.activitys;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.nfc.Tag;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,21 +36,32 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 public class CreateEventActivity extends BindingActivity implements ChoosedImageAdapter.ChoosedImageAdapterListened, CreateEventVM.CreateEventActivityListened {
 
+    private String TAG = getClass().getName();
     private static Integer CAMERA_MESSAGE_CODE = 1;
+    private int PERMISSION_REQUEST_CODE = 2;
+    private int INPUT_FILE_REQUEST_CODE = 3;
 
     private ActivityCreateEventBinding binding;
     private RecyclerView recyclerView;
     private ChoosedImageAdapter adapter;
     private List<Image> choosedImages;
+    private List<Uri> uploadedImageLink;
 
     private int count = 0;
     private int numberOfImage = 0;
+    private String filePath = "";
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -61,11 +78,13 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         storageReference = storage.getReference();
 
         choosedImages = new ArrayList<>();
+        uploadedImageLink = new ArrayList<>();
         numberOfImage = choosedImages.size();
 
         initRecycleView();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onResume() {
         super.onResume();
@@ -94,9 +113,19 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     }
 
     @Override
+    public void onCloseIconTapped(int index) {
+        if (uploadedImageLink.size() == choosedImages.size()) {
+            uploadedImageLink.remove(index);
+            choosedImages.remove(index);
+            count--;
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_MESSAGE_CODE && resultCode == RESULT_OK) {
+        if (requestCode == INPUT_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data.getClipData() != null) {
 
                 int totalItemsSelected = data.getClipData().getItemCount();
@@ -119,29 +148,46 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         }
     }
 
-    private void uploadImage() {
-        Log.e("Count Upload Image: ", "" + count);
-        Image image = choosedImages.get(count);
-        StorageReference fileToUpload = storageReference.child("Libraries").child(image.getName());
-        fileToUpload.putFile(image.getUri()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Image imageItem = choosedImages.get(count);
-                imageItem.setFlagIsLoading(false);
-                adapter.notifyDataSetChanged();
-                if (count < choosedImages.size() - 1) {
-                    count++;
-                    Log.e("Count Uploaded Image: ", "" + count);
-                    uploadImage();
-                } else {
-                    Log.e("Count Uploaded Image: ", "" + count + " - Return");
-                    return;
-                }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImageIntent();
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }
+    }
+
+    private void uploadImage() {
+        if (count < choosedImages.size()) {
+            final Image image = choosedImages.get(count);
+            StorageReference fileToUpload = storageReference.child("Libraries").child(image.getName());
+            fileToUpload.putFile(image.getUri()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Image imageItem = choosedImages.get(count);
+                    imageItem.setFlagIsLoading(false);
+                    adapter.notifyDataSetChanged();
+                    count++;
+                    addImageDownloadLink("Libraries/" + image.getName());
+                    uploadImage();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    toastMessage("Upload Failed!");
+                }
+            });
+        }
+
+    }
+
+    private void addImageDownloadLink(String path) {
+        storageReference.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                toastMessage("Upload Failed!");
+            public void onSuccess(Uri uri) {
+                uploadedImageLink.add(uri);
             }
         });
     }
@@ -151,12 +197,52 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void openChooserIntent() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_MESSAGE_CODE);
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_MESSAGE_CODE);
+        pickImageIntent();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void pickImageIntent() {
+        Intent[] intents;
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = Ultil.createImageFile();
+                takePictureIntent.putExtra("PhotoPath", filePath);
+            } catch (IOException ex) {
+                Log.e(TAG, "Create Image Failed", ex);
+            }
+
+            if (photoFile != null) {
+                filePath = "file:" + photoFile.getAbsolutePath();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+            } else {
+                takePictureIntent = null;
+            }
+        }
+        Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        contentSelectionIntent.setType("image/*");
+        contentSelectionIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intents = new Intent[]{takePictureIntent};
+        Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+        chooserIntent.putExtra(Intent.EXTRA_TITLE, "Chọn Ảnh");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        } else {
+            startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE);
+        }
     }
 
     private String getFileName(Uri uri) {
@@ -181,6 +267,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         return result;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onSelectImageTapped(View view) {
         openChooserIntent();

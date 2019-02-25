@@ -43,6 +43,14 @@ public class ChoosedImageAdapter extends RecyclerView.Adapter<ChoosedImageAdapte
                 }
             }
         });
+        choosedImageViewHolder.binding.imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listened != null) {
+                    listened.onCloseIconTapped(i);
+                }
+            }
+        });
     }
 
     @Override
@@ -66,6 +74,7 @@ public class ChoosedImageAdapter extends RecyclerView.Adapter<ChoosedImageAdapte
 
     public interface ChoosedImageAdapterListened {
         void onImageItemTapped(Image image);
+        void onCloseIconTapped(int index);
     }
 
 }
