@@ -9,8 +9,16 @@
             type="com.example.macbookpro.ticketapp.models.Navigation" />
 
         <variable
+            name="viewModel"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM" />
+
+        <variable
+            name="event"
+            type="com.example.macbookpro.ticketapp.models.Event" />
+
+        <variable
             name="listened"
-            type="com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM.CreateEventActivityListened"/>
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM.CreateEventActivityListened" />
 
     </data>
 
@@ -119,17 +127,66 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:text="23/02/2018 - 10:00"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:textSize="18sp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"
-                     />
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:onClick="@{v -> listened.onDateTapped(v)}"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="@{event.date}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="-"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.CardView
+                        android:onClick="@{v -> listened.onTimeTapped(v)}"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="@{event.time}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -177,6 +234,7 @@
                 </LinearLayout>
 
                 <com.nex3z.flowlayout.FlowLayout
+                    android:id="@+id/category_flow_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -184,39 +242,39 @@
                     app:flRowSpacing="8dp">
 
                     <TextView
-                        style="@style/textViewCategoryChecked"
+                        style="@style/categoryTextViewTheme"
                         android:text="Thể Thao" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Du lịch" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Ẩm thực" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Game show" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Nghệ thuật" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Học tập" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Công nghệ" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Khác" />
 
                     <TextView
-                        style="@style/textViewCategoryUncheck"
+                        style="@style/categoryTextViewTheme"
                         android:text="Kinh doanh" />
 
                 </com.nex3z.flowlayout.FlowLayout>
@@ -251,7 +309,8 @@
                     <android.support.v7.widget.AppCompatCheckBox
                         android:id="@+id/checkbox_contact"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:onClick="@{v -> listened.onCheckboxTapped(v)}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -265,11 +324,13 @@
                 <EditText
                     android:id="@+id/edt_email"
                     style="@style/editTextTheme"
+                    android:enabled="@{ event.flagIsCheckboxContactChecked ? false : true }"
                     android:hint="Email" />
 
                 <EditText
                     android:id="@+id/edt_phone"
                     style="@style/editTextTheme"
+                    android:enabled="@{ event.flagIsCheckboxContactChecked ? false : true }"
                     android:hint="Phone"
                     android:inputType="number" />
 
@@ -294,51 +355,51 @@
                 </LinearLayout>
 
                 <EditText
-                    android:gravity="top|left"
-                    android:minLines="5"
                     android:id="@+id/edt_description"
                     style="@style/editTextMultipleLineTheme"
+                    android:gravity="top|left"
                     android:hint="Nội dung"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:minLines="5" />
 
                 <android.support.v7.widget.AppCompatButton
-                    android:onClick="@{v -> listened.onSelectImageTapped(v)}"
-                    android:textSize="18sp"
                     android:id="@+id/btn_add_image"
-                    android:layout_marginBottom="8dp"
-                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:textStyle="bold"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@color/colorPrimary"
-                    android:textColor="@color/whiteColor"
+                    android:onClick="@{v -> listened.onSelectImageTapped(v)}"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:text="Thêm Ảnh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:background="@drawable/custom_border_edit_text"
                     android:id="@+id/rv_list_image"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="300dp"
+                    android:background="@drawable/custom_border_edit_text" />
 
                 <android.support.v7.widget.AppCompatButton
-                    android:textSize="18sp"
                     android:id="@+id/btn_create_event"
-                    android:layout_marginBottom="8dp"
-                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:textStyle="bold"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@color/colorPrimary"
-                    android:textColor="@color/whiteColor"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:text="Đăng Sự Kiện"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>

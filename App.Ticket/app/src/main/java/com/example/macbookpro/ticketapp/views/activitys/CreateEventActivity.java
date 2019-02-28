@@ -1,6 +1,8 @@
 package com.example.macbookpro.ticketapp.views.activitys;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,6 +21,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
@@ -42,11 +47,13 @@ import com.squareup.picasso.RequestCreator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-public class CreateEventActivity extends BindingActivity implements ChoosedImageAdapter.ChoosedImageAdapterListened, CreateEventVM.CreateEventActivityListened {
+public class CreateEventActivity extends BindingActivity implements ChoosedImageAdapter.ChoosedImageAdapterListened, CreateEventVM.CreateEventActivityListened,
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private String TAG = getClass().getName();
     private static Integer CAMERA_MESSAGE_CODE = 1;
@@ -54,11 +61,13 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private int INPUT_FILE_REQUEST_CODE = 3;
 
     private ActivityCreateEventBinding binding;
+    private CreateEventVM viewModel = new CreateEventVM();
     private RecyclerView recyclerView;
     private ChoosedImageAdapter adapter;
     private List<Image> choosedImages;
     private List<Uri> uploadedImageLink;
-
+    private int lastCategoryChoosedIndex = 0;
+    private List<TextView> textViews = new ArrayList<>();
     private int count = 0;
     private int numberOfImage = 0;
     private String filePath = "";
@@ -72,6 +81,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
         binding = (ActivityCreateEventBinding) getViewBinding();
         binding.setNavigation(new Navigation(R.drawable.ic_event, "Tạo Sự Kiện"));
+        binding.setEvent(viewModel.event);
         binding.setListened(this);
 
         storage = FirebaseStorage.getInstance();
@@ -82,6 +92,8 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         numberOfImage = choosedImages.size();
 
         initRecycleView();
+        getCategoryList();
+        configCategoryFlowLayoutTapped();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -89,7 +101,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     protected void onResume() {
         super.onResume();
 
-        if(numberOfImage != choosedImages.size()) uploadImage();
+        if (numberOfImage != choosedImages.size()) uploadImage();
     }
 
     private void initRecycleView() {
@@ -196,14 +208,45 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    private void getCategoryList() {
+        for (int index = 0; index < binding.categoryFlowLayout.getChildCount(); index++) {
+            final View childView = binding.categoryFlowLayout.getChildAt(index);
+            if (childView instanceof TextView) {
+                textViews.add((TextView) childView);
+                if (index == 0) {
+                    childView.setBackground(getResources().getDrawable(R.drawable.custom_textview_category_checked));
+                    ((TextView) childView).setTextColor(getResources().getColor(R.color.whiteColor));
+                } else {
+                    childView.setBackground(getResources().getDrawable(R.drawable.custom_textview_category_uncheck));
+                    ((TextView) childView).setTextColor(getResources().getColor(R.color.normalText));
+                }
+            }
+        }
+    }
+
+    private void configCategoryFlowLayoutTapped() {
+        for (int index = 0; index < textViews.size(); index++) {
+            final TextView childView = textViews.get(index);
+            final int finalIndex = index;
+            childView.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    viewModel.setCategoryOfEventAt(finalIndex);
+                    childView.setBackground(getResources().getDrawable(R.drawable.custom_textview_category_checked));
+                    ((TextView) childView).setTextColor(getResources().getColor(R.color.whiteColor));
+                    TextView lastChoosedTextView = textViews.get(lastCategoryChoosedIndex);
+                    lastChoosedTextView.setBackground(getResources().getDrawable(R.drawable.custom_textview_category_uncheck));
+                    lastChoosedTextView.setTextColor(getResources().getColor(R.color.normalText));
+                    lastCategoryChoosedIndex = finalIndex;
+                }
+            });
+        }
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void openChooserIntent() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_MESSAGE_CODE);
         pickImageIntent();
     }
 
@@ -272,4 +315,34 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     public void onSelectImageTapped(View view) {
         openChooserIntent();
     }
+
+    @Override
+    public void onDateTapped(View view) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, CreateEventActivity.this, 2019, 10, 10);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onTimeTapped(View view) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,CreateEventActivity.this, 10, 00, true);
+        timePickerDialog.show();
+    }
+
+    @Override
+    public void onCheckboxTapped(View view) {
+        viewModel.event.setFlagIsCheckboxContactChecked(!viewModel.event.isFlagIsCheckboxContactChecked());
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = year + "/" + month + "/" + dayOfMonth;
+        viewModel.event.setDate(date);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String time = hourOfDay + ":" + minute;
+        viewModel.event.setTime(time);
+    }
 }
+
