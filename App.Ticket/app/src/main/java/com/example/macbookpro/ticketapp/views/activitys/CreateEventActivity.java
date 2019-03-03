@@ -335,7 +335,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = year + "/" + month + "/" + dayOfMonth;
+        String date = dayOfMonth + "/" + month + "/" + year;
         viewModel.event.setDate(date);
     }
 

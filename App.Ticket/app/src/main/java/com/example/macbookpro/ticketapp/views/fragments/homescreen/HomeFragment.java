@@ -54,13 +54,13 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        CustomProgress.getInstance().showLoading(getActivity());
+       // CustomProgress.getInstance().showLoading(getActivity());
         binding = (FragmentHomeBinding) getViewBinding();
         binding.setListened(this);
         homeFragmentVM = new HomeFragmentVM();
         homeFragmentVM.getCategories();
         initRecycleView();
-        getAppleMusic(homeFragmentVM.categories.get(0).getId());
+        //getAppleMusic(homeFragmentVM.categories.get(0).getId());
         initEventsRecycleView();
     }
 
@@ -102,8 +102,8 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
 
     @Override
     public void onCategoryTapped(Category category) {
-        getAppleMusic(category.getId());
-        CustomProgress.getInstance().showLoading(getContext());
+        //getAppleMusic(category.getId());
+        //CustomProgress.getInstance().showLoading(getContext());
     }
 
     @Override

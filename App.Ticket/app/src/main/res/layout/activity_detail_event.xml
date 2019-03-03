@@ -4,27 +4,275 @@
 
     <data>
 
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.DetailEventActivityVM.DetailEventListened" />
+
+        <variable
+            name="viewModel"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.DetailEventActivityVM" />
+
+        <import type="android.view.View" />
+
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/mapFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
         android:orientation="vertical"
         android:weightSum="10"
         tools:context=".views.fragments.DetailEventFragment">
 
-        <include
+        <RelativeLayout
             android:id="@+id/nav_title"
-            layout="@layout/navigation_bar" />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_view"
-            android:layout_weight="4"
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_height="45dp"
+            android:background="@color/selectedColor">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_back_button" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/custom_font"
+                android:text="Ticket Hunter"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/nav_title">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Flutter xu thế tương lai?"
+                    android:textColor="@color/normalText"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_avatar_circle" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_avatar_circle" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_avatar_circle" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_avatar_circle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="..." />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="@{v -> listened.onCommentTapped(v)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.flagCommentLayoutPresenting ? @string/content : @string/comment}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:src="@{viewModel.flagCommentLayoutPresenting ? @drawable/ic_content : @drawable/ic_message_black_24dp}" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/whiteColor"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.flagCommentLayoutPresenting ? View.GONE : View.VISIBLE}">
+
+                    <TextView
+                        style="@style/labelEventTextViewTheme"
+                        android:text="Thời gian" />
+
+                    <TextView
+                        style="@style/contentEventTextViewTheme"
+                        android:text="01/10/2019 - 10:00"
+                        android:textColor="@color/hightLightColor" />
+
+                    <TextView
+                        style="@style/labelEventTextViewTheme"
+                        android:text="Số lượng vé" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="100"
+                        android:textColor="@color/hightLightColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/labelEventTextViewTheme"
+                        android:text="Giá vé" />
+
+                    <TextView
+                        style="@style/contentEventTextViewTheme"
+                        android:text="100.000 - 500.000"
+                        android:textColor="@color/hightLightColor" />
+
+                    <TextView
+                        style="@style/labelEventTextViewTheme"
+                        android:text="Thông tin liên hệ" />
+
+                    <TextView
+                        style="@style/contentEventTextViewTheme"
+                        android:text="Email: hoangminhhai1997@gmail.com"
+                        android:textColor="@color/hightLightColor" />
+
+                    <TextView
+                        style="@style/contentEventTextViewTheme"
+                        android:text="Phone: 0986913011"
+                        android:textColor="@color/hightLightColor" />
+
+                    <TextView
+                        style="@style/labelEventTextViewTheme"
+                        android:text="Nội dung:" />
+
+                    <TextView
+                        style="@style/contentEventTextViewTheme"
+                        android:layout_marginBottom="20dp"
+                        android:text="is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/whiteColor"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.flagCommentLayoutPresenting ? View.VISIBLE : View.GONE}">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_list_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="450dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_toLeftOf="@+id/btn_send"
+                            android:background="@drawable/edt_comment_background"
+                            android:focusable="true"
+                            android:hint="Comment"
+                            android:paddingStart="12dp"
+                            android:textColor="@color/normalText" />
+
+                        <ImageView
+                            android:id="@+id/btn_send"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_send" />
 
 
-    </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_list_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/whiteColor" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </RelativeLayout>
 
 </layout>

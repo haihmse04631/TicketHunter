@@ -17,6 +17,7 @@ import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityDetailEventBinding;
 import com.example.macbookpro.ticketapp.helper.location.FetchURL;
 import com.example.macbookpro.ticketapp.helper.location.TaskLoadedCallback;
+import com.example.macbookpro.ticketapp.viewmodels.activitys.DetailEventActivityVM;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +33,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class DetailEventActivity extends BindingActivity implements OnMapReadyCallback, TaskLoadedCallback {
+public class DetailEventActivity extends BindingActivity implements OnMapReadyCallback, TaskLoadedCallback, DetailEventActivityVM.DetailEventListened {
 
     private static final int LOCATION_PERMISSTION_REQUEST_CODE = 1;
     private static final String DIRECTION_MODE = "driving";
@@ -48,6 +49,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     private MarkerOptions currentMarkerOptions;
     private Marker targetMarker;
     private MarkerOptions place1, place2;
+    private DetailEventActivityVM viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +64,9 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     }
 
     private void initViewBinding() {
-
+        viewModel = new DetailEventActivityVM();
+        binding.setListened(this);
+        binding.setViewModel(viewModel);
     }
 
     @Override
@@ -187,6 +191,11 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.map_api_key);
         return url;
+    }
+
+    @Override
+    public void onCommentTapped(View view) {
+        viewModel.setFlagCommentLayoutPresenting(!viewModel.isFlagCommentLayoutPresenting());
     }
 
 }

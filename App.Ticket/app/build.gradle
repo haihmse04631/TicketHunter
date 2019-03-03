@@ -16,11 +16,11 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField("String", "BASE_URL", '"https://itunes.apple.com/"')
+            buildConfigField("String", "BASE_URL", '"http://35.197.141.100:8080"')
         }
         release {
             minifyEnabled false
-            buildConfigField("String", "BASE_URL", '"https://itunes.apple.com/"')
+            buildConfigField("String", "BASE_URL", '"http://35.197.141.100:8080"')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

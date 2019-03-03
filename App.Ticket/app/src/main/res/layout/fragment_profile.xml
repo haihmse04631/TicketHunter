@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:onClick="@{v -> listened.onShowDialog(v)}"
-            android:text="Dialog" />
+            android:text="Create Event" />
 
     </LinearLayout>
 

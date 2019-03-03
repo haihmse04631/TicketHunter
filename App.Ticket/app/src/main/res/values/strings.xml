@@ -20,5 +20,7 @@
     <string name="detail_ticket">Detail Ticket</string>
     <string name="home_tab">Home</string>
     <string name="create_event">Tạo Event</string>
+    <string name="comment">Bình Luận</string>
+    <string name="content">Nội Dung</string>
 
 </resources>
