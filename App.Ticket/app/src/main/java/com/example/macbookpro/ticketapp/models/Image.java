@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.macbookpro.ticketapp.BR;
+import com.example.macbookpro.ticketapp.R;
 
 /**
  * Created by Hoang Hai on 2/23/19.
@@ -16,7 +18,7 @@ public class Image extends BaseObservable {
 
     private int id;
     private Uri uri;
-    private boolean flagIsLoading;
+    private boolean flagIsLoading = false;
     private String name;
 
     public Image(int id, Uri uri, boolean flagIsLoading, String name) {
@@ -32,12 +34,17 @@ public class Image extends BaseObservable {
         this.flagIsLoading = flagIsLoading;
     }
 
-
+    public Image() {
+    }
 
     @BindingAdapter("loadChoosedImage")
     public static void loadChoosedImage(ImageView view, Uri uri) {
         Glide.with(view.getContext())
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.ic_avatar_circle)
+                        .error(R.drawable.ic_avatar_circle))
                 .load(uri)
+                .apply(RequestOptions.circleCropTransform())
                 .into(view);
     }
 

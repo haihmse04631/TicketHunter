@@ -25,6 +25,7 @@ public class DetailEventActivityVM extends BaseActivityVM {
 
     public interface DetailEventListened {
         void onCommentTapped(View view);
+        void onBackButtonTapped(View view);
     }
 
 }

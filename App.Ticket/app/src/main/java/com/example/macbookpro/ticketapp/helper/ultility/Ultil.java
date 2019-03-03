@@ -1,11 +1,15 @@
 package com.example.macbookpro.ticketapp.helper.ultility;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.databinding.BindingAdapter;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
@@ -45,8 +49,8 @@ public class Ultil {
     public static void loadCirleImage(ImageView view, String imageCircle) {
         Glide.with(view.getContext())
                 .applyDefaultRequestOptions(new RequestOptions()
-                .placeholder(R.drawable.ic_avatar)
-                .error(R.drawable.ic_avatar))
+                .placeholder(R.drawable.ic_avatar_circle)
+                .error(R.drawable.ic_avatar_circle))
                 .load(imageCircle)
                 .apply(RequestOptions.circleCropTransform())
                 .into(view);
@@ -89,6 +93,28 @@ public class Ultil {
         String imageFileName = "img_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         return  File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+
+    public static String getFileName(Uri uri, ContentResolver contentResolver) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = contentResolver.query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 }

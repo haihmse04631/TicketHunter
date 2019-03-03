@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.models.Event;
+import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by Hoang Hai on 2/24/19.
  */
-public class CreateEventVM {
+public class CreateEventVM extends BaseActivityVM {
 
     public Event event = new Event();
 
@@ -25,6 +26,7 @@ public class CreateEventVM {
         void onDateTapped(View view);
         void onTimeTapped(View view);
         void onCheckboxTapped(View view);
+        void onAvatarImageTapped(View view);
     }
 
     public void setCategoryOfEventAt(int index) {

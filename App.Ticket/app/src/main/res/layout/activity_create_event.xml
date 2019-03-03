@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -19,6 +20,12 @@
         <variable
             name="listened"
             type="com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM.CreateEventActivityListened" />
+
+        <variable
+            name="avatarImage"
+            type="com.example.macbookpro.ticketapp.models.Image"/>
+
+        <import type="android.view.View"/>
 
     </data>
 
@@ -45,12 +52,29 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp">
 
-                <ImageView
-                    android:id="@+id/img_avatar"
+                <RelativeLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_upload_avatar" />
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/img_avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:onClick="@{v -> listened.onAvatarImageTapped(v)}"
+                        bind:loadChoosedImage="@{avatarImage.uri}" />
+
+                    <ImageView
+                        android:id="@+id/img_upload_status"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="4dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:visibility="@{avatarImage.uri == null ? View.GONE : View.VISIBLE}"
+                        android:src="@{avatarImage.flagIsLoading ? @drawable/ic_upload_image : @drawable/ic_upload_done}" />
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -133,12 +157,12 @@
                     android:orientation="horizontal">
 
                     <android.support.v7.widget.CardView
-                        android:onClick="@{v -> listened.onDateTapped(v)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:onClick="@{v -> listened.onDateTapped(v)}">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -166,12 +190,12 @@
                         android:textStyle="bold" />
 
                     <android.support.v7.widget.CardView
-                        android:onClick="@{v -> listened.onTimeTapped(v)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:onClick="@{v -> listened.onTimeTapped(v)}">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -211,6 +235,31 @@
                 <EditText
                     style="@style/editTextTheme"
                     android:hint="Số lượng "
+                    android:inputType="number" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_ticker" />
+
+                    <TextView
+                        style="@style/labelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Giá vé:" />
+
+                </LinearLayout>
+
+                <EditText
+                    style="@style/editTextTheme"
+                    android:hint="Giá vé"
                     android:inputType="number" />
 
                 <LinearLayout

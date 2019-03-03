@@ -198,4 +198,9 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         viewModel.setFlagCommentLayoutPresenting(!viewModel.isFlagCommentLayoutPresenting());
     }
 
+    @Override
+    public void onBackButtonTapped(View view) {
+        super.onBackPressed();
+    }
+
 }

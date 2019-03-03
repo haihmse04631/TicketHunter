@@ -16,7 +16,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField("String", "BASE_URL", '"http://35.197.141.100:8080"')
+            buildConfigField("String", "BASE_URL", '"https://itunes.apple.com/"')
         }
         release {
             minifyEnabled false

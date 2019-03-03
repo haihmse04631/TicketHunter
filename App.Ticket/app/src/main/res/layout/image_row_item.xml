@@ -43,7 +43,9 @@
                     bind:loadChoosedImage="@{image.uri}" />
 
                 <ImageView
-                    android:padding="5dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginEnd="-4dp"
+                    android:padding="8dp"
                     android:id="@+id/img_close"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_close"
@@ -52,11 +54,10 @@
 
                 <ImageView
                     android:id="@+id/img_upload_status"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
                     android:src="@{image.flagIsLoading ? @drawable/ic_upload_image : @drawable/ic_upload_done}" />
 
