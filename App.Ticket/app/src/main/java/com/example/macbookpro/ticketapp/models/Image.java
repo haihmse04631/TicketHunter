@@ -44,7 +44,6 @@ public class Image extends BaseObservable {
                         .placeholder(R.drawable.ic_avatar_circle)
                         .error(R.drawable.ic_avatar_circle))
                 .load(uri)
-                .apply(RequestOptions.circleCropTransform())
                 .into(view);
     }
 

@@ -26,7 +26,6 @@ public class Event extends BaseObservable {
     private String phone;
     private String content;
     private List<String> imageLinks;
-    private boolean flagIsCheckboxContactChecked = false;
 
     public Event() {
     }
@@ -186,11 +185,6 @@ public class Event extends BaseObservable {
     }
 
     @Bindable
-    public boolean isFlagIsCheckboxContactChecked() {
-        return flagIsCheckboxContactChecked;
-    }
-
-    @Bindable
     public String getDate() {
         return date;
     }
@@ -200,8 +194,4 @@ public class Event extends BaseObservable {
         notifyPropertyChanged(BR.date);
     }
 
-    public void setFlagIsCheckboxContactChecked(boolean flagIsCheckboxContactChecked) {
-        this.flagIsCheckboxContactChecked = flagIsCheckboxContactChecked;
-        notifyPropertyChanged(BR.flagIsCheckboxContactChecked);
-    }
 }

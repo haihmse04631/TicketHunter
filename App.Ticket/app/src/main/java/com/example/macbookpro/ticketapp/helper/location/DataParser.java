@@ -14,7 +14,6 @@ import java.util.List;
  * Created by Hoang Hai on 2/12/19.
  */
 public class DataParser {
-
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
 
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
@@ -94,5 +93,4 @@ public class DataParser {
 
         return poly;
     }
-
 }

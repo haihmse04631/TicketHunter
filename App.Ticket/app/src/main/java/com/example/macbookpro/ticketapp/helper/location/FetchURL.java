@@ -18,7 +18,6 @@ import java.net.URL;
  * Created by Hoang Hai on 2/12/19.
  */
 public class FetchURL extends AsyncTask<String, Void, String> {
-
     Context mContext;
     String directionMode = "driving";
 
@@ -78,5 +77,4 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         }
         return data;
     }
-
 }

@@ -18,7 +18,6 @@ import java.util.List;
  * Created by Hoang Hai on 2/12/19.
  */
 public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
     TaskLoadedCallback taskCallback;
     String directionMode = "driving";
 
@@ -92,6 +91,4 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             Log.d("mylog", "without Polylines drawn");
         }
     }
-
-
 }

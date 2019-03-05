@@ -34,6 +34,9 @@ import com.example.macbookpro.ticketapp.models.TestApi;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM;
 import com.example.macbookpro.ticketapp.views.adapter.ChoosedImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,7 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEventActivity extends BindingActivity implements ChoosedImageAdapter.ChoosedImageAdapterListened, CreateEventVM.CreateEventActivityListened,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback {
 
     private String TAG = getClass().getName();
     private int PICK_AVATAR_REQUEST_CODE = 1;
@@ -66,6 +69,9 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private String filePath = "";
     private Image avatarImage;
     private boolean isUploadImageDone = false;
+    private boolean isCheckboxTapped = false;
+    private MapView mapView;
+    private GoogleMap googleMap;
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -74,30 +80,55 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = (ActivityCreateEventBinding) getViewBinding();
-        binding.setNavigation(new Navigation(R.drawable.ic_event, "Tạo Sự Kiện"));
-        binding.setEvent(viewModel.event);
-        binding.setListened(this);
-        avatarImage = new Image();
-        binding.setAvatarImage(avatarImage);
+        configViewBidding();
+
+        // Firebase Storage
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        // Init image list
         choosedImages = new ArrayList<>();
         uploadedImageLink = new ArrayList<>();
         numberOfImage = choosedImages.size();
+
+        mapView = binding.mapView;
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
 
         initRecycleView();
         getCategoryList();
         configCategoryFlowLayoutTapped();
     }
 
+    private void configViewBidding() {
+        binding = (ActivityCreateEventBinding) getViewBinding();
+        binding.setNavigation(new Navigation(R.drawable.ic_event, "Tạo Sự Kiện"));
+        binding.setEvent(viewModel.event);
+        binding.setListened(this);
+        avatarImage = new Image();
+        binding.setAvatarImage(avatarImage);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onResume() {
+        mapView.onResume();
         super.onResume();
 
         if (numberOfImage != choosedImages.size()) uploadImage(false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
     }
 
     private void initRecycleView() {
@@ -344,7 +375,9 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     @Override
     public void onCheckboxTapped(View view) {
-        viewModel.event.setFlagIsCheckboxContactChecked(!viewModel.event.isFlagIsCheckboxContactChecked());
+        isCheckboxTapped = !isCheckboxTapped;
+        binding.edtEmail.setEnabled(!isCheckboxTapped);
+        binding.edtPhone.setEnabled(!isCheckboxTapped);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -363,6 +396,11 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String time = hourOfDay + ":" + minute;
         viewModel.event.setTime(time);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
 

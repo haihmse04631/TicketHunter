@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".application.TKApplication"
@@ -19,7 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".views.activitys.CreateEventActivity"></activity>
+        <activity android:name=".views.activitys.SelectLocationActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo"
+            android:value="AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo" />
+
+        <activity android:name=".views.activitys.CreateEventActivity" />
         <activity android:name=".views.activitys.DetailEventActivity" />
 
         <meta-data

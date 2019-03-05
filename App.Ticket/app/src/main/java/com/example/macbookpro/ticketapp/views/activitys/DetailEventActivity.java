@@ -47,8 +47,6 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     private Polyline polyline;
     private MarkerOptions targetLocation = new MarkerOptions().position(new LatLng(21.02271831, 105.85263135));
     private MarkerOptions currentMarkerOptions;
-    private Marker targetMarker;
-    private MarkerOptions place1, place2;
     private DetailEventActivityVM viewModel;
 
     @Override
@@ -189,7 +187,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         // Output format
         String output = "json";
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.map_api_key);
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getResources().getString(R.string.map_api_key);
         return url;
     }
 

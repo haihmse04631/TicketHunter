@@ -373,13 +373,11 @@
                 <EditText
                     android:id="@+id/edt_email"
                     style="@style/editTextTheme"
-                    android:enabled="@{ event.flagIsCheckboxContactChecked ? false : true }"
                     android:hint="Email" />
 
                 <EditText
                     android:id="@+id/edt_phone"
                     style="@style/editTextTheme"
-                    android:enabled="@{ event.flagIsCheckboxContactChecked ? false : true }"
                     android:hint="Phone"
                     android:inputType="number" />
 

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Ticket Hunter</string>
-    <string name="map_api_key">AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo</string>
+    <string name="map_api_key">AIzaSyAda4IMRyS2bBoqE-JJC45GfNoVuaUQezk</string>
     //error message
     <string name="alert_msg_noconnection">No Connection</string>
     <string name="alert_update_version">Request update version</string>
