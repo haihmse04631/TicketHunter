@@ -129,7 +129,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.flagCommentLayoutPresenting ? @string/content : @string/comment}"
+                            android:text="@string/comment"
                             android:textColor="@color/colorPrimary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -138,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
-                            android:src="@{viewModel.flagCommentLayoutPresenting ? @drawable/ic_content : @drawable/ic_message_black_24dp}" />
+                            android:src="@drawable/ic_message_black_24dp" />
 
                     </LinearLayout>
 
@@ -152,8 +152,7 @@
                     android:layout_marginEnd="16dp"
                     android:animateLayoutChanges="true"
                     android:background="@color/whiteColor"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.flagCommentLayoutPresenting ? View.GONE : View.VISIBLE}">
+                    android:orientation="vertical">
 
                     <TextView
                         style="@style/labelEventTextViewTheme"
@@ -208,55 +207,6 @@
                         style="@style/contentEventTextViewTheme"
                         android:layout_marginBottom="20dp"
                         android:text="is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:animateLayoutChanges="true"
-                    android:background="@color/whiteColor"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.flagCommentLayoutPresenting ? View.VISIBLE : View.GONE}">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_list_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="450dp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="4dp"
-                            android:layout_toLeftOf="@+id/btn_send"
-                            android:background="@drawable/edt_comment_background"
-                            android:focusable="true"
-                            android:hint="Comment"
-                            android:paddingStart="12dp"
-                            android:textColor="@color/normalText" />
-
-                        <ImageView
-                            android:id="@+id/btn_send"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="4dp"
-                            android:src="@drawable/ic_send" />
-
-
-                    </RelativeLayout>
 
                 </LinearLayout>
 

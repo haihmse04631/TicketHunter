@@ -74,6 +74,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
 
+    implementation ("com.google.android.libraries.places:places-compat:1.0.0")
+    implementation ("com.schibstedspain.android:leku:5.0.0") {
+        exclude group: 'com.google.android.gms'
+        exclude module: "play-services-places"
+    }
+
+    implementation 'com.google.firebase:firebase-database:16.1.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

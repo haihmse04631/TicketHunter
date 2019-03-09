@@ -4,33 +4,49 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.example.macbookpro.ticketapp.BR;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Hoang Hai on 1/27/19.
  */
-public class Event extends BaseObservable {
+public class Event extends BaseObservable implements Serializable {
 
-    private int id;
-    private String name;
+    private String id = "";
+    @SerializedName("title")
+    private String name = "";
     private String collection;
+    @SerializedName("ticket_price")
     private String price;
+    @SerializedName("avatar_url")
     private String imageUrl;
-    private String location;
+    private String location = "";
     private String date = "10/10/2019";
     private String time = "10:10";
+    @SerializedName("ticket_number")
     private int numberOfTicket;
-    private String category;
+    @SerializedName("category")
+    private String category = "";
     private String email;
     private String phone;
+    @SerializedName("description")
     private String content;
-    private List<String> imageLinks;
+    @SerializedName("image_url")
+    private List<String> imageLinks = new ArrayList<>();
+    @SerializedName("own_id")
+    private String ownId = "";
+    @SerializedName("joined_users")
+    private List<String> userJoined = new ArrayList<>();
+    @SerializedName("followed_users")
+    private List<String> followUser = new ArrayList<>();
 
     public Event() {
     }
 
-    public Event(int id, String name, String collection, String price, String imageUrl, String location, String date,
+    public Event(String id, String name, String collection, String price, String imageUrl, String location, String date,
                  String time, int numberOfTicket, String category, String email, String phone, String content, List<String> imageLinks) {
         this.id = id;
         this.name = name;
@@ -48,12 +64,20 @@ public class Event extends BaseObservable {
         this.imageLinks = imageLinks;
     }
 
-    public Event(Integer id, String name, String collection, String price, String imageUrl) {
+    public Event(String id, String name, String collection, String price, String imageUrl) {
         this.id = id;
         this.name = name;
         this.collection = collection;
         this.price = price;
         this.imageUrl = imageUrl;
+    }
+
+    public String getOwnId() {
+        return ownId;
+    }
+
+    public void setOwnId(String ownId) {
+        this.ownId = ownId;
     }
 
     @Bindable
@@ -97,11 +121,11 @@ public class Event extends BaseObservable {
     }
 
     @Bindable
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
         notifyPropertyChanged(BR.id);
     }
@@ -194,4 +218,19 @@ public class Event extends BaseObservable {
         notifyPropertyChanged(BR.date);
     }
 
+    public List<String> getUserJoined() {
+        return userJoined;
+    }
+
+    public void setUserJoined(List<String> userJoined) {
+        this.userJoined = userJoined;
+    }
+
+    public List<String> getFollowUser() {
+        return followUser;
+    }
+
+    public void setFollowUser(List<String> followUser) {
+        this.followUser = followUser;
+    }
 }

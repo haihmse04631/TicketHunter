@@ -19,4 +19,5 @@
     <color name="customLineColor">#f94545</color>
     <color name="whiteColor">#ffffff</color>
     <color name="backgroundColor">#E9E7E7</color>
+    <color name="blue_text_color">#066EC7</color>
 </resources>

@@ -37,11 +37,14 @@ import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.schibstedspain.leku.LocationPicker;
+import com.schibstedspain.leku.LocationPickerActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +58,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private int PICK_AVATAR_REQUEST_CODE = 1;
     private int PERMISSION_REQUEST_CODE = 2;
     private int INPUT_FILE_REQUEST_CODE = 3;
+    private int MAP_BUTTON_REQUEST_CODE = 5;
 
     private ActivityCreateEventBinding binding;
     private CreateEventVM viewModel = new CreateEventVM();
@@ -94,7 +98,6 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
 
         initRecycleView();
         getCategoryList();
@@ -384,6 +387,27 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     @Override
     public void onAvatarImageTapped(View view) {
         pickImageIntent(PICK_AVATAR_REQUEST_CODE);
+    }
+
+    @Override
+    public void onMapViewTapped(View view) {
+        showChooseMapActivity();
+    }
+
+    private void showChooseMapActivity() {
+        startActivityForResult(new LocationPickerActivity.Builder()
+                .withLocation(41.4036299, 2.1743558)
+                .withGeolocApiKey(getResources().getString(R.string.map_api_key))
+                .withSearchZone("vi-VN")
+                .shouldReturnOkOnBackPressed()
+                .withStreetHidden()
+                .withCityHidden()
+                .withZipCodeHidden()
+                .withSatelliteViewHidden()
+                .withGooglePlacesEnabled()
+                .withGoogleTimeZoneEnabled()
+                .withVoiceSearchHidden()
+                .build(getApplicationContext()), MAP_BUTTON_REQUEST_CODE);
     }
 
     @Override

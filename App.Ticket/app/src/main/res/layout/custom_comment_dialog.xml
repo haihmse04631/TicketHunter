@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.macbookpro.ticketapp.viewmodels.dialog.CommentDialogVM" />
+
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.viewmodels.dialog.CommentDialogVM.CommentDialogListened" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/nav_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/selectedColor">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:onClick="@{v -> listened.onBackTapped(v)}"
+                android:src="@drawable/ic_back_button" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@{viewModel.event.name}"
+                android:textColor="@color/whiteColor"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list_comment"
+            android:layout_width="match_parent"
+            android:layout_height="505dp" />
+
+        <RelativeLayout
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <EditText
+                android:id="@+id/edt_comment_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:layout_toLeftOf="@+id/btn_send"
+                android:background="@drawable/edt_comment_background"
+                android:focusable="true"
+                android:hint="Comment"
+                android:paddingStart="12dp"
+                android:textColor="@color/normalText" />
+
+            <ImageView
+                android:id="@+id/btn_send"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:onClick="@{v -> listened.onSendCommentTapped(v)}"
+                android:src="@drawable/ic_send" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</layout>

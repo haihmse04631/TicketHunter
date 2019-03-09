@@ -38,7 +38,7 @@ public class HomeFragmentVM extends BaseFragmentVM {
             List<Entry> entries = appleMusic.getFeed().getEntries();
             for (int i = 0; i < entries.size(); i++) {
                 Entry entry = entries.get(i);
-                Integer id = i;
+                String id = i + "";
                 String name = entry.getName().getLabel();
                 String collection = entry.getCollection().getName().getLabel();
                 String price = entry.getPrice().getLabel();

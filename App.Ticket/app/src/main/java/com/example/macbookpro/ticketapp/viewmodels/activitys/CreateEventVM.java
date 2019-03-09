@@ -27,6 +27,7 @@ public class CreateEventVM extends BaseActivityVM {
         void onTimeTapped(View view);
         void onCheckboxTapped(View view);
         void onAvatarImageTapped(View view);
+        void onMapViewTapped(View view);
     }
 
     public void setCategoryOfEventAt(int index) {

@@ -10,15 +10,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityDetailEventBinding;
 import com.example.macbookpro.ticketapp.helper.location.FetchURL;
 import com.example.macbookpro.ticketapp.helper.location.TaskLoadedCallback;
+import com.example.macbookpro.ticketapp.models.Comment;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.DetailEventActivityVM;
+import com.example.macbookpro.ticketapp.views.adapter.CommentsAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.example.macbookpro.ticketapp.views.dialog.CommentDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +46,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
 
     private static final int LOCATION_PERMISSTION_REQUEST_CODE = 1;
     private static final String DIRECTION_MODE = "driving";
+    public static final String EVENT_KEY = "event_key";
 
     private ActivityDetailEventBinding binding;
     private MapView mapView;
@@ -164,7 +174,10 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), 15.0f));
-                                new FetchURL(DetailEventActivity.this).execute(getUrl(currentMarkerOptions.getPosition(), targetLocation.getPosition(), DIRECTION_MODE), DIRECTION_MODE);
+//                                new FetchURL(DetailEventActivity.this).execute(viewModel.getUrl(currentMarkerOptions.getPosition(),
+//                                                                                        targetLocation.getPosition(),
+//                                                                                        DIRECTION_MODE,
+//                                                                                        getResources().getString(R.string.map_api_key)), DIRECTION_MODE);
                             }
                         }
                     }
@@ -175,25 +188,22 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         }
     }
 
-    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Mode
-        String mode = "mode=" + directionMode;
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
-        // Output format
-        String output = "json";
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getResources().getString(R.string.map_api_key);
-        return url;
-    }
-
     @Override
     public void onCommentTapped(View view) {
-        viewModel.setFlagCommentLayoutPresenting(!viewModel.isFlagCommentLayoutPresenting());
+        showCommentDialog();
+    }
+
+    private void showCommentDialog() {
+        viewModel.event.setId("123456789");
+        CommentDialog commentDialog = new CommentDialog(this, viewModel.event);
+        commentDialog.show();
+        Window window = commentDialog.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = Gravity.BOTTOM;
+        layoutParams.x = 0;
+        layoutParams.y = 30;
+        window.setAttributes(layoutParams);
     }
 
     @Override
