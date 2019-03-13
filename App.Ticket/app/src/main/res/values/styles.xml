@@ -94,4 +94,14 @@
         <item name="android:layout_marginStart">16dp</item>
     </style>
 
+    <style name="warningTextViewTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+
+
 </resources>

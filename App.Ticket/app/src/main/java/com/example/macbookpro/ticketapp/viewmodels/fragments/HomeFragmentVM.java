@@ -1,16 +1,27 @@
 package com.example.macbookpro.ticketapp.viewmodels.fragments;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
+import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.models.AppleMusic;
 import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.models.Entry;
 import com.example.macbookpro.ticketapp.models.Event;
+import com.example.macbookpro.ticketapp.models.ResponseEvents;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseFragmentVM;
+import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
+import com.google.android.gms.common.api.Api;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragmentVM extends BaseFragmentVM {
 
@@ -22,15 +33,15 @@ public class HomeFragmentVM extends BaseFragmentVM {
     }
 
     public void getCategories() {
-        categories.add(new Category(R.drawable.category_sport, "Thể Thao", "1"));
-        categories.add(new Category(R.drawable.category_sport, "Du Lịch", "2"));
-        categories.add(new Category(R.drawable.category_sport, "Ẩm Thực", "3"));
-        categories.add(new Category(R.drawable.category_sport, "Game Show", "4"));
-        categories.add(new Category(R.drawable.category_sport, "Nghệ Thuật", "5"));
-        categories.add(new Category(R.drawable.category_sport, "Học Tập", "6"));
-        categories.add(new Category(R.drawable.category_sport, "Công Nghệ", "7"));
-        categories.add(new Category(R.drawable.category_sport, "Kinh Doanh", "8"));
-        categories.add(new Category(R.drawable.category_sport, "Khác", "9"));
+        categories.add(new Category(R.drawable.category_sport, "Thể Thao", "sport" , "1"));
+        categories.add(new Category(R.drawable.category_sport, "Du Lịch", "travel" ,"2"));
+        categories.add(new Category(R.drawable.category_sport, "Ẩm Thực", "food","3"));
+        categories.add(new Category(R.drawable.category_sport, "Game Show", "gameshow","4"));
+        categories.add(new Category(R.drawable.category_sport, "Nghệ Thuật", "act","5"));
+        categories.add(new Category(R.drawable.category_sport, "Học Tập", "study","6"));
+        categories.add(new Category(R.drawable.category_sport, "Công Nghệ", "technology","7"));
+        categories.add(new Category(R.drawable.category_sport, "Kinh Doanh", "economic","8"));
+        categories.add(new Category(R.drawable.category_sport, "Khác", "other","9"));
     }
 
     public void prepareDataEventList() {

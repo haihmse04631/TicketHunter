@@ -15,33 +15,33 @@ import java.util.List;
  */
 public class Event extends BaseObservable implements Serializable {
 
+    @SerializedName("id")
     private String id = "";
     @SerializedName("title")
     private String name = "";
-    private String collection;
-    @SerializedName("ticket_price")
-    private String price;
+    @SerializedName("description")
+    private String content;
     @SerializedName("avatar_url")
     private String imageUrl;
     private String location = "";
-    private String date = "10/10/2019";
-    private String time = "10:10";
-    @SerializedName("ticket_number")
-    private int numberOfTicket;
-    @SerializedName("category")
     private String category = "";
-    private String email;
-    private String phone;
-    @SerializedName("description")
-    private String content;
     @SerializedName("image_url")
     private List<String> imageLinks = new ArrayList<>();
     @SerializedName("own_id")
     private String ownId = "";
+    private String time = "10:10";
+    @SerializedName("ticket_number")
+    private int numberOfTicket;
+    @SerializedName("ticket_price")
+    private String price;
+    private String phone;
     @SerializedName("joined_users")
     private List<String> userJoined = new ArrayList<>();
     @SerializedName("followed_users")
     private List<String> followUser = new ArrayList<>();
+    private String date = "10/10/2019";
+    private String email;
+    private String collection;
 
     public Event() {
     }
@@ -151,8 +151,8 @@ public class Event extends BaseObservable implements Serializable {
     }
 
     @Bindable
-    public int getNumberOfTicket() {
-        return numberOfTicket;
+    public String getNumberOfTicket() {
+        return numberOfTicket + "";
     }
 
     public void setNumberOfTicket(int numberOfTicket) {

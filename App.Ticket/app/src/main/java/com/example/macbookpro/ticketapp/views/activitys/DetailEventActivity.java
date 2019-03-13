@@ -174,10 +174,10 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), 15.0f));
-//                                new FetchURL(DetailEventActivity.this).execute(viewModel.getUrl(currentMarkerOptions.getPosition(),
-//                                                                                        targetLocation.getPosition(),
-//                                                                                        DIRECTION_MODE,
-//                                                                                        getResources().getString(R.string.map_api_key)), DIRECTION_MODE);
+                                new FetchURL(DetailEventActivity.this).execute(viewModel.getUrl(currentMarkerOptions.getPosition(),
+                                                                                        targetLocation.getPosition(),
+                                                                                        DIRECTION_MODE,
+                                                                                        getResources().getString(R.string.map_api_key)), DIRECTION_MODE);
                             }
                         }
                     }

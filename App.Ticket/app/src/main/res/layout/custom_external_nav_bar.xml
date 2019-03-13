@@ -8,6 +8,10 @@
             name="navigation"
             type="com.example.macbookpro.ticketapp.models.Navigation" />
 
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.models.Navigation.NavBarButtonListened"/>
+
     </data>
 
     <RelativeLayout
@@ -16,9 +20,10 @@
         android:background="@color/colorPrimary">
 
         <ImageView
+            android:onClick="@{v -> listened.onLeftBarButtonTapped(v)}"
             bind:imgCategory="@{navigation.imageResource}"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_ticker" />

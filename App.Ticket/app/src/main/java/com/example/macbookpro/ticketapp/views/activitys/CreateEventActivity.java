@@ -5,11 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -30,21 +28,18 @@ import com.example.macbookpro.ticketapp.helper.ultility.GridSpacingItemDecoratio
 import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.Image;
 import com.example.macbookpro.ticketapp.models.Navigation;
-import com.example.macbookpro.ticketapp.models.TestApi;
+import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM;
 import com.example.macbookpro.ticketapp.views.adapter.ChoosedImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.schibstedspain.leku.LocationPicker;
-import com.schibstedspain.leku.LocationPickerActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEventActivity extends BindingActivity implements ChoosedImageAdapter.ChoosedImageAdapterListened, CreateEventVM.CreateEventActivityListened,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback, Navigation.NavBarButtonListened {
 
     private String TAG = getClass().getName();
     private int PICK_AVATAR_REQUEST_CODE = 1;
@@ -61,11 +56,11 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private int MAP_BUTTON_REQUEST_CODE = 5;
 
     private ActivityCreateEventBinding binding;
-    private CreateEventVM viewModel = new CreateEventVM();
+    private CreateEventVM viewModel;
     private RecyclerView recyclerView;
     private ChoosedImageAdapter adapter;
     private List<Image> choosedImages;
-    private List<Uri> uploadedImageLink;
+    private List<String> uploadedImageLinks;
     private int lastCategoryChoosedIndex = 0;
     private List<TextView> textViews = new ArrayList<>();
     private int count = 0;
@@ -84,6 +79,8 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        viewModel = new CreateEventVM(this);
+
         configViewBidding();
 
         // Firebase Storage
@@ -92,7 +89,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
         // Init image list
         choosedImages = new ArrayList<>();
-        uploadedImageLink = new ArrayList<>();
+        uploadedImageLinks = new ArrayList<>();
         numberOfImage = choosedImages.size();
 
         mapView = binding.mapView;
@@ -106,9 +103,11 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     private void configViewBidding() {
         binding = (ActivityCreateEventBinding) getViewBinding();
-        binding.setNavigation(new Navigation(R.drawable.ic_event, "Tạo Sự Kiện"));
+        binding.setNavigation(new Navigation(R.drawable.ic_back_button, "Tạo Sự Kiện"));
+        binding.navigationBar.setListened(this);
         binding.setEvent(viewModel.event);
         binding.setListened(this);
+        binding.setViewModel(viewModel);
         avatarImage = new Image();
         binding.setAvatarImage(avatarImage);
     }
@@ -156,8 +155,8 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     @Override
     public void onCloseIconTapped(int index) {
-        if (uploadedImageLink.size() == choosedImages.size()) {
-            uploadedImageLink.remove(index);
+        if (uploadedImageLinks.size() == choosedImages.size()) {
+            uploadedImageLinks.remove(index);
             choosedImages.remove(index);
             count--;
             adapter.notifyDataSetChanged();
@@ -266,7 +265,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
             storageReference.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    uploadedImageLink.add(uri);
+                    uploadedImageLinks.add(uri.toString());
                 }
             });
         } else {
@@ -372,15 +371,21 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     @Override
     public void onTimeTapped(View view) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,CreateEventActivity.this, 10, 00, true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, CreateEventActivity.this, 10, 00, true);
         timePickerDialog.show();
     }
 
     @Override
     public void onCheckboxTapped(View view) {
         isCheckboxTapped = !isCheckboxTapped;
+        viewModel.isUsingMyContactChecked = isCheckboxTapped;
         binding.edtEmail.setEnabled(!isCheckboxTapped);
         binding.edtPhone.setEnabled(!isCheckboxTapped);
+        if (isCheckboxTapped) {
+            User user = viewModel.getUserData();
+            viewModel.eventParam.setEmail(user.getEmail());
+            viewModel.eventParam.setPhone(user.getPhone());
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -394,20 +399,36 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         showChooseMapActivity();
     }
 
+    @Override
+    public void onCreateEventTapped(View view) {
+        String timeParam = viewModel.event.getDate() + "-" + viewModel.event.getTime();
+        if (viewModel.isAllFeildFilled()) {
+            viewModel.eventParam.setTime(timeParam);
+            viewModel.eventParam.setImageLinks(uploadedImageLinks);
+            viewModel.eventParam.setImageUrl(viewModel.event.getImageUrl());
+            Log.e("eventParam", viewModel.eventParam.toString());
+            viewModel.pushEventToServer();
+        } else {
+            viewModel.notifyWarningTextViewStateChange();
+        }
+    }
+
     private void showChooseMapActivity() {
-        startActivityForResult(new LocationPickerActivity.Builder()
-                .withLocation(41.4036299, 2.1743558)
-                .withGeolocApiKey(getResources().getString(R.string.map_api_key))
-                .withSearchZone("vi-VN")
-                .shouldReturnOkOnBackPressed()
-                .withStreetHidden()
-                .withCityHidden()
-                .withZipCodeHidden()
-                .withSatelliteViewHidden()
-                .withGooglePlacesEnabled()
-                .withGoogleTimeZoneEnabled()
-                .withVoiceSearchHidden()
-                .build(getApplicationContext()), MAP_BUTTON_REQUEST_CODE);
+        Intent intent = new Intent(this, SelectLocationActivity.class);
+        startActivity(intent);
+//        startActivityForResult(new LocationPickerActivity.Builder()
+//                .withLocation(41.4036299, 2.1743558)
+//                .withGeolocApiKey(getResources().getString(R.string.map_api_key))
+//                .withSearchZone("vi-VN")
+//                .shouldReturnOkOnBackPressed()
+//                .withStreetHidden()
+//                .withCityHidden()
+//                .withZipCodeHidden()
+//                .withSatelliteViewHidden()
+//                .withGooglePlacesEnabled()
+//                .withGoogleTimeZoneEnabled()
+//                .withVoiceSearchHidden()
+//                .build(getApplicationContext()), MAP_BUTTON_REQUEST_CODE);
     }
 
     @Override
@@ -426,5 +447,11 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     public void onMapReady(GoogleMap googleMap) {
 
     }
+
+    @Override
+    public void onLeftBarButtonTapped(View view) {
+        super.onBackPressed();
+    }
+
 }
 

@@ -12,12 +12,28 @@ import com.bumptech.glide.Glide;
 public class Category extends BaseObservable {
     private Integer imgCategory;
     private String categoryName;
+    private String categoryCode;
     private String id;
 
     public Category(Integer imgCategory, String categoryName, String id) {
         this.imgCategory = imgCategory;
         this.categoryName = categoryName;
         this.id = id;
+    }
+
+    public Category(Integer imgCategory, String categoryName, String categoryCode, String id) {
+        this.imgCategory = imgCategory;
+        this.categoryName = categoryName;
+        this.categoryCode = categoryCode;
+        this.id = id;
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
     }
 
     @BindingAdapter("imgCategory")

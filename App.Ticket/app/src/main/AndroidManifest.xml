@@ -22,36 +22,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".views.activitys.SelectLocationActivity">
-        </activity>
-
-        <activity
-            android:name="com.schibstedspain.leku.LocationPickerActivity"
-            android:label="@string/leku_title_activity_location_picker"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".views.activitys.SelectLocationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/leku_searchable" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activitys.SelectLocationActivity" />
-        </activity>
-
-
-        <meta-data
-            android:name="com.google.android.geo.AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo"
-            android:value="AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo" />
-
-        <activity android:name=".views.activitys.CreateEventActivity" />
-        <activity android:name=".views.activitys.DetailEventActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
+
+        <activity
+            android:name=".views.activitys.LaunchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".views.activitys.SelectLocationActivity"/>
+
+        <activity android:name=".views.activitys.CreateEventActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity android:name=".views.activitys.DetailEventActivity" />
+
+        <activity android:name=".views.activitys.LoginActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo"
+            android:value="AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo" />
 
         <activity android:name=".views.activitys.MainActivity" /> <!-- Facebook SDK -->
         <meta-data
@@ -74,16 +71,5 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.activitys.LoginActivity" />
-        <activity
-            android:name=".views.activitys.LaunchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
-
 </manifest>

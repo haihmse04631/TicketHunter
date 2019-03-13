@@ -3,6 +3,7 @@ package com.example.macbookpro.ticketapp.models;
 import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.view.View;
 
 /**
  * Created by Hoang Hai on 1/20/19.
@@ -32,5 +33,9 @@ public class Navigation extends BaseObservable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public interface NavBarButtonListened {
+        void onLeftBarButtonTapped(View view);
     }
 }

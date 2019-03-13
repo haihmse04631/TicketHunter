@@ -16,11 +16,11 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField("String", "BASE_URL", '"https://itunes.apple.com/"')
+            buildConfigField("String", "BASE_URL", '"http://35.197.141.100:8080/"')
         }
         release {
             minifyEnabled false
-            buildConfigField("String", "BASE_URL", '"http://35.197.141.100:8080"')
+            buildConfigField("String", "BASE_URL", '"http://35.197.141.100:8080/"')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -74,13 +74,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
 
-    implementation ("com.google.android.libraries.places:places-compat:1.0.0")
-    implementation ("com.schibstedspain.android:leku:5.0.0") {
-        exclude group: 'com.google.android.gms'
-        exclude module: "play-services-places"
-    }
-
     implementation 'com.google.firebase:firebase-database:16.1.0'
+
+    //GooglePlace
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
 
 }
 

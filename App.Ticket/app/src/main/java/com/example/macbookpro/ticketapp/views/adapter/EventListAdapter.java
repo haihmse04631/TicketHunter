@@ -3,6 +3,7 @@ package com.example.macbookpro.ticketapp.views.adapter;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     }
 
     public EventListAdapter(List<Event> events, EventListAdapterListened listened) {
+        Log.e("eventListAdapter", events.size() + "");
         this.events = events;
         this.listened = listened;
     }
@@ -49,6 +51,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     @Override
     public void onBindViewHolder(@NonNull EventListViewHolder eventListViewHolder, final int i) {
+        Log.e("eventData", events.get(i).getName());
         eventListViewHolder.binding.setEvent(events.get(i));
         eventListViewHolder.binding.eventItemView.setOnClickListener(new View.OnClickListener() {
             @Override

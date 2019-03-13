@@ -17,6 +17,17 @@ public class User extends BaseObservable implements Serializable {
     private String userName;
     private String avatarUrl;
     private String accountType;
+    private String email;
+    private String phone;
+
+    public User(String id, String userName, String avatarUrl, String accountType, String email, String phone) {
+        this.id = id;
+        this.userName = userName;
+        this.avatarUrl = avatarUrl;
+        this.accountType = accountType;
+        this.email = email;
+        this.phone = phone;
+    }
 
     public User() {
         this.id = "";
@@ -30,6 +41,22 @@ public class User extends BaseObservable implements Serializable {
         this.userName = userName;
         this.avatarUrl = avatarUrl;
         this.accountType = accountType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Bindable
