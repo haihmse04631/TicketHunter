@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,11 +23,17 @@ import android.widget.LinearLayout;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityDetailEventBinding;
+import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.helper.location.FetchURL;
 import com.example.macbookpro.ticketapp.helper.location.TaskLoadedCallback;
+import com.example.macbookpro.ticketapp.helper.ultility.GridSpacingItemDecoration;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.Comment;
+import com.example.macbookpro.ticketapp.models.Event;
+import com.example.macbookpro.ticketapp.models.EventResponse;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.DetailEventActivityVM;
 import com.example.macbookpro.ticketapp.views.adapter.CommentsAdapter;
+import com.example.macbookpro.ticketapp.views.adapter.DetailListImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.example.macbookpro.ticketapp.views.dialog.CommentDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,7 +50,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class DetailEventActivity extends BindingActivity implements OnMapReadyCallback, TaskLoadedCallback, DetailEventActivityVM.DetailEventListened {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class DetailEventActivity extends BindingActivity implements OnMapReadyCallback, TaskLoadedCallback, DetailEventActivityVM.DetailEventListened, DetailListImageAdapter.ImageListListened {
 
     private static final int LOCATION_PERMISSTION_REQUEST_CODE = 1;
     private static final String DIRECTION_MODE = "driving";
@@ -58,6 +70,8 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     private MarkerOptions targetLocation = new MarkerOptions().position(new LatLng(21.02271831, 105.85263135));
     private MarkerOptions currentMarkerOptions;
     private DetailEventActivityVM viewModel;
+    private RecyclerView recyclerView;
+    private DetailListImageAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +83,8 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         mapView.getMapAsync(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         initViewBinding();
+
+        viewModel.eventKey = getIntent().getStringExtra(EVENT_KEY);
     }
 
     private void initViewBinding() {
@@ -77,10 +93,21 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         binding.setViewModel(viewModel);
     }
 
+    private void initRecycleView() {
+        recyclerView = binding.rvListImage;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, Ultil.dpToPx(getResources(), 8), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(true);
+        adapter = new DetailListImageAdapter(viewModel.event.getImageLinks(), this);
+        recyclerView.setAdapter(adapter);
+    }
+
     @Override
     protected void onResume() {
         mapView.onResume();
         super.onResume();
+        getEvent();
     }
 
     @Override
@@ -194,7 +221,6 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     }
 
     private void showCommentDialog() {
-        viewModel.event.setId("123456789");
         CommentDialog commentDialog = new CommentDialog(this, viewModel.event);
         commentDialog.show();
         Window window = commentDialog.getWindow();
@@ -209,6 +235,31 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     @Override
     public void onBackButtonTapped(View view) {
         super.onBackPressed();
+    }
+
+    private void getEvent() {
+        Log.e("eventKey", viewModel.eventKey);
+        Call<EventResponse> eventResponseCall = ApiClient.getInstance().getApi().getEventById(viewModel.eventKey);
+        eventResponseCall.enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                EventResponse eventResponse = response.body();
+                viewModel.event = eventResponse.getEvent();
+                binding.setEvent(viewModel.event);
+                initRecycleView();
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onImageItemTapped(String imgUrl) {
+
     }
 
 }

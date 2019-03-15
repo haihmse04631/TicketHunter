@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class DetailEventActivityVM extends BaseActivityVM {
 
     public Event event = new Event();
+    public String eventKey = "";
 
     public DetailEventActivityVM() {
         event.setName("Flutter Xu Thế Tương Lai?");

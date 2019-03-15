@@ -4,6 +4,7 @@ import com.example.macbookpro.ticketapp.models.AppleMusic;
 import com.example.macbookpro.ticketapp.models.BaseApiModel;
 import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.models.EventParam;
+import com.example.macbookpro.ticketapp.models.EventResponse;
 import com.example.macbookpro.ticketapp.models.ResponseEvents;
 import com.example.macbookpro.ticketapp.models.ResponseMessage;
 import com.example.macbookpro.ticketapp.models.TestApi;
@@ -30,5 +31,8 @@ public interface ApiService {
 
     @GET("event/category/{category}")
     Call<ResponseEvents> getEventWithCategory(@Path("category") String category);
+
+    @GET("event/{id}")
+    Call<EventResponse> getEventById(@Path("id") String id);
 
 }

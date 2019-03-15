@@ -172,7 +172,7 @@ public class Event extends BaseObservable implements Serializable {
 
     @Bindable
     public String getEmail() {
-        return email;
+        return "Email: " + email;
     }
 
     public void setEmail(String email) {
@@ -182,7 +182,7 @@ public class Event extends BaseObservable implements Serializable {
 
     @Bindable
     public String getPhone() {
-        return phone;
+        return "Phone: " + phone;
     }
 
     public void setPhone(String phone) {
@@ -197,6 +197,7 @@ public class Event extends BaseObservable implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+        notifyPropertyChanged(BR.content);
     }
 
     @Bindable

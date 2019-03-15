@@ -120,6 +120,7 @@ public class HomeFragment extends BindingFragment implements CategoryAdapter.Cat
     @Override
     public void onEventTapped(Event event) {
         Intent intent = new Intent(getActivity(), DetailEventActivity.class);
+        intent.putExtra(DetailEventActivity.EVENT_KEY, event.getId());
         startActivity(intent);
     }
 

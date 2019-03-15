@@ -80,6 +80,11 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
         startActivity(intent);
     }
 
+    @Override
+    public void onShowMenu(View view) {
+
+    }
+
     private void doLogout(User user) {
         switch (user.getAccountType()) {
             case Constant.DEFAULT_ACCTION:
