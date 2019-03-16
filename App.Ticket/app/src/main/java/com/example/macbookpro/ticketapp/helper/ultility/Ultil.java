@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.models.User;
+import com.example.macbookpro.ticketapp.models.UserParam;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -115,6 +116,14 @@ public class Ultil {
             }
         }
         return result;
+    }
+
+    public static void saveUserToSharedPreference(User user, Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString(Constant.USER_DATA, json);
+        editor.apply();
     }
 
 }

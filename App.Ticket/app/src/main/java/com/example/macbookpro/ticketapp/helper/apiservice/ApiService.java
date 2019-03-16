@@ -8,8 +8,11 @@ import com.example.macbookpro.ticketapp.models.EventResponse;
 import com.example.macbookpro.ticketapp.models.ResponseEvents;
 import com.example.macbookpro.ticketapp.models.ResponseMessage;
 import com.example.macbookpro.ticketapp.models.TestApi;
+import com.example.macbookpro.ticketapp.models.UserParam;
+import com.google.android.gms.location.places.GeoDataClient;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -34,5 +37,8 @@ public interface ApiService {
 
     @GET("event/{id}")
     Call<EventResponse> getEventById(@Path("id") String id);
+
+    @POST("user")
+    Call<ResponseMessage> createUser(@Body UserParam userBody);
 
 }

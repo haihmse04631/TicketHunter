@@ -24,6 +24,9 @@ import com.example.macbookpro.ticketapp.views.activitys.CreateEventActivity;
 import com.example.macbookpro.ticketapp.views.activitys.LoginActivity;
 import com.example.macbookpro.ticketapp.views.base.BindingFragment;
 import com.facebook.login.LoginManager;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.orhanobut.dialogplus.DialogPlus;
 
@@ -86,28 +89,14 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
     }
 
     private void doLogout(User user) {
-        switch (user.getAccountType()) {
-            case Constant.DEFAULT_ACCTION:
-                clearUserData();
-                backToLoginActivity();
-                break;
-            case Constant.FACEBOOK_ACCOUNT:
-                LoginManager.getInstance().logOut();
-                clearUserData();
-                backToLoginActivity();
-                break;
-            case Constant.GOOGLE_ACCOUNT:
-                clearUserData();
-                backToLoginActivity();
-                break;
-            case Constant.TWITTER_ACCOUNT:
-                clearUserData();
-                backToLoginActivity();
-                break;
-            default:
-                clearUserData();
-                backToLoginActivity();
-        }
+        AuthUI.getInstance()
+                .signOut(getContext())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.e("Login Activity", "Logout Success");
+                    }
+                });
     }
 
     private void backToLoginActivity() {

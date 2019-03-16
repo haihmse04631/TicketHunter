@@ -79,6 +79,11 @@ dependencies {
     //GooglePlace
     implementation 'com.google.android.gms:play-services-places:16.0.0'
 
+    // Authentication
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.facebook.android:facebook-android-sdk:4.40.0'
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

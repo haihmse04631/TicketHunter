@@ -1,10 +1,5 @@
 package com.example.macbookpro.ticketapp.models;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-
-import com.example.macbookpro.ticketapp.BR;
-import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -12,35 +7,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hoang Hai on 1/24/19.
+ * Created by Hoang Hai on 3/16/19.
  */
-public class User extends BaseObservable implements Serializable {
+public class UserParam implements Serializable {
 
     private String id = "";
+    @SerializedName("first_name")
     private String firstName = "";
+    @SerializedName("last_name")
     private String lastName = "";
-    private String email;
-    private String phone;
-    private String address;
-    private String avatarUrl;
+    @SerializedName("user_name")
+    private String userName = "";
+    private String email = "";
+    private String phone = "";
+    private String address = "";
+    @SerializedName("avatar_url")
+    private String avatarUrl = "";
     private String description = "";
+    @SerializedName("own_events")
     private List<String> ownEvents = new ArrayList<>();
+    @SerializedName("followed_events")
     private List<String> followedEvents = new ArrayList<>();
+    @SerializedName("joined_events")
     private List<String> joinedEvents = new ArrayList<>();
 
-    public User(String id, String email, String phone, String avatarUrl) {
+    public UserParam() {
+    }
+
+    public UserParam(String id, String firstName, String lastName, String userName, String email, String phone, String address, String avatarUrl, String description) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
         this.email = email;
         this.phone = phone;
+        this.address = address;
         this.avatarUrl = avatarUrl;
+        this.description = description;
     }
 
-    public User() {
-    }
-
-    public User(String id, String firstName, String lastName,
-                String email, String phone, String address, String avatarUrl,
-                String description, List<String> ownEvents, List<String> followedEvents, List<String> joinedEvents) {
+    public UserParam(String id, String firstName, String lastName, String email, String phone, String address, String avatarUrl, String description) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,9 +55,25 @@ public class User extends BaseObservable implements Serializable {
         this.address = address;
         this.avatarUrl = avatarUrl;
         this.description = description;
-        this.ownEvents = ownEvents;
-        this.followedEvents = followedEvents;
-        this.joinedEvents = joinedEvents;
+    }
+
+    public UserParam(String id) {
+        this.id = id;
+    }
+
+    public UserParam(String id, String email, String phone, String avatarUrl) {
+        this.id = id;
+        this.email = email;
+        this.phone = phone;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -70,12 +92,44 @@ public class User extends BaseObservable implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getDescription() {
@@ -110,39 +164,4 @@ public class User extends BaseObservable implements Serializable {
         this.joinedEvents = joinedEvents;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Bindable
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-        notifyPropertyChanged(BR.id);
-    }
-
-    @Bindable
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-        notifyPropertyChanged(BR.avatarUrl);
-    }
 }

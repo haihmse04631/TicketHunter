@@ -13,8 +13,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--FacebookSDK-->
-    <string name="facebook_app_id">794601517549572</string>
-    <string name="fb_login_protocol_scheme">fb794601517549572</string>
+    <string name="facebook_application_id">2137248003028698</string>
+    <string name="facebook_login_protocol_scheme">fb2137248003028698</string>
 
     <!--Navigation-->
     <string name="detail_ticket">Detail Ticket</string>

@@ -1,78 +1,65 @@
 package com.example.macbookpro.ticketapp.viewmodels.activitys;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.util.Log;
 import android.view.View;
 import com.example.macbookpro.ticketapp.BR;
 
+import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
+import com.example.macbookpro.ticketapp.models.ResponseMessage;
+import com.example.macbookpro.ticketapp.models.User;
+import com.example.macbookpro.ticketapp.models.UserParam;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
+import com.example.macbookpro.ticketapp.views.activitys.LoginActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Hoang Hai on 1/21/19.
  */
 public class LoginActivityVM extends BaseActivityVM {
 
-    @Bindable
-    private boolean flagLoginState = true;
-    @Bindable
-    private boolean flagRegisterState = false;
-    public String email = "";
-    public String password = "";
-    public String regEmail = "";
-    public String regPassword = "";
-    public String regConfirmPassword = "";
+    private Context mContext;
+    private LoginApiCallBack listened;
 
-    public boolean isFlagLoginState() {
-        return flagLoginState;
+    public UserParam userParam = new UserParam();
+
+    public LoginActivityVM(Context mContext, LoginApiCallBack listened) {
+        this.mContext = mContext;
+        this.listened = listened;
     }
 
-    public void setFlagLoginState(boolean flagLoginState) {
-        this.flagLoginState = flagLoginState;
+    public void pushUserInforToServer() {
+        final Call<ResponseMessage> userCall = ApiClient.getInstance().getApi().createUser(userParam);
+        userCall.enqueue(new Callback<ResponseMessage>() {
+            @Override
+            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                User user = new User(userParam.getId(), userParam.getEmail(), userParam.getPhone(), userParam.getAvatarUrl());
+                Ultil.saveUserToSharedPreference(user, mContext);
+                listened.onCreateUserSuccess();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                listened.onFailure("Có lỗi xảy ra, Đăng nhập không thành công!");
+            }
+        });
+
     }
 
-    public boolean isFlagRegisterState() {
-        return flagRegisterState;
-    }
-
-    public void setFlagRegisterState(boolean flagRegisterState) {
-        this.flagRegisterState = flagRegisterState;
-    }
-
-    public void notifyStateChange() {
-        notifyPropertyChanged(BR.flagLoginState);
-        notifyPropertyChanged(BR.flagRegisterState);
-    }
-
-    public void afterEmailTextChanged(CharSequence email) {
-        this.email = email.toString();
-    }
-
-    public void afterPasswordTextChanged(CharSequence password) {
-        this.password = password.toString();
-    }
-
-    public void afterRegEmailTextChanged(CharSequence regEmail) {
-        this.regEmail = regEmail.toString();
-    }
-
-    public void afterRegPasswordTextChanged(CharSequence regPassword) {
-        this.regPassword = regPassword.toString();
-    }
-
-    public void afterRegConfirmPasswordTextChanged(CharSequence regConfirmPassword) {
-        this.regConfirmPassword = regConfirmPassword.toString();
+    public interface LoginApiCallBack {
+        void onCreateUserSuccess();
+        void onFailure(String message);
     }
 
     public interface LoginActionListened {
-        void onLoginChangeStateTapped(View view);
-        void onRegisterChangeStateTapped(View view);
         void onLoginTapped(View view);
-        void onRegisterTapped(View view);
-        void onLoginFacebookTapped(View view);
-        void onLoginTwitterTapped(View view);
-        void onLoginGoogleTapped(View view);
+        void onLogoutTapped(View view);
     }
 
 }

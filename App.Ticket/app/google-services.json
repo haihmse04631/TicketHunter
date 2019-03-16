@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "298972528495-iustndkb15ds6caqenuk7m8fdk8ne4g9.apps.googleusercontent.com",
+          "client_id": "298972528495-3bldmhttsajpahjv3bbhq2gdgohc044e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.macbookpro.ticketapp",
@@ -23,13 +23,21 @@
           }
         },
         {
-          "client_id": "298972528495-bk2q49ubmejvl0alkecu1qqche9sfqen.apps.googleusercontent.com",
+          "client_id": "298972528495-b3j6c9vea0gvtj90jrai8p688e87kf84.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.macbookpro.ticketapp",
+            "certificate_hash": "87a27b97473d953f751cccf21886d987c9f42100"
+          }
+        },
+        {
+          "client_id": "298972528495-ifcrn5komiftk8deqthk9ccnp34sl6d1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBSddvPxSrS2zyt8s11e1ks4Dz_QwTtdbU"
+          "current_key": "AIzaSyBi70arAxuNvvSfn5y1WVqRzMMuVnr7JSQ"
         }
       ],
       "services": {
@@ -40,7 +48,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "298972528495-bk2q49ubmejvl0alkecu1qqche9sfqen.apps.googleusercontent.com",
+              "client_id": "298972528495-ifcrn5komiftk8deqthk9ccnp34sl6d1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
