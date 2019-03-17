@@ -175,40 +175,6 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         }
     }
 
-    private void inputImageProcess(Intent data) {
-        if (data.getClipData() != null) {
-
-            int totalItemsSelected = data.getClipData().getItemCount();
-
-            for (int i = 0; i < totalItemsSelected; i++) {
-                Uri uri = data.getClipData().getItemAt(i).getUri();
-                String fileName = Ultil.getFileName(uri, getContentResolver());
-                Image image = new Image(i, uri, true, fileName);
-                choosedImages.add(image);
-                adapter.notifyDataSetChanged();
-            }
-
-        } else if (data.getData() != null) {
-            Uri uri = data.getData();
-            String fileName = Ultil.getFileName(uri, getContentResolver());
-            Image image = new Image(count, uri, true, fileName);
-            choosedImages.add(image);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    private void pickAvatarProcess(Intent data) {
-        if (data.getData() != null) {
-            Uri uri = data.getData();
-            String fileName = Ultil.getFileName(uri, getContentResolver());
-            avatarImage.setId(0);
-            avatarImage.setName(fileName);
-            avatarImage.setUri(uri);
-            avatarImage.setFlagIsLoading(true);
-            uploadImage(true);
-        }
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -220,6 +186,116 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
                 pickImageIntent(PICK_AVATAR_REQUEST_CODE);
             }
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onSelectImageTapped(View view) {
+        pickImageIntent(INPUT_FILE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onDateTapped(View view) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, CreateEventActivity.this, 2019, 10, 10);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onTimeTapped(View view) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, CreateEventActivity.this, 10, 00, true);
+        timePickerDialog.show();
+    }
+
+    @Override
+    public void onCheckboxTapped(View view) {
+        isCheckboxTapped = !isCheckboxTapped;
+        viewModel.isUsingMyContactChecked = isCheckboxTapped;
+        binding.edtEmail.setEnabled(!isCheckboxTapped);
+        binding.edtPhone.setEnabled(!isCheckboxTapped);
+        if (isCheckboxTapped) {
+            User user = viewModel.getUserData();
+            viewModel.eventParam.setEmail(user.getEmail());
+            viewModel.eventParam.setPhone(user.getPhone());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onAvatarImageTapped(View view) {
+        pickImageIntent(PICK_AVATAR_REQUEST_CODE);
+    }
+
+    @Override
+    public void onMapViewTapped(View view) {
+        showChooseMapActivity();
+    }
+
+    @Override
+    public void onCreateEventTapped(View view) {
+        String timeParam = viewModel.event.getDate() + "-" + viewModel.event.getTime();
+        if (viewModel.isAllFeildFilled()) {
+            viewModel.eventParam.setTime(timeParam);
+            viewModel.eventParam.setImageLinks(uploadedImageLinks);
+            viewModel.eventParam.setImageUrl(viewModel.event.getImageUrl());
+            Log.e("eventParam", viewModel.eventParam.toString());
+            viewModel.pushEventToServer();
+        } else {
+            viewModel.notifyWarningTextViewStateChange();
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = dayOfMonth + "/" + month + "/" + year;
+        viewModel.event.setDate(date);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String time = hourOfDay + ":" + minute;
+        viewModel.event.setTime(time);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    @Override
+    public void onLeftBarButtonTapped(View view) {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onUploadEventSuccess(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onUploadEventFailed(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    // MARK: Functions
+
+    private void showChooseMapActivity() {
+        Intent intent = new Intent(this, SelectLocationActivity.class);
+        startActivity(intent);
+//        startActivityForResult(new LocationPickerActivity.Builder()
+//                .withLocation(41.4036299, 2.1743558)
+//                .withGeolocApiKey(getResources().getString(R.string.map_api_key))
+//                .withSearchZone("vi-VN")
+//                .shouldReturnOkOnBackPressed()
+//                .withStreetHidden()
+//                .withCityHidden()
+//                .withZipCodeHidden()
+//                .withSatelliteViewHidden()
+//                .withGooglePlacesEnabled()
+//                .withGoogleTimeZoneEnabled()
+//                .withVoiceSearchHidden()
+//                .build(getApplicationContext()), MAP_BUTTON_REQUEST_CODE);
     }
 
     private void uploadImage(boolean isUploadAvatar) {
@@ -357,105 +433,39 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onSelectImageTapped(View view) {
-        pickImageIntent(INPUT_FILE_REQUEST_CODE);
-    }
+    private void inputImageProcess(Intent data) {
+        if (data.getClipData() != null) {
 
-    @Override
-    public void onDateTapped(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, CreateEventActivity.this, 2019, 10, 10);
-        datePickerDialog.show();
-    }
+            int totalItemsSelected = data.getClipData().getItemCount();
 
-    @Override
-    public void onTimeTapped(View view) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, CreateEventActivity.this, 10, 00, true);
-        timePickerDialog.show();
-    }
+            for (int i = 0; i < totalItemsSelected; i++) {
+                Uri uri = data.getClipData().getItemAt(i).getUri();
+                String fileName = Ultil.getFileName(uri, getContentResolver());
+                Image image = new Image(i, uri, true, fileName);
+                choosedImages.add(image);
+                adapter.notifyDataSetChanged();
+            }
 
-    @Override
-    public void onCheckboxTapped(View view) {
-        isCheckboxTapped = !isCheckboxTapped;
-        viewModel.isUsingMyContactChecked = isCheckboxTapped;
-        binding.edtEmail.setEnabled(!isCheckboxTapped);
-        binding.edtPhone.setEnabled(!isCheckboxTapped);
-        if (isCheckboxTapped) {
-            User user = viewModel.getUserData();
-            viewModel.eventParam.setEmail(user.getEmail());
-            viewModel.eventParam.setPhone(user.getPhone());
+        } else if (data.getData() != null) {
+            Uri uri = data.getData();
+            String fileName = Ultil.getFileName(uri, getContentResolver());
+            Image image = new Image(count, uri, true, fileName);
+            choosedImages.add(image);
+            adapter.notifyDataSetChanged();
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onAvatarImageTapped(View view) {
-        pickImageIntent(PICK_AVATAR_REQUEST_CODE);
-    }
-
-    @Override
-    public void onMapViewTapped(View view) {
-        showChooseMapActivity();
-    }
-
-    @Override
-    public void onCreateEventTapped(View view) {
-        String timeParam = viewModel.event.getDate() + "-" + viewModel.event.getTime();
-        if (viewModel.isAllFeildFilled()) {
-            viewModel.eventParam.setTime(timeParam);
-            viewModel.eventParam.setImageLinks(uploadedImageLinks);
-            viewModel.eventParam.setImageUrl(viewModel.event.getImageUrl());
-            Log.e("eventParam", viewModel.eventParam.toString());
-            viewModel.pushEventToServer();
-        } else {
-            viewModel.notifyWarningTextViewStateChange();
+    private void pickAvatarProcess(Intent data) {
+        if (data.getData() != null) {
+            Uri uri = data.getData();
+            String fileName = Ultil.getFileName(uri, getContentResolver());
+            avatarImage.setId(0);
+            avatarImage.setName(fileName);
+            avatarImage.setUri(uri);
+            avatarImage.setFlagIsLoading(true);
+            uploadImage(true);
         }
     }
 
-    private void showChooseMapActivity() {
-        Intent intent = new Intent(this, SelectLocationActivity.class);
-        startActivity(intent);
-//        startActivityForResult(new LocationPickerActivity.Builder()
-//                .withLocation(41.4036299, 2.1743558)
-//                .withGeolocApiKey(getResources().getString(R.string.map_api_key))
-//                .withSearchZone("vi-VN")
-//                .shouldReturnOkOnBackPressed()
-//                .withStreetHidden()
-//                .withCityHidden()
-//                .withZipCodeHidden()
-//                .withSatelliteViewHidden()
-//                .withGooglePlacesEnabled()
-//                .withGoogleTimeZoneEnabled()
-//                .withVoiceSearchHidden()
-//                .build(getApplicationContext()), MAP_BUTTON_REQUEST_CODE);
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = dayOfMonth + "/" + month + "/" + year;
-        viewModel.event.setDate(date);
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String time = hourOfDay + ":" + minute;
-        viewModel.event.setTime(time);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-    }
-
-    @Override
-    public void onLeftBarButtonTapped(View view) {
-        super.onBackPressed();
-    }
-
-    @Override
-    public void onUploadEventSuccess() {
-        super.onBackPressed();
-    }
 }
 

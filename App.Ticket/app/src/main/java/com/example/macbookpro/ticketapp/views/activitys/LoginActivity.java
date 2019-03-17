@@ -105,18 +105,6 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
     }
 
     @Override
-    public void onLogoutTapped(View view) {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.e("Login Activity", "Logout Success");
-                    }
-                });
-    }
-
-    @Override
     public void onCreateUserSuccess() {
         goToMainScreen();
     }

@@ -35,8 +35,13 @@ public class NavProfileFragment extends NavigationFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentNavProfileBinding) getViewBinding();
-        userInfor = Ultil.getUserInfor(getActivity());
-        setupContentView(userInfor, binding.imgAvatar);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        userInfor = Ultil.getUserFromShardPreference(getActivity());
+        binding.setUser(userInfor);
     }
 
     @Override

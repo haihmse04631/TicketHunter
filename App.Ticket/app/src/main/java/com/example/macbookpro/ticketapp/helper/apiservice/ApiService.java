@@ -1,21 +1,18 @@
 package com.example.macbookpro.ticketapp.helper.apiservice;
 
 import com.example.macbookpro.ticketapp.models.AppleMusic;
-import com.example.macbookpro.ticketapp.models.BaseApiModel;
-import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.models.EventParam;
 import com.example.macbookpro.ticketapp.models.EventResponse;
 import com.example.macbookpro.ticketapp.models.ResponseEvents;
 import com.example.macbookpro.ticketapp.models.ResponseMessage;
 import com.example.macbookpro.ticketapp.models.TestApi;
 import com.example.macbookpro.ticketapp.models.UserParam;
-import com.google.android.gms.location.places.GeoDataClient;
 
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -40,5 +37,8 @@ public interface ApiService {
 
     @POST("user")
     Call<ResponseMessage> createUser(@Body UserParam userBody);
+
+    @PUT("user")
+    Call<ResponseMessage> updateUserInfor(@Body UserParam userBody);
 
 }

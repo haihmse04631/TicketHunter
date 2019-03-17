@@ -1,9 +1,12 @@
 package com.example.macbookpro.ticketapp.viewmodels.activitys;
 
+import android.content.Context;
 import android.databinding.Bindable;
 import android.view.View;
 
 import com.example.macbookpro.ticketapp.BR;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
+import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
 
 /**
@@ -20,6 +23,15 @@ public class MainActivityVM extends BaseActivityVM {
     private boolean flagSelectedTabFavorite = false;
     @Bindable
     private boolean flagSelectedTabProfile = false;
+
+    public User user;
+
+    private Context mContext;
+
+    public MainActivityVM(Context context) {
+        this.mContext = context;
+        user = Ultil.getUserFromShardPreference(mContext);
+    }
 
     public boolean isFlagSelectedTabHome() {
         return flagSelectedTabHome;
@@ -43,6 +55,10 @@ public class MainActivityVM extends BaseActivityVM {
 
     public void setFlagSelectedTabProfile(boolean flagSelectedTabProfile) {
         this.flagSelectedTabProfile = flagSelectedTabProfile;
+    }
+
+    public void refreshUseInforData() {
+        user = Ultil.getUserFromShardPreference(mContext);
     }
 
     public void setSelectedTab(int index) {

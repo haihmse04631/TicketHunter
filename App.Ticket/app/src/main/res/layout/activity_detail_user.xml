@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="navigation"
+            type="com.example.macbookpro.ticketapp.models.Navigation" />
+
+        <variable
+            name="user"
+            type="com.example.macbookpro.ticketapp.models.User" />
+
+        <variable
+            name="viewModel"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.DetailUserVM" />
+
+        <variable
+            name="listened"
+            type="com.example.macbookpro.ticketapp.viewmodels.activitys.DetailUserVM.DetailUserActivityListened" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/navigation_bar"
+            layout="@layout/custom_external_nav_bar"
+            app:navigation="@{navigation}" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cover_image" />
+
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-50dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:onClick="@{v -> listened.onUpdateAvatarTapped(v)}"
+                        android:scaleType="centerCrop"
+                        bind:imageUrl="@{user.avatarUrl}" />
+
+                    <ImageView
+                        android:id="@+id/img_upload_status"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="4dp"
+                        android:src="@{viewModel.flagIsUploadingImage ? @drawable/ic_upload_image : @drawable/ic_upload_done}"
+                        android:visibility="@{viewModel.flagIsRequestUploadImage ? View.VISIBLE : View.GONE}" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:onClick="@{v -> listened.onUpdateProfileTapped(v)}"
+                    android:text="@string/edit_profile"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/DetailUserLabelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Họ tên:" />
+
+                    <EditText
+                        style="@style/DetailUserEdtTheme"
+                        android:layout_gravity="center"
+                        android:afterTextChanged="@{(content) -> viewModel.afterEdtNameChanged(content)}"
+                        android:enabled="@{viewModel.flagIsUpdateState}"
+                        android:hint="Họ tên "
+                        android:inputType="text"
+                        android:text="@{user.firstName}" />
+
+                    <TextView
+                        style="@style/DetailUserLabelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Email: " />
+
+                    <EditText
+                        style="@style/DetailUserEdtTheme"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:afterTextChanged="@{(content) -> viewModel.afterEdtEmailChanged(content)}"
+                        android:enabled="@{viewModel.flagIsUpdateState}"
+                        android:hint="Email "
+                        android:inputType="text"
+                        android:text="@{user.email}" />
+
+                    <TextView
+                        style="@style/DetailUserLabelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Phone:" />
+
+                    <EditText
+                        style="@style/DetailUserEdtTheme"
+                        android:layout_gravity="center"
+                        android:afterTextChanged="@{(content) -> viewModel.afterEdtPhoneChanged(content)}"
+                        android:enabled="@{viewModel.flagIsUpdateState}"
+                        android:hint="Phone "
+                        android:inputType="number"
+                        android:text="@{user.phone}" />
+
+
+                    <TextView
+                        style="@style/DetailUserLabelTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Thông tin:" />
+
+                    <EditText
+                        style="@style/DetailUserEdtMultipleTheme"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:afterTextChanged="@{(content) -> viewModel.afterEdtDescriptionChanged(content)}"
+                        android:enabled="@{viewModel.flagIsUpdateState}"
+                        android:gravity="top"
+                        android:hint="Thông tin "
+                        android:inputType="text"
+                        android:paddingTop="4dp"
+                        android:text="@{user.description}" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/colorPrimary"
+                        android:onClick="@{v -> listened.onCompleteButtonTapped(v)}"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+                        android:text="Cập Nhật"
+                        android:textAllCaps="false"
+                        android:textColor="@color/whiteColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:visibility="@{viewModel.flagIsUpdateState ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

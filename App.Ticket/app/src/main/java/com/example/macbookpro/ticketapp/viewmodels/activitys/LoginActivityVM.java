@@ -39,7 +39,7 @@ public class LoginActivityVM extends BaseActivityVM {
         userCall.enqueue(new Callback<ResponseMessage>() {
             @Override
             public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
-                User user = new User(userParam.getId(), userParam.getEmail(), userParam.getPhone(), userParam.getAvatarUrl());
+                User user = new User(userParam.getId(), userParam.getFirstName(), userParam.getLastName() ,userParam.getEmail(), userParam.getPhone(), userParam.getAvatarUrl());
                 Ultil.saveUserToSharedPreference(user, mContext);
                 listened.onCreateUserSuccess();
             }
@@ -59,7 +59,6 @@ public class LoginActivityVM extends BaseActivityVM {
 
     public interface LoginActionListened {
         void onLoginTapped(View view);
-        void onLogoutTapped(View view);
     }
 
 }

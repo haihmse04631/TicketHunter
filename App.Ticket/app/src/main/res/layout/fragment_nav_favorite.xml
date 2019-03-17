@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="user"
+            type="com.example.macbookpro.ticketapp.models.User"/>
 
     </data>
 
@@ -29,6 +34,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                bind:imageCircle="@{user.avatarUrl}"
                 android:id="@+id/img_avatar"
                 android:layout_width="35dp"
                 android:layout_height="35dp"

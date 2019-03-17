@@ -18,21 +18,17 @@
 
     <!--Navigation-->
     <string name="detail_ticket">Detail Ticket</string>
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
     <string name="home_tab">Home</string>
     <string name="create_event">Tạo Event</string>
     <string name="comment">Bình Luận</string>
     <string name="content">Nội Dung</string>
 
-    <string name="leku_title_activity_location_picker">Location Picker</string>
-    <string name="leku_load_location_error">Something went wrong. Please try again.</string>
-    <string name="leku_no_search_results">There are no results for your search</string>
-    <string name="leku_unknown_location">unknown location</string>
-    <string name="leku_voice_search_promp">Search by voice…</string>
-    <string name="leku_voice_search_extra_language">en-EN</string>
-    <string name="leku_toolbar_action_voice_title">Voice</string>
-    <string name="leku_search_hint">Search</string>
-
     <string name="edit"><u>Sửa</u></string>
     <string name="delete"><u>Xoá</u></string>
+    <string name="edit_profile"><u>Cập nhật thông tin</u></string>
 
 </resources>

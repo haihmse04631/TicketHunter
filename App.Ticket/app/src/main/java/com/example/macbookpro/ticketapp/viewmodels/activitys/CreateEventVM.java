@@ -63,13 +63,12 @@ public class CreateEventVM extends BaseActivityVM {
             @Override
             public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
                 responseMessage = response.body();
-                Toast.makeText(mContext, "Đăng sự kiện thành công!", Toast.LENGTH_LONG).show();
-                apiListened.onUploadEventSuccess();
+                apiListened.onUploadEventSuccess("Đăng sự kiện thành công!");
             }
 
             @Override
             public void onFailure(Call<ResponseMessage> call, Throwable t) {
-                Toast.makeText(mContext, "Đăng sự kiện không thành công!", Toast.LENGTH_LONG).show();
+                apiListened.onUploadEventFailed("Đăng sự kiện không thành công!");
             }
         });
     }
@@ -115,7 +114,8 @@ public class CreateEventVM extends BaseActivityVM {
     }
 
     public interface ApiListened {
-        void onUploadEventSuccess();
+        void onUploadEventSuccess(String message);
+        void onUploadEventFailed(String message);
     }
 
     public interface CreateEventActivityListened {

@@ -35,8 +35,13 @@ public class NavFavoriteFragment extends NavigationFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentNavFavoriteBinding) getViewBinding();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         userInfor = Ultil.getUserInfor(getActivity());
-        setupContentView(userInfor, binding.imgAvatar);
+        binding.setUser(userInfor);
     }
 
     @Override

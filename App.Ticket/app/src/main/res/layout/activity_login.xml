@@ -57,19 +57,6 @@
             android:textStyle="bold"
             app:pb_colorNormal="@color/selectedColor" />
 
-        <com.dd.processbutton.iml.ActionProcessButton
-            android:layout_marginBottom="50dp"
-            android:layout_width="200dp"
-            android:layout_height="45dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_alignParentBottom="true"
-            android:onClick="@{v -> listened.onLogoutTapped(v)}"
-            android:text="Logout"
-            android:textColor="@color/whiteColor"
-            android:textStyle="bold"
-            app:pb_colorNormal="@color/selectedColor" />
-
     </RelativeLayout>
 
 </layout>

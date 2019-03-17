@@ -18,18 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Hoang Hai on 1/13/19.
  */
 public class ApiClient {
-    private static ApiClient instance;
-
-    private ApiService api;
     private static final int TIME_OUT = 10; //Request timeout 10 seconds
+    private static ApiClient instance;
+    private ApiService api;
 
-
-    public static ApiClient getInstance() {
-        if (instance == null) {
-            instance = new ApiClient();
-        }
-        return instance;
-    }
 
     private ApiClient() {
         //set cookie request
@@ -60,6 +52,13 @@ public class ApiClient {
                 .build();
 
         api = retrofit.create(ApiService.class);
+    }
+
+    public static ApiClient getInstance() {
+        if (instance == null) {
+            instance = new ApiClient();
+        }
+        return instance;
     }
 
     public ApiService getApi() {

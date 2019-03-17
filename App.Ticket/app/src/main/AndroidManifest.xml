@@ -10,8 +10,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.location.network" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <application
         android:name=".application.TKApplication"
@@ -22,6 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".views.activitys.DetailUserActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,14 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".views.activitys.SelectLocationActivity"/>
-
-        <activity android:name=".views.activitys.CreateEventActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-
+        <activity android:name=".views.activitys.SelectLocationActivity" />
+        <activity
+            android:name=".views.activitys.CreateEventActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".views.activitys.DetailEventActivity" />
-
         <activity android:name=".views.activitys.LoginActivity" />
 
         <meta-data
@@ -51,7 +53,6 @@
             android:value="AIzaSyDxNMOllWZMpNLuztS7ZcGIPPOoIx2k1uo" />
 
         <activity android:name=".views.activitys.MainActivity" /> <!-- Facebook SDK -->
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -69,4 +70,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

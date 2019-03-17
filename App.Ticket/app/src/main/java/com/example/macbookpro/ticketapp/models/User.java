@@ -24,12 +24,22 @@ public class User extends BaseObservable implements Serializable {
     private String address;
     private String avatarUrl;
     private String description = "";
+    private String fullName = "";
     private List<String> ownEvents = new ArrayList<>();
     private List<String> followedEvents = new ArrayList<>();
     private List<String> joinedEvents = new ArrayList<>();
 
     public User(String id, String email, String phone, String avatarUrl) {
         this.id = id;
+        this.email = email;
+        this.phone = phone;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public User(String id, String firstName, String lastName, String email, String phone, String avatarUrl) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.avatarUrl = avatarUrl;
@@ -54,8 +64,9 @@ public class User extends BaseObservable implements Serializable {
         this.joinedEvents = joinedEvents;
     }
 
+    @Bindable
     public String getFirstName() {
-        return firstName;
+        return firstName + " " + lastName;
     }
 
     public void setFirstName(String firstName) {
@@ -78,6 +89,7 @@ public class User extends BaseObservable implements Serializable {
         this.address = address;
     }
 
+    @Bindable
     public String getDescription() {
         return description;
     }
@@ -110,12 +122,14 @@ public class User extends BaseObservable implements Serializable {
         this.joinedEvents = joinedEvents;
     }
 
+    @Bindable
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+        notifyPropertyChanged(BR.email);
     }
 
     public String getPhone() {
@@ -137,6 +151,15 @@ public class User extends BaseObservable implements Serializable {
     }
 
     @Bindable
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    @Bindable
     public String getAvatarUrl() {
         return avatarUrl;
     }
@@ -144,5 +167,12 @@ public class User extends BaseObservable implements Serializable {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
         notifyPropertyChanged(BR.avatarUrl);
+    }
+
+    public void notifyUserDataChanged() {
+        notifyPropertyChanged(BR.email);
+        notifyPropertyChanged(BR.firstName);
+        notifyPropertyChanged(BR.phone);
+        notifyPropertyChanged(BR.description);
     }
 }
