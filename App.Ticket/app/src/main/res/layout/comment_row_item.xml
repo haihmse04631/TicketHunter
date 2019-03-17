@@ -25,12 +25,12 @@
             bind:imageCircle="@{comment.avatarUrl}" />
 
         <ImageView
+            android:id="@+id/star_img"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="42dp"
             android:layout_marginTop="42dp"
-            android:src="@drawable/ic_star"
-            android:visibility="@{comment.flagIsOwnEventComment ? View.VISIBLE : View.GONE}" />
+            android:src="@drawable/ic_star" />
 
         <LinearLayout
             android:id="@+id/comment_container"
@@ -68,6 +68,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/edit_view_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_container"
@@ -83,8 +84,7 @@
                 android:layout_marginEnd="20dp"
                 android:text="@string/edit"
                 android:textColor="@color/blue_text_color"
-                android:textSize="15sp"
-                android:visibility="@{comment.flagIsMyComment ? View.VISIBLE : View.GONE}" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_delete"
@@ -92,8 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/delete"
                 android:textColor="@color/blue_text_color"
-                android:textSize="15sp"
-                android:visibility="@{comment.flagIsMyComment ? View.VISIBLE : View.GONE}" />
+                android:textSize="15sp" />
 
 
         </LinearLayout>

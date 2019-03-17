@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.macbookpro.ticketapp.BR;
 import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.models.EventParam;
@@ -37,6 +38,7 @@ public class CreateEventVM extends BaseActivityVM {
     public EventParam eventParam = new EventParam();
     public boolean isUsingMyContactChecked = false;
     private ApiListened apiListened;
+    private User user;
 
     @Bindable
     public boolean flagIsEventNameEmpty = false;
@@ -55,9 +57,11 @@ public class CreateEventVM extends BaseActivityVM {
         this.mContext = context;
         event.setCategory(CategoryTag.getValueWith(CategoryTag.index(CategoryTag.SPORT)));
         this.apiListened = listened;
+        this.user = Ultil.getUserFromShardPreference(mContext);
     }
 
     public void pushEventToServer() {
+        eventParam.setOwnId(user.getId());
         Call<ResponseMessage> call = ApiClient.getInstance().getApi().pushEvent(eventParam);
         call.enqueue(new Callback<ResponseMessage>() {
             @Override

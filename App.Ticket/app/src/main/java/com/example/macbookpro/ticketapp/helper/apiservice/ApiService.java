@@ -7,6 +7,7 @@ import com.example.macbookpro.ticketapp.models.ResponseEvents;
 import com.example.macbookpro.ticketapp.models.ResponseMessage;
 import com.example.macbookpro.ticketapp.models.TestApi;
 import com.example.macbookpro.ticketapp.models.UserParam;
+import com.example.macbookpro.ticketapp.models.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -40,5 +41,8 @@ public interface ApiService {
 
     @PUT("user")
     Call<ResponseMessage> updateUserInfor(@Body UserParam userBody);
+
+    @GET("user/{id}")
+    Call<UserResponse> getUserInforById(@Path("id") String id);
 
 }

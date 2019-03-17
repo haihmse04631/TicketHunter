@@ -60,7 +60,7 @@ public class CommentDialog extends Dialog implements CommentDialogVM.CommentDial
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.custom_comment_dialog, null, false);
         setContentView(binding.getRoot());
-        viewModel = new CommentDialogVM();
+        viewModel = new CommentDialogVM(mActivity);
         viewModel.event = event;
 
         binding.setListened(this);
@@ -101,8 +101,8 @@ public class CommentDialog extends Dialog implements CommentDialogVM.CommentDial
     }
 
     private void sendCommentNormalState(String commentContent) {
-        Comment comment = new Comment(viewModel.event.getName(),"1", "Ice Tea adsd",
-                "https://images-na.ssl-images-amazon.com/images/I/81MQcUJi-UL._SX425_.jpg", commentContent);
+        Comment comment = new Comment(viewModel.event.getOwnId(), viewModel.user.getId(), viewModel.user.getFirstName(),
+                viewModel.user.getAvatarUrl(), commentContent);
         sendComment(comment);
     }
 

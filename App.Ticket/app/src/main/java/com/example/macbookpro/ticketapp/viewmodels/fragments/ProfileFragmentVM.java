@@ -13,7 +13,7 @@ public class ProfileFragmentVM {
 
     private Context mContext;
 
-    public User user = new User();
+    public User user;
 
     public ProfileFragmentVM(Context mContext) {
         this.mContext = mContext;

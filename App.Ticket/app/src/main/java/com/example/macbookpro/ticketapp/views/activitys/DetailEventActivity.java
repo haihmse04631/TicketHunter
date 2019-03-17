@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityDetailEventBinding;
 import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
+import com.example.macbookpro.ticketapp.helper.constant.Constant;
 import com.example.macbookpro.ticketapp.helper.location.FetchURL;
 import com.example.macbookpro.ticketapp.helper.location.TaskLoadedCallback;
 import com.example.macbookpro.ticketapp.helper.ultility.GridSpacingItemDecoration;
@@ -31,10 +32,13 @@ import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.Comment;
 import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.models.EventResponse;
+import com.example.macbookpro.ticketapp.models.TempEvent;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.DetailEventActivityVM;
+import com.example.macbookpro.ticketapp.viewmodels.activitys.DetailUserVM;
 import com.example.macbookpro.ticketapp.views.adapter.CommentsAdapter;
 import com.example.macbookpro.ticketapp.views.adapter.DetailListImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
 import com.example.macbookpro.ticketapp.views.dialog.CommentDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -54,7 +58,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailEventActivity extends BindingActivity implements OnMapReadyCallback, TaskLoadedCallback, DetailEventActivityVM.DetailEventListened, DetailListImageAdapter.ImageListListened {
+public class DetailEventActivity extends BindingActivity implements OnMapReadyCallback, TaskLoadedCallback, DetailEventActivityVM.DetailEventListened, DetailListImageAdapter.ImageListListened, DetailEventActivityVM.DetailEventApiListened {
 
     private static final int LOCATION_PERMISSTION_REQUEST_CODE = 1;
     private static final String DIRECTION_MODE = "driving";
@@ -76,6 +80,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CustomProgress.getInstance().showLoading(this);
         binding = (ActivityDetailEventBinding) getViewBinding();
         getPermission();
         mapView = binding.mapView;
@@ -88,7 +93,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     }
 
     private void initViewBinding() {
-        viewModel = new DetailEventActivityVM();
+        viewModel = new DetailEventActivityVM(this, this);
         binding.setListened(this);
         binding.setViewModel(viewModel);
     }
@@ -237,8 +242,15 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
         super.onBackPressed();
     }
 
+    @Override
+    public void onFollowButtonTapped(View view) {
+        if (!viewModel.isFollowed) {
+            CustomProgress.getInstance().showLoading(this);
+            viewModel.updateFollowedEvent();
+        }
+    }
+
     private void getEvent() {
-        Log.e("eventKey", viewModel.eventKey);
         Call<EventResponse> eventResponseCall = ApiClient.getInstance().getApi().getEventById(viewModel.eventKey);
         eventResponseCall.enqueue(new Callback<EventResponse>() {
             @Override
@@ -247,6 +259,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
                 viewModel.event = eventResponse.getEvent();
                 binding.setEvent(viewModel.event);
                 initRecycleView();
+                viewModel.getUserInfor();
             }
 
             @Override
@@ -262,4 +275,18 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
 
     }
 
+    @Override
+    public void onGetUserInforSuccess() {
+        CustomProgress.getInstance().hideLoading();
+    }
+
+    @Override
+    public void onGetUserInforFailled() {
+        CustomProgress.getInstance().hideLoading();
+    }
+
+    @Override
+    public void onUpdateUserInforSuccess() {
+        CustomProgress.getInstance().hideLoading();
+    }
 }

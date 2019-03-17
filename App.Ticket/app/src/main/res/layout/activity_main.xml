@@ -94,7 +94,7 @@
                         android:id="@+id/tv_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Favorite"
+                        android:text="Hoạt động"
                         android:textColor="@{viewModel.flagSelectedTabFavorite ? @color/colorAccent : @color/unSelectedColor}"
                         android:textSize="@dimen/tab_text_size"
                         android:textStyle="bold" />
@@ -121,7 +121,7 @@
                         android:id="@+id/tv_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Profile"
+                        android:text="Cá nhân"
                         android:textColor="@{viewModel.flagSelectedTabProfile ? @color/colorAccent : @color/unSelectedColor}"
                         android:textSize="@dimen/tab_text_size"
                         android:textStyle="bold" />

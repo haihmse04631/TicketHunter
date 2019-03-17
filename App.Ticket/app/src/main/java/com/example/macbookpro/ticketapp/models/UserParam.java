@@ -152,8 +152,8 @@ public class UserParam implements Serializable {
         return followedEvents;
     }
 
-    public void setFollowedEvents(List<String> followedEvents) {
-        this.followedEvents = followedEvents;
+    public void setFollowedEvents(String eventId) {
+        this.followedEvents.add(eventId);
     }
 
     public List<String> getJoinedEvents() {

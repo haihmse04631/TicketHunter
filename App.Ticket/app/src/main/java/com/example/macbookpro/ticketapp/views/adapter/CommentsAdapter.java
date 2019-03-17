@@ -3,6 +3,7 @@ package com.example.macbookpro.ticketapp.views.adapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.icu.util.ULocale;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.CommentRowItemBinding;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.Comment;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +33,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     private List<Comment> comments = new ArrayList<>();
     private List<String> commentIds = new ArrayList<>();
     private Context mContext;
+    private String userId;
     private LayoutInflater layoutInflater;
     private CommentAdapterListened listened;
     private DatabaseReference mDatabaseReference;
@@ -49,6 +52,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     @Override
     public void onBindViewHolder(@NonNull CommentListViewHolder commentListViewHolder, final int i) {
         commentListViewHolder.binding.setComment(comments.get(i));
+        commentListViewHolder.binding.editViewContainer.setVisibility(userId.equals(comments.get(i).getUserId()) ? View.VISIBLE : View.GONE);
+        commentListViewHolder.binding.starImg.setVisibility(comments.get(i).isAddmin() ? View.VISIBLE : View.GONE);
         commentListViewHolder.binding.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,12 +87,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         this.mContext = context;
         this.listened = listened;
         mDatabaseReference = ref;
+        userId = Ultil.getUserFromShardPreference(mContext).getId();
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Comment comment = dataSnapshot.getValue(Comment.class);
-
                 commentIds.add(dataSnapshot.getKey());
                 comments.add(comment);
                 notifyItemInserted(comments.size() - 1);

@@ -20,8 +20,10 @@ public class Comment extends BaseObservable implements Serializable {
     private String name = "";
     private String avatarUrl = "";
     private String content = "";
+    private boolean isAddmin;
 
     public Comment() {
+
     }
 
     public Comment(String userId, String name, String avatarUrl, String content) {
@@ -37,6 +39,7 @@ public class Comment extends BaseObservable implements Serializable {
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.content = content;
+        this.isAddmin =  eventId.equals(userId);
     }
 
     public Map<String, Object> toMap() {
@@ -45,14 +48,21 @@ public class Comment extends BaseObservable implements Serializable {
         return result;
     }
 
-    @Bindable
-    public boolean isFlagIsMyComment() {
-        return userId.equals("1");
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     @Bindable
-    public boolean isFlagIsOwnEventComment() {
-        return eventId.equals("123456");
+    public boolean isAddmin() {
+        return isAddmin;
+    }
+
+    public void setAddmin(boolean addmin) {
+        isAddmin = addmin;
     }
 
     @Bindable

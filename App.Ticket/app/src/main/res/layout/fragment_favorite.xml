@@ -4,25 +4,91 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.example.macbookpro.ticketapp.viewmodels.fragments.FavoriteFragmentVM"/>
+
+        <variable
             name="listened"
             type="com.example.macbookpro.ticketapp.viewmodels.fragments.FavoriteFragmentVM.FavoriteFragmentActionCallBack" />
+
+        <import type="android.view.View" />
 
     </data>
 
     <LinearLayout
-        android:id="@+id/main_favorite"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/whiteColor"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:onClick="@{v -> listened.onClickDetailTicket(v)}"
-            android:text="Detail Ticket" />
+        <LinearLayout
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:onClick="@{v -> listened.onHistoryEventTapped(v)}"
+                    android:textColor="@color/normalText"
+                    android:textSize="18sp"
+                    android:background="@color/whiteColor"
+                    android:textStyle="bold"
+                    android:text="Đã Xem"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:visibility="@{viewModel.addedEventTapped ? View.GONE : View.VISIBLE }"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:onClick="@{v -> listened.onAddedEventTapped(v)}"
+                    android:textColor="@color/normalText"
+                    android:background="@color/whiteColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Đã tạo"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:visibility="@{viewModel.addedEventTapped ? View.VISIBLE : View.GONE}"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:background="@color/normalText"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+
+        <com.example.macbookpro.ticketapp.views.customviews.CustomViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
