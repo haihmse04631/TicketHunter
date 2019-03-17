@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEventActivity extends BindingActivity implements ChoosedImageAdapter.ChoosedImageAdapterListened, CreateEventVM.CreateEventActivityListened,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback, Navigation.NavBarButtonListened {
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback, Navigation.NavBarButtonListened, CreateEventVM.ApiListened {
 
     private String TAG = getClass().getName();
     private int PICK_AVATAR_REQUEST_CODE = 1;
@@ -79,7 +79,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = new CreateEventVM(this);
+        viewModel = new CreateEventVM(this, this);
 
         configViewBidding();
 
@@ -453,5 +453,9 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         super.onBackPressed();
     }
 
+    @Override
+    public void onUploadEventSuccess() {
+        super.onBackPressed();
+    }
 }
 

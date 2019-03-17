@@ -80,7 +80,8 @@ public class LoginActivity extends BindingActivity implements LoginActivityVM.Lo
 
             if (resultCode == RESULT_OK) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                loginActivityVM.userParam = new UserParam(user.getUid(), user.getEmail(), user.getPhoneNumber(), user.getPhotoUrl().toString());
+                String avatarUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
+                loginActivityVM.userParam = new UserParam(user.getUid(), user.getEmail(), user.getPhoneNumber(), avatarUrl);
                 loginActivityVM.pushUserInforToServer();
             }
         }

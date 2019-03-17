@@ -126,4 +126,22 @@ public class Ultil {
         editor.apply();
     }
 
+    public static User getUserFromShardPreference(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.TK_SHARE_PREFERENCE, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(Constant.USER_DATA, null);
+        if (json != null) {
+            return gson.fromJson(json, User.class);
+        }
+        return new User();
+    }
+
+    public static void clearUserData(Context context) {
+        SharedPreferences.Editor sharedPreferences = context.getSharedPreferences(Constant.TK_SHARE_PREFERENCE, Context.MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(null);
+        sharedPreferences.putString(Constant.USER_DATA, json);
+        sharedPreferences.apply();
+    }
+
 }

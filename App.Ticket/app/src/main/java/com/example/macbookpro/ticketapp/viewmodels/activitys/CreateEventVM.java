@@ -36,6 +36,7 @@ public class CreateEventVM extends BaseActivityVM {
     private Context mContext;
     public EventParam eventParam = new EventParam();
     public boolean isUsingMyContactChecked = false;
+    private ApiListened apiListened;
 
     @Bindable
     public boolean flagIsEventNameEmpty = false;
@@ -50,9 +51,10 @@ public class CreateEventVM extends BaseActivityVM {
     @Bindable
     public boolean flagIsConentEmpty = false;
 
-    public CreateEventVM(Context context) {
+    public CreateEventVM(Context context, ApiListened listened) {
         this.mContext = context;
         event.setCategory(CategoryTag.getValueWith(CategoryTag.index(CategoryTag.SPORT)));
+        this.apiListened = listened;
     }
 
     public void pushEventToServer() {
@@ -61,12 +63,13 @@ public class CreateEventVM extends BaseActivityVM {
             @Override
             public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
                 responseMessage = response.body();
-                Toast.makeText(mContext, responseMessage.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Đăng sự kiện thành công!", Toast.LENGTH_LONG).show();
+                apiListened.onUploadEventSuccess();
             }
 
             @Override
             public void onFailure(Call<ResponseMessage> call, Throwable t) {
-                Toast.makeText(mContext, "Call Api Failed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Đăng sự kiện không thành công!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -111,6 +114,10 @@ public class CreateEventVM extends BaseActivityVM {
         eventParam.setContent(eventContent);
     }
 
+    public interface ApiListened {
+        void onUploadEventSuccess();
+    }
+
     public interface CreateEventActivityListened {
         void onSelectImageTapped(View view);
         void onDateTapped(View view);
@@ -147,12 +154,11 @@ public class CreateEventVM extends BaseActivityVM {
             isPassContactCheck = !flagIsEmailEmpty && !flagIsPhoneEmpty;
         }
         return !flagIsEventNameEmpty && !flagIsNumberTicketEmpty && !flagIsPriceTicketEmpty && !flagIsConentEmpty && isPassContactCheck;
-
     }
 
     public void setCategoryOfEventAt(int index) {
         event.setCategory(CategoryTag.getValueWith(index));
-        eventParam.setCategory(CategoryTag.getValueWith(index));
+        eventParam.setCategory(CategoryTag.getKeyWith(index));
         Log.e("category: ", CategoryTag.getValueWith(index));
     }
 
@@ -199,6 +205,33 @@ public class CreateEventVM extends BaseActivityVM {
                     return "Khác";
                 case ECONOMIC:
                     return "Kinh Doanh";
+                default:
+                    return "";
+            }
+        }
+
+        public static String getKeyWith(int index) {
+            CategoryTag[] categoryTagList = CategoryTag.values();
+            CategoryTag categoryTag = categoryTagList[index];
+            switch (categoryTag) {
+                case SPORT:
+                    return "SPORT";
+                case TRAVEL:
+                    return "TRAVEL";
+                case FOOD:
+                    return "FOOD";
+                case GAMESHOW:
+                    return "GAMESHOW";
+                case ACT:
+                    return "ACT";
+                case STUDY:
+                    return "STUDY";
+                case TECHNOLOGY:
+                    return "TECHNOLOGY";
+                case OTHER:
+                    return "OTHER";
+                case ECONOMIC:
+                    return "ECONOMIC";
                 default:
                     return "";
             }

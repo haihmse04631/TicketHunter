@@ -18,6 +18,7 @@ import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.FragmentProfileBinding;
 import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.helper.constant.Constant;
+import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
 import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.fragments.ProfileFragmentVM;
 import com.example.macbookpro.ticketapp.views.activitys.CreateEventActivity;
@@ -39,9 +40,8 @@ import retrofit2.Response;
  */
 public class ProfileFragment extends BindingFragment implements ProfileFragmentVM.ProfileFragmentListened {
 
-    private User user;
-
     private FragmentProfileBinding binding;
+    private ProfileFragmentVM viewModel;
 
     public static ProfileFragment newInstance() {
 
@@ -55,9 +55,9 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel = new ProfileFragmentVM(getContext());
         binding = (FragmentProfileBinding) getViewBinding();
         binding.setListened(this);
-        getUserData();
     }
 
     @Override
@@ -72,13 +72,13 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
 
     @Override
     public void onLogoutTapped(View view) {
-        if (user != null) {
-            doLogout(user);
+        if (viewModel.user != null) {
+            doLogout();
         }
     }
 
     @Override
-    public void onShowDialog(View view) {
+    public void onCreateEventTapped(View view) {
         Intent intent = new Intent(getActivity(), CreateEventActivity.class);
         startActivity(intent);
     }
@@ -88,38 +88,22 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
 
     }
 
-    private void doLogout(User user) {
+    private void doLogout() {
         AuthUI.getInstance()
                 .signOut(getContext())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.e("Login Activity", "Logout Success");
+                        backToLoginActivity();
                     }
                 });
     }
 
     private void backToLoginActivity() {
+        Ultil.clearUserData(getContext());
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         getActivity().finish();
         startActivity(intent);
-    }
-
-    private void getUserData() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constant.TK_SHARE_PREFERENCE, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(Constant.USER_DATA, null);
-        if (json != null) {
-            user = gson.fromJson(json, User.class);
-        }
-    }
-
-    private void clearUserData() {
-        SharedPreferences.Editor sharedPreferences = getActivity().getSharedPreferences(Constant.TK_SHARE_PREFERENCE, Context.MODE_PRIVATE).edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(null);
-        sharedPreferences.putString(Constant.USER_DATA, json);
-        sharedPreferences.apply();
     }
 
 }
