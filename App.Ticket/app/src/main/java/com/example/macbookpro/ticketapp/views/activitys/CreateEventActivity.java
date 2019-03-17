@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,9 +32,12 @@ import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM;
 import com.example.macbookpro.ticketapp.views.adapter.ChoosedImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -53,7 +56,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private int PICK_AVATAR_REQUEST_CODE = 1;
     private int PERMISSION_REQUEST_CODE = 2;
     private int INPUT_FILE_REQUEST_CODE = 3;
-    private int MAP_BUTTON_REQUEST_CODE = 5;
+    public static final int MAP_BUTTON_REQUEST_CODE = 5;
 
     private ActivityCreateEventBinding binding;
     private CreateEventVM viewModel;
@@ -70,7 +73,8 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private boolean isUploadImageDone = false;
     private boolean isCheckboxTapped = false;
     private MapView mapView;
-    private GoogleMap googleMap;
+    private GoogleMap mMap;
+    private boolean isMapReady;
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -131,6 +135,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        isMapReady = false;
     }
 
     private void initRecycleView() {
@@ -173,6 +178,28 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
                 pickAvatarProcess(data);
             }
         }
+
+        if (requestCode == MAP_BUTTON_REQUEST_CODE) {
+            String locationName = data.getStringExtra("LocationName");
+            Double locationLat = data.getDoubleExtra("LocationLat", 0);
+            Double locationLng = data.getDoubleExtra("LocationLng", 0);
+
+            if (isMapReady && mMap != null) {
+                showMarker(locationName, new LatLng(locationLat, locationLng));
+            }
+        }
+    }
+
+    private void showMarker(String title, LatLng latLng) {
+        if (latLng == null) {
+            return;
+        }
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(title);
+        mMap.clear();
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.addMarker(markerOptions);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -259,6 +286,8 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        isMapReady = true;
+        mMap = googleMap;
 
     }
 
@@ -282,20 +311,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     private void showChooseMapActivity() {
         Intent intent = new Intent(this, SelectLocationActivity.class);
-        startActivity(intent);
-//        startActivityForResult(new LocationPickerActivity.Builder()
-//                .withLocation(41.4036299, 2.1743558)
-//                .withGeolocApiKey(getResources().getString(R.string.map_api_key))
-//                .withSearchZone("vi-VN")
-//                .shouldReturnOkOnBackPressed()
-//                .withStreetHidden()
-//                .withCityHidden()
-//                .withZipCodeHidden()
-//                .withSatelliteViewHidden()
-//                .withGooglePlacesEnabled()
-//                .withGoogleTimeZoneEnabled()
-//                .withVoiceSearchHidden()
-//                .build(getApplicationContext()), MAP_BUTTON_REQUEST_CODE);
+        startActivityForResult(intent, MAP_BUTTON_REQUEST_CODE);
     }
 
     private void uploadImage(boolean isUploadAvatar) {

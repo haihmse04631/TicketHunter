@@ -9,22 +9,28 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivitySelectLocationBinding;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SelectLocationActivity extends BindingActivity<ActivitySelectLocationBinding>
         implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -34,7 +40,8 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
     private GoogleMap mMap;
     private ActivitySelectLocationBinding mBinding;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    private GoogleApiClient mGoogleApiClient;
+    private PlacesClient placesClient;
+    private Place placeResult;
 
 
     @Override
@@ -50,61 +57,54 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
-        LinearLayout llSearch = mBinding.llSearch;
+        TextView llSearch = mBinding.tvSearch;
+        ImageView imgBack = mBinding.imgBack;
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+        String apiKey = getResources().getString(R.string.map_api_key);
+        if (apiKey.isEmpty()) {
+            return;
+        }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+        placesClient = Places.createClient(this);
 
         llSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = null;
-                try {
-                    intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                            .build(SelectLocationActivity.this);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                        .build(SelectLocationActivity.this);
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
             }
-
         });
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent returnIntent = new Intent();
+                if (placeResult != null && placeResult.getLatLng() != null) {
+                    returnIntent.putExtra("LocationName", placeResult.getName());
+                    returnIntent.putExtra("LocationLat", placeResult.getLatLng().latitude);
+                    returnIntent.putExtra("LocationLng", placeResult.getLatLng().longitude);
+                }
+                setResult(CreateEventActivity.MAP_BUTTON_REQUEST_CODE, returnIntent);
+                finish();
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                Log.i(TAG, "Place: " + place.getName());
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                // TODO: Handle the error.
-                Log.i(TAG, status.getStatusMessage());
-
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
+                placeResult = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + placeResult.getName() + ", " + placeResult.getLatLng());
+                showMarker(placeResult.getName(), placeResult.getLatLng());
             }
         }
     }
@@ -153,5 +153,17 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private void showMarker(String title, LatLng latLng) {
+        if (latLng == null) {
+            return;
+        }
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(title);
+        mMap.clear();
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.addMarker(markerOptions);
     }
 }
