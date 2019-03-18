@@ -1,26 +1,27 @@
 package com.example.macbookpro.ticketapp.views.activitys;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivitySelectLocationBinding;
+import com.example.macbookpro.ticketapp.viewmodels.activitys.SelectLocationVM;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
@@ -33,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SelectLocationActivity extends BindingActivity<ActivitySelectLocationBinding>
-        implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        implements OnMapReadyCallback, SelectLocationVM.IClickItemCallBack {
 
     private static final String TAG = SelectLocationActivity.class.getSimpleName();
     private MapView mMapView;
@@ -42,6 +43,7 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private PlacesClient placesClient;
     private Place placeResult;
+    private LatLng currentLocation;
 
 
     @Override
@@ -57,44 +59,16 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
-        TextView llSearch = mBinding.tvSearch;
-        ImageView imgBack = mBinding.imgBack;
-
         String apiKey = getResources().getString(R.string.map_api_key);
         if (apiKey.isEmpty()) {
             return;
         }
-
         // Setup Places Client
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
         placesClient = Places.createClient(this);
-
-        llSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                        .build(SelectLocationActivity.this);
-                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-            }
-        });
-
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                if (placeResult != null && placeResult.getLatLng() != null) {
-                    returnIntent.putExtra("LocationName", placeResult.getName());
-                    returnIntent.putExtra("LocationLat", placeResult.getLatLng().latitude);
-                    returnIntent.putExtra("LocationLng", placeResult.getLatLng().longitude);
-                }
-                setResult(CreateEventActivity.MAP_BUTTON_REQUEST_CODE, returnIntent);
-                finish();
-            }
-        });
+        mBinding.setEvent(this);
     }
 
     @Override
@@ -107,6 +81,30 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
                 showMarker(placeResult.getName(), placeResult.getLatLng());
             }
         }
+    }
+
+    private void moveMapToMyLocation() {
+        LocationManager locMan = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Criteria crit = new Criteria();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location loc = locMan.getLastKnownLocation(locMan.getBestProvider(crit, false));
+        currentLocation = new LatLng(loc.getLatitude(), loc.getLongitude());
+        CameraPosition camPos = new CameraPosition.Builder()
+                .target(currentLocation)
+                .zoom(15.0f)
+                .build();
+
+        CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
+        mMap.moveCamera(camUpdate);
     }
 
     @Override
@@ -138,21 +136,7 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
         mMap.setMyLocationEnabled(true);
         // Check to ensure coordinates aren't null, probably a better way of doing this...
         // mMapView.setCenterCoordinate(new LatLngZoom(mapView.getMyLocation().getLatitude(), mapView.getMyLocation().getLongitude(), 20), true);
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        moveMapToMyLocation();
     }
 
     private void showMarker(String title, LatLng latLng) {
@@ -165,5 +149,34 @@ public class SelectLocationActivity extends BindingActivity<ActivitySelectLocati
         mMap.clear();
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.addMarker(markerOptions);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        if (placeResult != null && placeResult.getLatLng() != null) {
+            returnIntent.putExtra("LocationName", placeResult.getName());
+            returnIntent.putExtra("LocationLat", placeResult.getLatLng().latitude);
+            returnIntent.putExtra("LocationLng", placeResult.getLatLng().longitude);
+        } else {
+            returnIntent.putExtra("LocationLat", currentLocation.latitude);
+            returnIntent.putExtra("LocationLng", currentLocation.longitude);
+        }
+        setResult(CreateEventActivity.MAP_BUTTON_REQUEST_CODE, returnIntent);
+        finish();
+    }
+
+    @Override
+    public void onBack() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onSearchLocation() {
+        List<Place.Field> fields = Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME);
+
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .build(SelectLocationActivity.this);
+        startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
     }
 }

@@ -32,10 +32,12 @@ import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM;
 import com.example.macbookpro.ticketapp.views.adapter.ChoosedImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -198,8 +200,14 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         markerOptions.position(latLng);
         markerOptions.title(title);
         mMap.clear();
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.addMarker(markerOptions);
+        CameraPosition camPos = new CameraPosition.Builder()
+                .target(latLng)
+                .zoom(15.0f)
+                .build();
+
+        CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
+        mMap.moveCamera(camUpdate);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
