@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.macbookpro.ticketapp.R;
 import com.example.macbookpro.ticketapp.databinding.ActivityDetailEventBinding;
@@ -54,6 +55,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.text.ParseException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,6 +79,7 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     private DetailEventActivityVM viewModel;
     private RecyclerView recyclerView;
     private DetailListImageAdapter adapter;
+    private boolean isLoadedDirection = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,11 +139,9 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.addMarker(targetLocation);
         initViewBinding();
         updateLocationUI();
         getDeviceLocation();
-
     }
 
     @Override
@@ -206,10 +208,13 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), 15.0f));
-                                new FetchURL(DetailEventActivity.this).execute(viewModel.getUrl(currentMarkerOptions.getPosition(),
-                                                                                        targetLocation.getPosition(),
-                                                                                        DIRECTION_MODE,
-                                                                                        getResources().getString(R.string.map_api_key)), DIRECTION_MODE);
+                                if (targetLocation != null && currentMarkerOptions != null && !isLoadedDirection) {
+                                    new FetchURL(DetailEventActivity.this).execute(viewModel.getUrl(currentMarkerOptions.getPosition(),
+                                            targetLocation.getPosition(),
+                                            DIRECTION_MODE,
+                                            getResources().getString(R.string.map_api_key)), DIRECTION_MODE);
+                                    isLoadedDirection = true;
+                                }
                             }
                         }
                     }
@@ -260,13 +265,47 @@ public class DetailEventActivity extends BindingActivity implements OnMapReadyCa
                 binding.setEvent(viewModel.event);
                 initRecycleView();
                 viewModel.getUserInfor();
+                getTargetLocation();
             }
 
             @Override
             public void onFailure(Call<EventResponse> call, Throwable t) {
-
+                Toast.makeText(DetailEventActivity.this, "Lấy thông tin sự kiện không thành công!", Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    private void getTargetLocation() {
+        Log.e("Event Location", viewModel.event.getLocation());
+        if (!viewModel.event.getLocation().isEmpty()) {
+            String locationResponse = viewModel.event.getLocation();
+            String[] parts = locationResponse.split(":");
+            if (parts.length == 2) {
+                String strLocationLat = parts[0];
+                String strLocationLng = parts[1];
+                try {
+                    double locationLat = Double.parseDouble(strLocationLat.trim());
+                    double locationLng = Double.parseDouble(strLocationLng.trim());
+                    targetLocation = new MarkerOptions().position(new LatLng(locationLat, locationLng));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                mMap.addMarker(targetLocation);
+            }
+
+        } else {
+            mMap.addMarker(targetLocation);
+        }
+
+        if (targetLocation != null && currentMarkerOptions != null && !isLoadedDirection) {
+            new FetchURL(DetailEventActivity.this).execute(viewModel.getUrl(currentMarkerOptions.getPosition(),
+                    targetLocation.getPosition(),
+                    DIRECTION_MODE,
+                    getResources().getString(R.string.map_api_key)), DIRECTION_MODE);
+            isLoadedDirection = true;
+        }
 
     }
 

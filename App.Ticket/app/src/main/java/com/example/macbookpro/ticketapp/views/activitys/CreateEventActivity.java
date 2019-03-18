@@ -188,6 +188,8 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
             if (isMapReady && mMap != null) {
                 showMarker(locationName, new LatLng(locationLat, locationLng));
+                String locationParam = locationLat + " : " + locationLng;
+                viewModel.eventParam.setLocation(locationParam);
             }
         }
     }
