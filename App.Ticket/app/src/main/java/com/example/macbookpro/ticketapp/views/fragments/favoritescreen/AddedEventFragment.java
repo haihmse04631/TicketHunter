@@ -86,12 +86,38 @@ public class AddedEventFragment extends BindingFragment<FragmentAddedEventBindin
     }
 
     @Override
+    public void onDeleteEventSuccess(int index) {
+        viewModel.updateUserAfterDeleteEvent(index);
+    }
+
+    @Override
+    public void onDeleteEventFailed() {
+        CustomProgress.getInstance().hideLoading();
+        Toast.makeText(getContext(), "Xoá sự kiện không thành công!", Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onUpdateUserInforSuccess() {
+        CustomProgress.getInstance().hideLoading();
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getContext(), "Xoá sự kiện thành công!", Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onUpdateUserInforFailed() {
+        CustomProgress.getInstance().hideLoading();
+        Toast.makeText(getContext(), "Xoá sự kiện không thành công!", Toast.LENGTH_LONG);
+    }
+
+    @Override
     public void onUpdateOptionTapped(TempEvent event) {
 
     }
 
     @Override
-    public void onDeleteOptionTapped(TempEvent event) {
-
+    public void onDeleteOptionTapped(int index, TempEvent event) {
+        CustomProgress.getInstance().showLoading(getContext());
+        viewModel.deleteEventById(event.getId(), index);
     }
+
 }

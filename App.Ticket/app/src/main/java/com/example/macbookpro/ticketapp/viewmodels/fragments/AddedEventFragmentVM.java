@@ -1,10 +1,10 @@
 package com.example.macbookpro.ticketapp.viewmodels.fragments;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
+import com.example.macbookpro.ticketapp.models.ResponseMessage;
 import com.example.macbookpro.ticketapp.models.TempEvent;
 import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.models.UserInfor;
@@ -49,7 +49,7 @@ public class AddedEventFragmentVM extends BaseFragmentVM {
                     List<String> tempEvents = userParam.getOwnEvents();
                     Gson gson = new Gson();
                     addedEvents.clear();
-                    for ( String eventJson : tempEvents ) {
+                    for (String eventJson : tempEvents) {
                         TempEvent tempEvent = gson.fromJson(eventJson, TempEvent.class);
                         addedEvents.add(tempEvent);
                     }
@@ -66,9 +66,58 @@ public class AddedEventFragmentVM extends BaseFragmentVM {
         });
     }
 
+    public void deleteEventById(String id, final int index) {
+        final Call<ResponseMessage> deleteEventCall = ApiClient.getInstance().getApi().deleteEventById(id);
+        deleteEventCall.enqueue(new Callback<ResponseMessage>() {
+            @Override
+            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                listened.onDeleteEventSuccess(index);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                listened.onDeleteEventFailed();
+            }
+        });
+    }
+
+    public void updateUserAfterDeleteEvent(int index) {
+        addedEvents.remove(index);
+        Gson gson = new Gson();
+        userParam.getOwnEvents().clear();
+        for (int i = 0; i < addedEvents.size(); i++) {
+            TempEvent tempEvent = addedEvents.get(i);
+            String tempEventJson = gson.toJson(tempEvent);
+            userParam.setOwnEvents(tempEventJson);
+        }
+        if (userParam != null) {
+            Call<ResponseMessage> uploadAddedEventCall = ApiClient.getInstance().getApi().updateUserInfor(userParam);
+            uploadAddedEventCall.enqueue(new Callback<ResponseMessage>() {
+                @Override
+                public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                    listened.onUpdateUserInforSuccess();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                    listened.onUpdateUserInforFailed();
+                }
+            });
+        }
+    }
+
     public interface AddedEventFragmentListened {
         void onGetApiSuccess();
+
         void onGetApiFailed();
+
+        void onDeleteEventSuccess(int index);
+
+        void onDeleteEventFailed();
+
+        void onUpdateUserInforSuccess();
+
+        void onUpdateUserInforFailed();
     }
 
 }

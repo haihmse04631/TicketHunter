@@ -17,6 +17,9 @@ public class ProfileFragmentVM {
 
     public ProfileFragmentVM(Context mContext) {
         this.mContext = mContext;
+    }
+
+    public void getUserInfor() {
         user = Ultil.getUserFromShardPreference(mContext);
     }
 

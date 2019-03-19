@@ -57,6 +57,12 @@ public class ProfileFragment extends BindingFragment implements ProfileFragmentV
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ProfileFragmentVM(getContext());
         binding = (FragmentProfileBinding) getViewBinding();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        viewModel.getUserInfor();
         binding.setUser(viewModel.user);
         binding.setListened(this);
     }

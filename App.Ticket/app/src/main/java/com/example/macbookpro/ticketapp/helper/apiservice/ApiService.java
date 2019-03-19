@@ -11,6 +11,7 @@ import com.example.macbookpro.ticketapp.models.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -44,5 +45,8 @@ public interface ApiService {
 
     @GET("user/{id}")
     Call<UserResponse> getUserInforById(@Path("id") String id);
+
+    @DELETE("event/{id}")
+    Call<ResponseMessage> deleteEventById(@Path("id") String id);
 
 }

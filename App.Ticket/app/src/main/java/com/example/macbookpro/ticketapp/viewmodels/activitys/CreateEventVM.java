@@ -85,7 +85,6 @@ public class CreateEventVM extends BaseActivityVM {
     }
 
     public void updateAddedEvent() {
-        Log.e("update added event" , "updated");
         TempEvent tempEvent = new TempEvent(eventParam.getId(), eventParam.getName(), eventParam.getImageUrl(), eventParam.getTime(), eventParam.getNumberOfTicket() + "", eventParam.getPrice() + "");
         Gson gson = new Gson();
         String json = gson.toJson(tempEvent);

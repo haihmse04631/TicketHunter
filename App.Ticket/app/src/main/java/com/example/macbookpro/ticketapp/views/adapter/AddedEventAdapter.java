@@ -53,13 +53,15 @@ public class AddedEventAdapter extends RecyclerView.Adapter<AddedEventAdapter.Ad
         addedEventViewHolder.binding.updateOptionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addedEventViewHolder.binding.optionDialogContainer.setVisibility(View.GONE);
                 listened.onUpdateOptionTapped(events.get(i));
             }
         });
         addedEventViewHolder.binding.deleteOptionContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listened.onDeleteOptionTapped(events.get(i));
+                addedEventViewHolder.binding.optionDialogContainer.setVisibility(View.GONE);
+                listened.onDeleteOptionTapped(i , events.get(i));
             }
         });
     }
@@ -85,6 +87,6 @@ public class AddedEventAdapter extends RecyclerView.Adapter<AddedEventAdapter.Ad
 
     public interface AddedEventAdapterListened {
         void onUpdateOptionTapped(TempEvent event);
-        void onDeleteOptionTapped(TempEvent event);
+        void onDeleteOptionTapped(int index, TempEvent event);
     }
 }

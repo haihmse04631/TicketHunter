@@ -61,6 +61,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     private int INPUT_FILE_REQUEST_CODE = 3;
     public static final int MAP_BUTTON_REQUEST_CODE = 5;
 
+
     private ActivityCreateEventBinding binding;
     private CreateEventVM viewModel;
     private RecyclerView recyclerView;
@@ -178,35 +179,20 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-
             if (requestCode == INPUT_FILE_REQUEST_CODE) {
-                if (intent == null || intent.getData() == null) {
-                    if (filePath != null) {
-                        inputImageProcess(Uri.parse(filePath));
-                    }
-                } else {
-                    int totalItemsSelected = intent.getClipData().getItemCount();
-                    for (int i = 0; i < totalItemsSelected; i++) {
-                        Uri uri = intent.getClipData().getItemAt(i).getUri();
-                        inputImageProcess(uri);
-                    }
-                }
+                inputImageProcess(data);
             } else {
-                if (filePath != null) {
-                    pickAvatarProcess(Uri.parse(filePath));
-                } else {
-                    pickAvatarProcess(intent.getData());
-                }
+                pickAvatarProcess(data);
             }
         }
 
         if (requestCode == MAP_BUTTON_REQUEST_CODE) {
-            String locationName = intent.getStringExtra("LocationName");
-            Double locationLat = intent.getDoubleExtra("LocationLat", 0);
-            Double locationLng = intent.getDoubleExtra("LocationLng", 0);
+            String locationName = data.getStringExtra("LocationName");
+            Double locationLat = data.getDoubleExtra("LocationLat", 0);
+            Double locationLng = data.getDoubleExtra("LocationLng", 0);
 
             if (isMapReady && mMap != null) {
                 showMarker(locationName, new LatLng(locationLat, locationLng));
@@ -215,6 +201,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
             }
         }
     }
+
 
     private void showMarker(String title, LatLng latLng) {
         if (latLng == null) {
@@ -495,8 +482,21 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         }
     }
 
-    private void inputImageProcess(Uri uri) {
-        if (uri != null) {
+    private void inputImageProcess(Intent data) {
+        if (data.getClipData() != null) {
+
+            int totalItemsSelected = data.getClipData().getItemCount();
+
+            for (int i = 0; i < totalItemsSelected; i++) {
+                Uri uri = data.getClipData().getItemAt(i).getUri();
+                String fileName = Ultil.getFileName(uri, getContentResolver());
+                Image image = new Image(i, uri, true, fileName);
+                choosedImages.add(image);
+                adapter.notifyDataSetChanged();
+            }
+
+        } else if (data.getData() != null) {
+            Uri uri = data.getData();
             String fileName = Ultil.getFileName(uri, getContentResolver());
             Image image = new Image(count, uri, true, fileName);
             choosedImages.add(image);
@@ -504,8 +504,9 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         }
     }
 
-    private void pickAvatarProcess(Uri uri) {
-        if (uri != null) {
+    private void pickAvatarProcess(Intent data) {
+        if (data.getData() != null) {
+            Uri uri = data.getData();
             String fileName = Ultil.getFileName(uri, getContentResolver());
             avatarImage.setId(0);
             avatarImage.setName(fileName);
