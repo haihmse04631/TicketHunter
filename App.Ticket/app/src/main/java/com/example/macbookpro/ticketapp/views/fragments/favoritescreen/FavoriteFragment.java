@@ -45,7 +45,7 @@ public class FavoriteFragment extends BindingFragment implements FavoriteFragmen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentFavoriteBinding) getViewBinding();
-        viewModel = new FavoriteFragmentVM();
+        viewModel = new FavoriteFragmentVM(getContext());
         binding.setViewModel(viewModel);
         binding.setListened(this);
         viewPager = binding.viewPager;

@@ -144,8 +144,8 @@ public class UserParam implements Serializable {
         return ownEvents;
     }
 
-    public void setOwnEvents(List<String> ownEvents) {
-        this.ownEvents = ownEvents;
+    public void setOwnEvents(String ownEventJson) {
+        this.ownEvents.add(ownEventJson);
     }
 
     public List<String> getFollowedEvents() {

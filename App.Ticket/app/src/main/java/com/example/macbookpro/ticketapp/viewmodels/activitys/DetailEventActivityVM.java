@@ -14,6 +14,7 @@ import com.example.macbookpro.ticketapp.models.EventResponse;
 import com.example.macbookpro.ticketapp.models.ResponseMessage;
 import com.example.macbookpro.ticketapp.models.TempEvent;
 import com.example.macbookpro.ticketapp.models.User;
+import com.example.macbookpro.ticketapp.models.UserInfor;
 import com.example.macbookpro.ticketapp.models.UserParam;
 import com.example.macbookpro.ticketapp.models.UserResponse;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
@@ -54,6 +55,7 @@ public class DetailEventActivityVM extends BaseActivityVM {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 UserResponse userResponse = response.body();
                 userParam = userResponse.getUserParam();
+                UserInfor.getInstance().setUserParam(userParam);
                 List<String> tempEvents = userParam.getFollowedEvents();
                 Gson gson = new Gson();
                 for ( String eventJson : tempEvents ) {
@@ -68,7 +70,6 @@ public class DetailEventActivityVM extends BaseActivityVM {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 apiListened.onGetUserInforSuccess();
-
             }
         });
     }
@@ -77,7 +78,6 @@ public class DetailEventActivityVM extends BaseActivityVM {
         TempEvent tempEvent = new TempEvent(event.getId(), event.getName(), event.getImageUrl(), event.getTime(), event.getNumberOfTicket(), event.getPrice());
         Gson gson = new Gson();
         String json = gson.toJson(tempEvent);
-        Log.e("Send json:", json);
         if (userParam != null) {
             userParam.setFollowedEvents(json);
             Call<ResponseMessage> updateFollowedCall = ApiClient.getInstance().getApi().updateUserInfor(userParam);

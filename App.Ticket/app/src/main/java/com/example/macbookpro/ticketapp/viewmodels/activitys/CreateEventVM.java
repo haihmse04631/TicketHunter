@@ -15,8 +15,13 @@ import com.example.macbookpro.ticketapp.models.Category;
 import com.example.macbookpro.ticketapp.models.Event;
 import com.example.macbookpro.ticketapp.models.EventParam;
 import com.example.macbookpro.ticketapp.models.ResponseMessage;
+import com.example.macbookpro.ticketapp.models.TempEvent;
 import com.example.macbookpro.ticketapp.models.User;
+import com.example.macbookpro.ticketapp.models.UserInfor;
+import com.example.macbookpro.ticketapp.models.UserParam;
+import com.example.macbookpro.ticketapp.models.UserResponse;
 import com.example.macbookpro.ticketapp.viewmodels.base.BaseActivityVM;
+import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -38,6 +43,7 @@ public class CreateEventVM extends BaseActivityVM {
     public EventParam eventParam = new EventParam();
     public boolean isUsingMyContactChecked = false;
     private ApiListened apiListened;
+    public UserParam userParam;
     private User user;
 
     @Bindable
@@ -58,6 +64,46 @@ public class CreateEventVM extends BaseActivityVM {
         event.setCategory(CategoryTag.getValueWith(CategoryTag.index(CategoryTag.SPORT)));
         this.apiListened = listened;
         this.user = Ultil.getUserFromShardPreference(mContext);
+    }
+
+    public void getUserInfor() {
+        final Call<UserResponse> userParamCall = ApiClient.getInstance().getApi().getUserInforById(user.getId());
+        userParamCall.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                UserResponse userResponse = response.body();
+                userParam = userResponse.getUserParam();
+                UserInfor.getInstance().setUserParam(userParam);
+                apiListened.onGetUserInforSuccess();
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                apiListened.onGetUserInforSuccess();
+            }
+        });
+    }
+
+    public void updateAddedEvent() {
+        Log.e("update added event" , "updated");
+        TempEvent tempEvent = new TempEvent(eventParam.getId(), eventParam.getName(), eventParam.getImageUrl(), eventParam.getTime(), eventParam.getNumberOfTicket() + "", eventParam.getPrice() + "");
+        Gson gson = new Gson();
+        String json = gson.toJson(tempEvent);
+        if (userParam != null) {
+            userParam.setOwnEvents(json);
+            Call<ResponseMessage> uploadAddedEventCall = ApiClient.getInstance().getApi().updateUserInfor(userParam);
+            uploadAddedEventCall.enqueue(new Callback<ResponseMessage>() {
+                @Override
+                public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                    apiListened.onUpdateAddedEventSuccess();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                    apiListened.onUpdateAddedEventFailed();
+                }
+            });
+        }
     }
 
     public void pushEventToServer() {
@@ -85,10 +131,8 @@ public class CreateEventVM extends BaseActivityVM {
     public void afterNumberOfTicketChanged(CharSequence content) {
         String numberOfTicket = content.toString();
         if (!numberOfTicket.isEmpty()) {
-            Log.e("numberTicket", numberOfTicket);
             eventParam.setNumberOfTicket(Integer.parseInt(numberOfTicket));
         } else {
-            Log.e("numberTicket", numberOfTicket);
             eventParam.setNumberOfTicket(-1);
         }
     }
@@ -120,6 +164,9 @@ public class CreateEventVM extends BaseActivityVM {
     public interface ApiListened {
         void onUploadEventSuccess(String message);
         void onUploadEventFailed(String message);
+        void onGetUserInforSuccess();
+        void onUpdateAddedEventSuccess();
+        void onUpdateAddedEventFailed();
     }
 
     public interface CreateEventActivityListened {

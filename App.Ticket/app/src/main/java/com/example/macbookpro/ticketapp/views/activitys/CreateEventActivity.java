@@ -32,6 +32,7 @@ import com.example.macbookpro.ticketapp.models.User;
 import com.example.macbookpro.ticketapp.viewmodels.activitys.CreateEventVM;
 import com.example.macbookpro.ticketapp.views.adapter.ChoosedImageAdapter;
 import com.example.macbookpro.ticketapp.views.base.BindingActivity;
+import com.example.macbookpro.ticketapp.views.customviews.CustomProgress;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -84,7 +85,7 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        CustomProgress.getInstance().showLoading(this);
         viewModel = new CreateEventVM(this, this);
 
         configViewBidding();
@@ -105,6 +106,12 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
         initRecycleView();
         getCategoryList();
         configCategoryFlowLayoutTapped();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        viewModel.getUserInfor();
     }
 
     private void configViewBidding() {
@@ -290,7 +297,6 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
             viewModel.eventParam.setTime(timeParam);
             viewModel.eventParam.setImageLinks(uploadedImageLinks);
             viewModel.eventParam.setImageUrl(viewModel.event.getImageUrl());
-            Log.e("eventParam", viewModel.eventParam.toString());
             viewModel.pushEventToServer();
         } else {
             viewModel.notifyWarningTextViewStateChange();
@@ -323,13 +329,28 @@ public class CreateEventActivity extends BindingActivity implements ChoosedImage
 
     @Override
     public void onUploadEventSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        super.onBackPressed();
+        viewModel.updateAddedEvent();
     }
 
     @Override
     public void onUploadEventFailed(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onGetUserInforSuccess() {
+        CustomProgress.getInstance().hideLoading();
+    }
+
+    @Override
+    public void onUpdateAddedEventSuccess() {
+        Toast.makeText(this, "Đăng sự kiện thành công!", Toast.LENGTH_LONG).show();
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onUpdateAddedEventFailed() {
+        Toast.makeText(this, "Đăng sự kiện không thành công!", Toast.LENGTH_LONG).show();
     }
 
     // MARK: Functions

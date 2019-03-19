@@ -1,6 +1,7 @@
 package com.example.macbookpro.ticketapp.viewmodels.fragments;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.macbookpro.ticketapp.helper.apiservice.ApiClient;
 import com.example.macbookpro.ticketapp.helper.ultility.Ultil;
@@ -22,18 +23,18 @@ import retrofit2.Response;
 /**
  * Created by Hoang Hai on 3/18/19.
  */
-public class HistoryEventVM extends BaseFragmentVM {
+public class AddedEventFragmentVM extends BaseFragmentVM {
 
-    private Context mContext;
-    private HistoryEventListened listened;
+    private Context mContent;
+    private AddedEventFragmentListened listened;
     public UserParam userParam;
-    public List<TempEvent> followedEvents = new ArrayList<>();
+    public List<TempEvent> addedEvents = new ArrayList<>();
     private User currentUser;
 
-    public HistoryEventVM(Context mContext, HistoryEventListened listened) {
-        this.mContext = mContext;
+    public AddedEventFragmentVM(Context mContent, AddedEventFragmentListened listened) {
+        this.mContent = mContent;
         this.listened = listened;
-        currentUser = Ultil.getUserFromShardPreference(mContext);
+        currentUser = Ultil.getUserFromShardPreference(mContent);
     }
 
     public void getUserInfor() {
@@ -43,28 +44,31 @@ public class HistoryEventVM extends BaseFragmentVM {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 UserResponse userResponse = response.body();
                 userParam = userResponse.getUserParam();
-                UserInfor.getInstance().setUserParam(userParam);
-                List<String> tempEvents = userParam.getFollowedEvents();
-                Gson gson = new Gson();
-                followedEvents.clear();
-                for ( String eventJson : tempEvents ) {
-                    TempEvent tempEvent = gson.fromJson(eventJson, TempEvent.class);
-                    followedEvents.add(tempEvent);
+                if (userParam != null) {
+                    UserInfor.getInstance().setUserParam(userParam);
+                    List<String> tempEvents = userParam.getOwnEvents();
+                    Gson gson = new Gson();
+                    addedEvents.clear();
+                    for ( String eventJson : tempEvents ) {
+                        TempEvent tempEvent = gson.fromJson(eventJson, TempEvent.class);
+                        addedEvents.add(tempEvent);
+                    }
+                    listened.onGetApiSuccess();
                 }
-                listened.onGetApiSuccess();
+
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                listened.ongetApiFailed();
+                listened.onGetApiFailed();
 
             }
         });
     }
 
-    public interface HistoryEventListened {
+    public interface AddedEventFragmentListened {
         void onGetApiSuccess();
-        void ongetApiFailed();
+        void onGetApiFailed();
     }
 
 }
