@@ -34,14 +34,14 @@ public class HomeFragmentVM extends BaseFragmentVM {
 
     public void getCategories() {
         categories.add(new Category(R.drawable.category_sport, "Thể Thao", "sport" , "1"));
-        categories.add(new Category(R.drawable.category_sport, "Du Lịch", "travel" ,"2"));
-        categories.add(new Category(R.drawable.category_sport, "Ẩm Thực", "food","3"));
-        categories.add(new Category(R.drawable.category_sport, "Game Show", "gameshow","4"));
-        categories.add(new Category(R.drawable.category_sport, "Nghệ Thuật", "act","5"));
-        categories.add(new Category(R.drawable.category_sport, "Học Tập", "study","6"));
-        categories.add(new Category(R.drawable.category_sport, "Công Nghệ", "technology","7"));
-        categories.add(new Category(R.drawable.category_sport, "Kinh Doanh", "economic","8"));
-        categories.add(new Category(R.drawable.category_sport, "Khác", "other","9"));
+        categories.add(new Category(R.drawable.travel, "Du Lịch", "travel" ,"2"));
+        categories.add(new Category(R.drawable.cuisine, "Ẩm Thực", "food","3"));
+        categories.add(new Category(R.drawable.gamshow, "Game Show", "gameshow","4"));
+        categories.add(new Category(R.drawable.art, "Nghệ Thuật", "act","5"));
+        categories.add(new Category(R.drawable.study, "Học Tập", "study","6"));
+        categories.add(new Category(R.drawable.technology, "Công Nghệ", "technology","7"));
+        categories.add(new Category(R.drawable.business, "Kinh Doanh", "economic","8"));
+        categories.add(new Category(R.drawable.other, "Khác", "other","9"));
     }
 
     public void prepareDataEventList() {
